@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String POST = "1", GET = "2";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +19,23 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+    //Button creates logic handler and send own number to server
     public void sendOwnNumber(View view) {
         Log.d("sendButton", "pressed");
-        new RestConnector().execute(POST,"http://10.181.26.131:8080/android/registerNumber/12");
-        new RestConnector().execute(GET,"http://10.181.26.131:8080/android/checkNumbers/1/11,12");
+        new LogicHandler(this).sendOwnNumber();
+
+    }
+
+    //Button creates logic handler and starts async task which gets own numbers from contacts and sends them to server
+    public void sendContacts(View view) {
+        Log.d("contactButton", "pressed");
+        new LogicHandler(this).executePhoneDataHandler();
+    }
+
+    //creates logic handler and sends friends numbers to server
+    public void inviteFriends(View view) throws Exception {
+        Log.d("inviteFriends", "pressed");
+        new LogicHandler(this).inviteFriends();
 
     }
 
