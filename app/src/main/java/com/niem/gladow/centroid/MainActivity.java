@@ -1,5 +1,6 @@
 package com.niem.gladow.centroid;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +36,10 @@ public class MainActivity extends AppCompatActivity {
         new LogicHandler(this).executePhoneDataHandler();
     }
 
-    public void inviteFriends(View view) {
+    public void inviteFriends(View view) throws Exception{
         Log.d("inviteFriends", "pressed");
         new LogicHandler(this).inviteFriends();
+
     }
 
     @Override
