@@ -1,6 +1,5 @@
 package com.niem.gladow.centroid;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,11 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,18 +19,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+    //Button creates logic handler and send own number to server
     public void sendOwnNumber(View view) {
         Log.d("sendButton", "pressed");
         new LogicHandler(this).sendOwnNumber();
 
     }
 
+    //Button creates logic handler and starts async task which gets own numbers from contacts and sends them to server
     public void sendContacts(View view) {
         Log.d("contactButton", "pressed");
         new LogicHandler(this).executePhoneDataHandler();
     }
 
-    public void inviteFriends(View view) throws Exception{
+    //creates logic handler and sends friends numbers to server
+    public void inviteFriends(View view) throws Exception {
         Log.d("inviteFriends", "pressed");
         new LogicHandler(this).inviteFriends();
 

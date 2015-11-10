@@ -22,14 +22,15 @@ public class RestConnector extends AsyncTask<String, String, String> {
     private static final String POST = "1", GET = "2", SEND = "3";
     private Context context;
 
-    public RestConnector (Context context) {
+    public RestConnector(Context context) {
         this.context = context;
     }
 
+    //depending on post, get or send (send all contacts) goes to method to communicate with server
     @Override
     protected String doInBackground(String... params) {
         String result;
-        switch (params[0]){
+        switch (params[0]) {
             case POST:
                 result = restPost(params[1]);
                 break;
@@ -51,17 +52,17 @@ public class RestConnector extends AsyncTask<String, String, String> {
     }
 
     private String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
-        while((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null)
             result += line;
 
         inputStream.close();
         return result;
     }
 
-    private String restPost (String urlString) {
+    private String restPost(String urlString) {
         String result;
         try {
             Log.d("urlparams", urlString);
@@ -76,7 +77,6 @@ public class RestConnector extends AsyncTask<String, String, String> {
             Log.d("reader", result);
 
 
-
         } catch (Exception e) {
             result = e.getMessage();
         }
@@ -84,7 +84,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
         return result;
     }
 
-    private String restGet (String urlString) {
+    private String restGet(String urlString) {
         String result;
         try {
             Log.d("urlparams", urlString);
@@ -99,7 +99,6 @@ public class RestConnector extends AsyncTask<String, String, String> {
             Log.d("reader", result);
 
 
-
         } catch (Exception e) {
             result = e.getMessage();
         }
@@ -107,7 +106,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
         return result;
     }
 
-    private void saveContactsToFile (String contacts) {
+    private void saveContactsToFile(String contacts) {
         FileOutputStream outputStream;
         try {
             outputStream = context.openFileOutput("friend_list", Context.MODE_PRIVATE);
@@ -117,8 +116,6 @@ public class RestConnector extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
     }
-
-
 
 
 } // end CallAPI
