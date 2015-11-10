@@ -21,9 +21,9 @@ public class PhoneDataHandler extends AsyncTask <String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
-        Log.d("Contacts", getContactsNumbers());
-        return null;
+        String _contacts = getContactsNumbers();
+        Log.d("Contacts", _contacts);
+        return _contacts;
     }
 
     protected void onPostExecute(String result) {

@@ -9,10 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String POST = "1", GET = "2";
-    private static final String SERVER_ADDRESS ="http://10.181.26.131:8080", SEND_NUMBER = "/android/registerNumber/",
-            SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
-    private LogicHandler logicHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,23 +17,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        logicHandler = new LogicHandler(this);
     }
 
     public void sendOwnNumber(View view) {
         Log.d("sendButton", "pressed");
-        logicHandler.sendOwnNumber();
+        new LogicHandler(this).sendOwnNumber();
 
     }
 
     public void sendContacts(View view) {
         Log.d("contactButton", "pressed");
-        logicHandler.executePhoneDataHandler();
+        new LogicHandler(this).executePhoneDataHandler();
     }
 
     public void inviteFriends(View view) {
         Log.d("inviteFriends", "pressed");
-       logicHandler.inviteFriends();
+        new LogicHandler(this).inviteFriends();
     }
 
     @Override

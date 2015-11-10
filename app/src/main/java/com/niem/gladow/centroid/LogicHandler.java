@@ -25,14 +25,20 @@ public class LogicHandler implements AsyncResponse {
     }
 
     private boolean sendContacts(String contacts) {
-        new RestConnector(context).execute(GET, SERVER_ADDRESS + SEND_CONTACTS + "1/11,12");
+        new RestConnector(context).execute(GET, SERVER_ADDRESS + SEND_CONTACTS + "1/" + contacts);
         return true;
     }
 
     public boolean sendOwnNumber() {
-        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "11");
+        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "00436506064522");
+        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "00436604071555");
+        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "004369918165580");
+        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "00436504293795");
+        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "00436506689088");
+
         return true;
     }
+
 
     public boolean inviteFriends() {
         new RestConnector(context).execute(GET, SERVER_ADDRESS + INVITE_FRIENDS + "1/11");
@@ -40,7 +46,18 @@ public class LogicHandler implements AsyncResponse {
     }
 
     public void processFinish(String output) {
-        sendContacts(output);
+        sendContacts(cleanNumberString(output));
+    }
+
+    private String cleanNumberString(String numbers) {
+        String _tmp = numbers;
+        Log.d("NUMBERS", numbers);
+
+        _tmp = _tmp.replaceAll("[+]", "00");
+        _tmp = _tmp.replaceAll("[^0-9,]","");
+        Log.d("afterClean", _tmp);
+
+        return _tmp;
     }
 
 }
