@@ -10,6 +10,8 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     private static final String POST = "1", GET = "2";
+    private static final String SERVER_ADDRESS ="http://10.181.26.131:8080", SEND_NUMBER = "/android/registerNumber/",
+            SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +23,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendOwnNumber(View view) {
         Log.d("sendButton", "pressed");
-        new RestConnector().execute(POST,"http://10.181.26.131:8080/android/registerNumber/12");
-        new RestConnector().execute(GET,"http://10.181.26.131:8080/android/checkNumbers/1/11,12");
+        new RestConnector(this).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "11");
+
+    }
+
+    public void sendContacts(View view) {
+        Log.d("contactButton", "pressed");
+        new RestConnector(this).execute(GET, SERVER_ADDRESS + SEND_CONTACTS + "1/11,12");
+
+    }
+
+    public void inviteFriends(View view) {
+        Log.d("inviteFriends", "pressed");
+        //new RestConnector(this).execute(GET, SERVER_ADDRESS + INVITE_FRIENDS + "1/11");
+        PhoneDataHandler phoneDataHandler = new PhoneDataHandler(this);
+        phoneDataHandler.execute("");
 
     }
 

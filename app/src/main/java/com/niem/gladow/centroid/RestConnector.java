@@ -1,7 +1,9 @@
 package com.niem.gladow.centroid;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +17,11 @@ import java.net.URL;
  */
 public class RestConnector extends AsyncTask<String, String, String> {
     private static final String POST = "1", GET = "2";
+    private Context context;
+
+    public RestConnector (Context context) {
+        this.context = context;
+    }
 
     @Override
     protected String doInBackground(String... params) {
@@ -33,7 +40,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
     }
 
     protected void onPostExecute(String result) {
-
+        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
     }
 
     private String convertInputStreamToString(InputStream inputStream) throws IOException {
