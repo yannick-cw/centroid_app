@@ -13,6 +13,7 @@ import android.widget.Toast;
 public class PhoneDataHandler extends AsyncTask <String, String, String> {
     private Context context;
     private String numbers;
+    public AsyncResponse delegate = null;
 
     public PhoneDataHandler(Context context) {
         this.context = context;
@@ -26,6 +27,7 @@ public class PhoneDataHandler extends AsyncTask <String, String, String> {
     }
 
     protected void onPostExecute(String result) {
+        delegate.processFinish(result);
     }
 
     private String getContactsNumbers() {
