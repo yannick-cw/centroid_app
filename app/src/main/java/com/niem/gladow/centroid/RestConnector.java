@@ -37,8 +37,8 @@ public class RestConnector extends AsyncTask<String, String, String> {
                 break;
             case SEND:
                 result = restGet(params[1]);
-                new PersistenceHandler().createFriendMap(result);
-                Log.d("friend Map", PersistenceHandler.getFriendMap().values().toString());
+                PersistenceHandler.getInstance().createFriendMap(result);
+                Log.d("friend Map", PersistenceHandler.getInstance().getFriendMap().values().toString());
                 break;
             default:
                 result = "wrong input";

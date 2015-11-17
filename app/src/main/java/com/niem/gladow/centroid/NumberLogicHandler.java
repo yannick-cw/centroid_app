@@ -52,7 +52,7 @@ public class NumberLogicHandler implements AsyncResponse {
     //reads friendlist from file and starts async task RestConnector to send friend numbers to server
     public boolean inviteFriends() {
 
-        new RestConnector(context).execute(GET, INVITE_FRIENDS + ownNumber + PersistenceHandler.getInviteList());
+        new RestConnector(context).execute(GET, INVITE_FRIENDS + ownNumber + PersistenceHandler.getInstance().getInviteList());
         return true;
     }
 

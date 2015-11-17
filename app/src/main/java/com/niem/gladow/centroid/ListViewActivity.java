@@ -26,7 +26,7 @@ public class ListViewActivity extends Activity {
 
         final ListView listview = (ListView) findViewById(R.id.listview);
 
-        final ArrayList<String> list = new ArrayList<>(PersistenceHandler.getFriendMap().values());
+        final ArrayList<String> list = new ArrayList<>(PersistenceHandler.getInstance().getFriendMap().values());
 
         final StableArrayAdapter adapter = new StableArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
@@ -42,7 +42,8 @@ public class ListViewActivity extends Activity {
                         .withEndAction(new Runnable() {
                             @Override
                             public void run() {
-                                PersistenceHandler.addToInviteList(Util.getInstance().getKeyByValue(PersistenceHandler.getFriendMap(),item));
+                                PersistenceHandler.getInstance().addToInviteList(Util.getInstance()
+                                        .getKeyByValue(PersistenceHandler.getInstance().getFriendMap(),item));
                                 Log.d("Item", item);
                                 list.remove(item);
                                 adapter.notifyDataSetChanged();

@@ -27,7 +27,7 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         setContactsMap();
-        String _contacts = new PersistenceHandler().getCleanNumbers();
+        String _contacts = PersistenceHandler.getInstance().getCleanNumbers();
         Log.d("Contacts", _contacts);
         return _contacts;
     }
@@ -54,7 +54,7 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
             numbersNames.put(phoneNumber,name);
         }
         phones.close();
-        new PersistenceHandler().setContactsMap(numbersNames);
+        PersistenceHandler.getInstance().setContactsMap(numbersNames);
     }
 
     public static Map getNumbersNames() {

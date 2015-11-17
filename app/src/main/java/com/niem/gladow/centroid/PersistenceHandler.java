@@ -20,6 +20,18 @@ public class PersistenceHandler {
     private static Map<String,String> friendMap = new HashMap<>();
     private static List<String> inviteList = new LinkedList<>();
 
+    private static PersistenceHandler instance;
+
+    private PersistenceHandler() {
+    }
+
+    public static PersistenceHandler getInstance() {
+        if (instance == null) {
+            instance = new PersistenceHandler();
+        }
+        return instance;
+    }
+
     public void createFriendMap (String contacts) {
         List<String> numbers = Arrays.asList(contacts.split(","));
         for (String str: numbers) {
@@ -38,12 +50,12 @@ public class PersistenceHandler {
         return Util.getInstance().cleanKeySet(contactsMap.keySet().toString());
     }
 
-    public static String getInviteList() {
+    public String getInviteList() {
       return Util.getInstance().cleanKeySet(inviteList.toString());
     }
 
-    public static void addToInviteList(String number) {
-        PersistenceHandler.inviteList.add(number);
+    public void addToInviteList(String number) {
+        this.inviteList.add(number);
     }
 
     InputStream inputStream;
@@ -58,7 +70,7 @@ public class PersistenceHandler {
     }
     return true;*/
 
-    public static Map<String, String> getFriendMap() {
+    public Map<String, String> getFriendMap() {
         return friendMap;
     }
 }
