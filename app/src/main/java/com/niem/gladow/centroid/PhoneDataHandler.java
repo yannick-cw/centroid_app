@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by yannick_uni on 11/10/15.
@@ -14,7 +13,7 @@ import android.widget.Toast;
 public class PhoneDataHandler extends AsyncTask<String, String, String> {
     private Context context;
     private String numbers;
-    //creates public object from interface and is initialized with null, later LogicHandler is assigned to it
+    //creates public object from interface and is initialized with null, later NumberLogicHandler is assigned to it
     public AsyncResponse delegate = null;
 
     public PhoneDataHandler(Context context) {
@@ -29,7 +28,7 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
     }
 
     protected void onPostExecute(String result) {
-        //starts method in LogicHandler.processFinish
+        //starts method in NumberLogicHandler.processFinish
         delegate.processFinish(result);
     }
 

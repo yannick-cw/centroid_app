@@ -11,20 +11,22 @@ import java.io.InputStreamReader;
 /**
  * Created by yannick_uni on 11/10/15.
  */
-public class LogicHandler implements AsyncResponse {
+public class NumberLogicHandler implements AsyncResponse {
     private static final String POST = "1", GET = "2", SEND = "3";
-    private static final String SERVER_ADDRESS = "http://192.168.1.214:8080", SEND_NUMBER = "/android/registerNumber/",
+    private static final String SEND_NUMBER = "/android/registerNumber/",
             SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
-    private static String ownNumber = "1/";
+    private static String ownNumber;
     PhoneDataHandler phoneDataHandler;
 
     private Context context;
 
-    public LogicHandler(Context context) {
+    public NumberLogicHandler(Context context) {
         this.context = context;
         phoneDataHandler = new PhoneDataHandler(context);
         //puts himself in the phoneDataHandler delegate object, for returning results
         phoneDataHandler.delegate = this;
+
+        //das hier ist glaube ich noch nicht gut so, sollte nicht einfach eine Methode im Async aufrufen
         ownNumber = cleanNumberString(phoneDataHandler.getOwnNumber()) + "/";
 
     }
@@ -36,19 +38,14 @@ public class LogicHandler implements AsyncResponse {
 
     private boolean sendContacts(String contacts) {
         //starts RestConnector async task to send contacts to server
-        new RestConnector(context).execute(SEND, SERVER_ADDRESS + SEND_CONTACTS + ownNumber + contacts);
+        new RestConnector(context).execute(SEND, SEND_CONTACTS + ownNumber + contacts);
         return true;
     }
 
     public boolean sendOwnNumber() {
 
         //starts async task RestConnector to send ownNumber to server
-        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + ownNumber);
-        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "436604071555");
-        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "4369918165580");
-        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "436504293795");
-        new RestConnector(context).execute(POST, SERVER_ADDRESS + SEND_NUMBER + "436506689088");
-
+        new RestConnector(context).execute(POST, SEND_NUMBER + ownNumber);
         return true;
     }
 
@@ -60,7 +57,7 @@ public class LogicHandler implements AsyncResponse {
             inputStream = context.openFileInput("friend_list");
             readFile = convertInputStreamToString(inputStream);
             Log.d("readFile", readFile);
-            new RestConnector(context).execute(GET, SERVER_ADDRESS + INVITE_FRIENDS + ownNumber + readFile);
+            new RestConnector(context).execute(GET, INVITE_FRIENDS + ownNumber + readFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -81,6 +78,11 @@ public class LogicHandler implements AsyncResponse {
         _tmp = _tmp.replaceAll("[^0-9,]", "");
         _tmp = _tmp.replaceAll("[,][0]{2}", ",");
         _tmp = _tmp.replaceAll("[,][0]", ",49");
+
+        //removes leading comma
+        if(_tmp.charAt(0)==',') {
+            _tmp = _tmp.substring(1);
+        }
 
         Log.d("afterClean", _tmp);
 

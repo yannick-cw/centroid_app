@@ -8,8 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,21 +21,25 @@ public class MainActivity extends AppCompatActivity {
     //Button creates logic handler and send own number to server
     public void sendOwnNumber(View view) {
         Log.d("sendButton", "pressed");
-        new LogicHandler(this).sendOwnNumber();
+        new NumberLogicHandler(this).sendOwnNumber();
 
     }
 
     //Button creates logic handler and starts async task which gets own numbers from contacts and sends them to server
     public void sendContacts(View view) {
         Log.d("contactButton", "pressed");
-        new LogicHandler(this).executePhoneDataHandler();
+        new NumberLogicHandler(this).executePhoneDataHandler();
     }
 
     //creates logic handler and sends friends numbers to server
     public void inviteFriends(View view) throws Exception {
         Log.d("inviteFriends", "pressed");
-        new LogicHandler(this).inviteFriends();
+        new NumberLogicHandler(this).inviteFriends();
+    }
 
+    public void sendGps(View view) {
+        Log.d("sendOwnGps", "pressed");
+        new GpsDataHandler(this);
     }
 
     @Override
@@ -60,4 +63,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

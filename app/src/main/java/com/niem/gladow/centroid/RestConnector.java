@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +18,7 @@ import java.net.URL;
  */
 public class RestConnector extends AsyncTask<String, String, String> {
     private static final String POST = "1", GET = "2", SEND = "3";
+    private static final String HOST_ADDRESS = "http://192.168.1.214:8080";
     private Context context;
 
     public RestConnector(Context context) {
@@ -65,7 +65,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
         String result;
         try {
             Log.d("urlparams", urlString);
-            URL url = new URL(urlString);
+            URL url = new URL(HOST_ADDRESS+urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");
@@ -87,7 +87,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
         String result;
         try {
             Log.d("urlparams", urlString);
-            URL url = new URL(urlString);
+            URL url = new URL(HOST_ADDRESS+urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("GET");
