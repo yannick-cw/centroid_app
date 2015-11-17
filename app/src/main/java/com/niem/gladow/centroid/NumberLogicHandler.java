@@ -27,7 +27,7 @@ public class NumberLogicHandler implements AsyncResponse {
         phoneDataHandler.delegate = this;
 
         //das hier ist glaube ich noch nicht gut so, sollte nicht einfach eine Methode im Async aufrufen
-        ownNumber = cleanNumberString(phoneDataHandler.getOwnNumber()) + "/";
+        ownNumber = Util.getInstance().cleanNumberString(phoneDataHandler.getOwnNumber()) + "/";
 
     }
 
@@ -67,26 +67,7 @@ public class NumberLogicHandler implements AsyncResponse {
     //gets called by PhoneDataHandler async tasks, when it is finished
     public void processFinish(String output) {
         //sends contacts to server after cleanup
-        sendContacts(cleanNumberString(output));
-    }
-
-    private String cleanNumberString(String numbers) {
-        String _tmp = numbers;
-        Log.d("NUMBERS", numbers);
-
-        _tmp = _tmp.replaceAll("[+]", "");
-        _tmp = _tmp.replaceAll("[^0-9,]", "");
-        _tmp = _tmp.replaceAll("[,][0]{2}", ",");
-        _tmp = _tmp.replaceAll("[,][0]", ",49");
-
-        //removes leading comma
-        if(_tmp.charAt(0)==',') {
-            _tmp = _tmp.substring(1);
-        }
-
-        Log.d("afterClean", _tmp);
-
-        return _tmp;
+        sendContacts(output);
     }
 
     private String convertInputStreamToString(InputStream inputStream) throws IOException {

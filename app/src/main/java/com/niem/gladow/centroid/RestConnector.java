@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,7 +37,8 @@ public class RestConnector extends AsyncTask<String, String, String> {
                 break;
             case SEND:
                 result = restGet(params[1]);
-                saveContactsToFile(result);
+                new PersistenceHandler().createFriendMap(result);
+                Log.d("friend Map", PersistenceHandler.getFriendMap().values().toString());
                 break;
             default:
                 result = "wrong input";
@@ -104,17 +104,4 @@ public class RestConnector extends AsyncTask<String, String, String> {
 
         return result;
     }
-
-    private void saveContactsToFile(String contacts) {
-        FileOutputStream outputStream;
-        try {
-            outputStream = context.openFileOutput("friend_list", Context.MODE_PRIVATE);
-            outputStream.write(contacts.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
 } // end CallAPI

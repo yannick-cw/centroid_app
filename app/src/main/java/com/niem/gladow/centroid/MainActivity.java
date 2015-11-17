@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity{
         new GpsDataHandler(this);
     }
 
-    public void seeList(View view){
-        Log.d("pressed","seelist");
+    public void seeList(View view) {
+        Log.d("List", "pressed");
         Intent intent = new Intent(this, ListViewActivity.class);
         startActivity(intent);
     }

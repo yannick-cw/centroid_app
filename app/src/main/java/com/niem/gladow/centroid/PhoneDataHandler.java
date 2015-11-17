@@ -7,14 +7,18 @@ import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by yannick_uni on 11/10/15.
  */
 public class PhoneDataHandler extends AsyncTask<String, String, String> {
     private Context context;
-    private String numbers;
+    private static Map numbersNames;
     //creates public object from interface and is initialized with null, later NumberLogicHandler is assigned to it
     public AsyncResponse delegate = null;
+
 
     public PhoneDataHandler(Context context) {
         this.context = context;
@@ -22,7 +26,8 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String _contacts = getContactsNumbers();
+        setContactsMap();
+        String _contacts = new PersistenceHandler().getCleanNumbers();
         Log.d("Contacts", _contacts);
         return _contacts;
     }
@@ -39,16 +44,20 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
     }
 
     //gets all numbers from phone
-    private String getContactsNumbers() {
+    private void setContactsMap() {
+        numbersNames = new HashMap();
         Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         while (phones.moveToNext()) {
-            // String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            numbers += "," + phoneNumber;
-
+            phoneNumber = Util.getInstance().cleanNumberString(phoneNumber);
+            numbersNames.put(phoneNumber,name);
         }
         phones.close();
-        return numbers;
+        new PersistenceHandler().setContactsMap(numbersNames);
     }
 
+    public static Map getNumbersNames() {
+        return numbersNames;
+    }
 }
