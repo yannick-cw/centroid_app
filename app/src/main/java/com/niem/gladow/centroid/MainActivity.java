@@ -1,5 +1,6 @@
 package com.niem.gladow.centroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +41,12 @@ public class MainActivity extends AppCompatActivity{
     public void sendGps(View view) {
         Log.d("sendOwnGps", "pressed");
         new GpsDataHandler(this);
+    }
+
+    public void seeList(View view){
+        Log.d("pressed","seelist");
+        Intent intent = new Intent(this, ListViewActivity.class);
+        startActivity(intent);
     }
 
     @Override
