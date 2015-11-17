@@ -15,9 +15,9 @@
         android:text="Send Own Number"
         android:id="@+id/button1"
         android:onClick="sendOwnNumber"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/button2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="96dp" />
+        android:layout_marginBottom="57dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -25,25 +25,11 @@
         android:text="Send Contacts"
         android:id="@+id/button2"
         android:onClick="sendContacts"
-        android:layout_below="@+id/button1"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignStart="@+id/button1"
-        android:layout_marginTop="55dp"
+        android:layout_centerVertical="true"
         android:layout_alignRight="@+id/button1"
-        android:layout_alignEnd="@+id/button1" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Invite All Friends"
-        android:id="@+id/button3"
-        android:onClick="inviteFriends"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="62dp"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_alignStart="@+id/button2" />
+        android:layout_alignEnd="@+id/button1"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignStart="@+id/button1" />
 
     <Button
         android:layout_width="wrap_content"
@@ -51,12 +37,12 @@
         android:text="See ListView"
         android:id="@+id/button5"
         android:onClick="seeList"
-        android:layout_marginTop="55dp"
-        android:layout_below="@+id/button3"
-        android:layout_alignLeft="@+id/button3"
-        android:layout_alignStart="@+id/button3"
-        android:layout_alignRight="@+id/button3"
-        android:layout_alignEnd="@+id/button3" />
+        android:layout_marginTop="57dp"
+        android:layout_below="@+id/button2"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_alignStart="@+id/button2"
+        android:layout_alignRight="@+id/button2"
+        android:layout_alignEnd="@+id/button2" />
 
     <Button
         android:layout_width="wrap_content"
@@ -65,8 +51,7 @@
         android:id="@+id/button4"
         android:onClick="sendGps"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/button1"
-        android:layout_alignEnd="@+id/button1"
         android:layout_alignLeft="@+id/button1"
-        android:layout_alignStart="@+id/button1" />
+        android:layout_alignStart="@+id/button1"
+        android:layout_marginTop="46dp" />
 </RelativeLayout>

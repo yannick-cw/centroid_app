@@ -32,12 +32,6 @@ public class MainActivity extends AppCompatActivity{
         new NumberLogicHandler(this).executePhoneDataHandler();
     }
 
-    //creates logic handler and sends friends numbers to server
-    public void inviteFriends(View view) throws Exception {
-        Log.d("inviteFriends", "pressed");
-        new NumberLogicHandler(this).inviteFriends();
-    }
-
     public void sendGps(View view) {
         Log.d("sendOwnGps", "pressed");
         new GpsDataHandler(this);

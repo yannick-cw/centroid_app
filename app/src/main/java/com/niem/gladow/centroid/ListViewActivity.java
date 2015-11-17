@@ -19,6 +19,11 @@ import java.util.List;
  */
 public class ListViewActivity extends Activity {
 
+    public void inviteFriends(View view) {
+        Log.d("inviteFriends", "pressed");
+        new NumberLogicHandler(this).inviteFriends();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +48,7 @@ public class ListViewActivity extends Activity {
                             @Override
                             public void run() {
                                 PersistenceHandler.getInstance().addToInviteList(Util.getInstance()
-                                        .getKeyByValue(PersistenceHandler.getInstance().getFriendMap(),item));
+                                        .getKeyByValue(PersistenceHandler.getInstance().getFriendMap(), item));
                                 Log.d("Item", item);
                                 list.remove(item);
                                 adapter.notifyDataSetChanged();
