@@ -3,6 +3,7 @@ package com.niem.gladow.centroid;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,17 +25,8 @@ public class ListViewActivity extends Activity {
         setContentView(R.layout.listview_activity);
 
         final ListView listview = (ListView) findViewById(R.id.listview);
-        String[] values = new String[]{"Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile"};
 
-
-        final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
+        final ArrayList<String> list = new ArrayList<>(PersistenceHandler.getFriendMap().values());
 
         final StableArrayAdapter adapter = new StableArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
@@ -49,6 +42,8 @@ public class ListViewActivity extends Activity {
                         .withEndAction(new Runnable() {
                             @Override
                             public void run() {
+                                PersistenceHandler.addToInviteList(Util.getInstance().getKeyByValue(PersistenceHandler.getFriendMap(),item));
+                                Log.d("Item", item);
                                 list.remove(item);
                                 adapter.notifyDataSetChanged();
                                 view.setAlpha(1);

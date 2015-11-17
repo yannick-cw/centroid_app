@@ -2,6 +2,9 @@ package com.niem.gladow.centroid;
 
 import android.util.Log;
 
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * Created by yannick_uni on 11/17/15.
  */
@@ -35,5 +38,14 @@ public final class Util {
         String _tmp = keySet;
         _tmp = _tmp.replaceAll("[^0-9,]", "");
         return _tmp;
+    }
+
+    public  String getKeyByValue(Map<String, String> map, String value) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

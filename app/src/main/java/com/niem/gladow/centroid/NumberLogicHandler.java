@@ -51,16 +51,8 @@ public class NumberLogicHandler implements AsyncResponse {
 
     //reads friendlist from file and starts async task RestConnector to send friend numbers to server
     public boolean inviteFriends() {
-        InputStream inputStream;
-        String readFile;
-        try {
-            inputStream = context.openFileInput("friend_list");
-            readFile = convertInputStreamToString(inputStream);
-            Log.d("readFile", readFile);
-            new RestConnector(context).execute(GET, INVITE_FRIENDS + ownNumber + readFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        new RestConnector(context).execute(GET, INVITE_FRIENDS + ownNumber + PersistenceHandler.getInviteList());
         return true;
     }
 
