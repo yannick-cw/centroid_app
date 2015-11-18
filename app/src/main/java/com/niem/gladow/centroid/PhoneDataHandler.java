@@ -1,11 +1,17 @@
 package com.niem.gladow.centroid;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +48,8 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return (telephonyManager.getLine1Number());
     }
+
+
 
     //gets all numbers from phone
     private void setContactsMap() {
