@@ -1,7 +1,6 @@
 package com.niem.gladow.centroid;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,15 +12,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity{
     private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 12;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
-    private static final int MY_PERMISSIONS_REQUEST_INTERNET = 15;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +32,7 @@ public class MainActivity extends AppCompatActivity{
     public void sendOwnNumber(View view) {
         Log.d("sendButton", "pressed");
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_PHONE_STATE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
@@ -48,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
                 // sees the explanation, try again to request the permission.
                 // No explanation needed, we can request the permission.
                 Log.d("ALREADY ASKED","Again");
+                Toast.makeText(this,"Please change your \"Phone Permission\" Settings.",Toast.LENGTH_LONG).show();
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
@@ -59,10 +55,6 @@ public class MainActivity extends AppCompatActivity{
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-
-                // MY_PERMISSIONS_REQUEST_READ_PHONE_STATE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }else{
             new NumberLogicHandler(this).sendOwnNumber();
@@ -74,32 +66,27 @@ public class MainActivity extends AppCompatActivity{
     public void sendContacts(View view) {
         Log.d("contactButton", "pressed");
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_CONTACTS)) {
-                Log.d("ALREADY ASKED","Again");
-
+                Log.d("ALREADY ASKED", "Again");
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{Manifest.permission.READ_CONTACTS},
-//                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                Toast.makeText(this,"Please change your \"Contacts Permission\" Settings.",Toast.LENGTH_LONG).show();
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             } else {
                 Log.d("NEVER ASKED","go");
-
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_CONTACTS},
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
 
-                // MY_PERMISSIONS_REQUEST_READ_PHONE_STATE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }else{
             new NumberLogicHandler(this).executePhoneDataHandler();
@@ -109,30 +96,29 @@ public class MainActivity extends AppCompatActivity{
     public void sendGps(View view) {
         Log.d("sendOwnGps", "pressed");
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
                 Log.d("ALREADY ASKED","Again");
-
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-
+                Toast.makeText(this,"Please change your \"Location Permission\" Settings.",Toast.LENGTH_LONG).show();
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             } else {
-                Log.d("NEVER ASKED","go");
+                Log.d("NEVER ASKED", "go");
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
-                // MY_PERMISSIONS_REQUEST_READ_PHONE_STATE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
+        }else{
+            new GpsDataHandler(this);
         }
     }
 
@@ -188,8 +174,7 @@ public class MainActivity extends AppCompatActivity{
             }
             case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
@@ -204,33 +189,13 @@ public class MainActivity extends AppCompatActivity{
                 }
                 return;
             }
-            case MY_PERMISSIONS_REQUEST_INTERNET: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    sendOwnNumber(this.getCurrentFocus());
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(this, "INTERNET Denied", Toast.LENGTH_SHORT)
-                            .show();
-                }
-                return;
-            }
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    new GpsDataHandler(this);
-
+                    sendGps(this.getCurrentFocus());
 
                 } else {
 

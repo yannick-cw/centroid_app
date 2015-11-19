@@ -22,7 +22,6 @@ public class NumberLogicHandler implements AsyncResponse {
             SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
     private static String ownNumber = "";
     PhoneDataHandler phoneDataHandler;
-    private EditText mEdit;
 
 
     private Context context;
@@ -32,7 +31,6 @@ public class NumberLogicHandler implements AsyncResponse {
         phoneDataHandler = new PhoneDataHandler(context);
         //puts himself in the phoneDataHandler delegate object, for returning results
         phoneDataHandler.delegate = this;
-        mEdit = (EditText)((Activity)context).getWindow().getDecorView().findViewById(R.id.phone_number);
         //mEdit.setImeActionLabel("Send", KeyEvent.KEYCODE_ENTER);
     }
 
@@ -53,30 +51,15 @@ public class NumberLogicHandler implements AsyncResponse {
 
     public boolean sendOwnNumber() {
         //das hier ist glaube ich noch nicht gut so, sollte nicht einfach eine Methode im Async aufrufen
-        if(ownNumber.equals("")){ownNumber = Util.getInstance().cleanNumberString(phoneDataHandler.getOwnNumber()) + "/";}
-        Log.d("ownNumber",ownNumber);
-        if(ownNumber.equals("/")){
-            Log.d("sendOwnNumber","if");
-            mEdit.setVisibility(View.VISIBLE);
-            mEdit.setOnKeyListener(new View.OnKeyListener() {
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    // If the event is a key-down event on the "enter" button
-                    if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                            (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                        // Perform action on key press
-                        Toast.makeText(context, mEdit.getText(), Toast.LENGTH_SHORT).show();
-                        ownNumber = Util.getInstance().cleanNumberString(mEdit.getText().toString()) + "/";
-                        sendOwnNumber();
-                    }
-                    return false;
-                }
-            });
+        Log.d("sendOwnNumber","else");
+        ownNumber = phoneDataHandler.getOwnNumber();
+        if (ownNumber.equals("/")){
+            Toast.makeText(context,"Please enter your Number and try again",Toast.LENGTH_LONG).show();
+
             return false;
         }else{
-            Log.d("sendOwnNumber","else");
             //starts async task RestConnector to send ownNumber to server
             new RestConnector(context).execute(POST, SEND_NUMBER + ownNumber);
-            mEdit.setVisibility(View.INVISIBLE);
             return true;
         }
     }

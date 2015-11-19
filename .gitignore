@@ -2,8 +2,8 @@
 /app/app.iml
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
+/.idea
+/centroid_app.iml
 /captures
