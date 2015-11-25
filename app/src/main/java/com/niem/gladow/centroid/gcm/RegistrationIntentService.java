@@ -56,7 +56,7 @@ public class RegistrationIntentService extends IntentService {
             Log.i(TAG, "GCM Registration Token: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
-            PersistenceHandler.saveOwnToken(token);
+            PersistenceHandler.getInstance().saveOwnToken(token);
             //sync with server
             new NumberLogicHandler(this).syncTokenAndNumber();
 

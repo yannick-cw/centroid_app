@@ -23,13 +23,13 @@ import java.util.Map;
  * Created by yannick_uni on 11/17/15.
  */
 public class PersistenceHandler {
-    private static Map<String, String> contactsMap;
-    private static Map<String,String> friendMap = new HashMap<>();
-    private static List<String> inviteList = new LinkedList<>();
-    private static String ownNumber = "";
-    private static EditText mEdit;
-    private static Context _context;
-    private static String token;
+    private Map<String, String> contactsMap;
+    private Map<String,String> friendMap = new HashMap<>();
+    private List<String> inviteList = new LinkedList<>();
+    private String ownNumber = "";
+    private EditText mEdit;
+    private Context _context;
+    private String token = "";
 
 
     private static PersistenceHandler instance;
@@ -97,11 +97,11 @@ public class PersistenceHandler {
         return friendMap;
     }
 
-    public static String getOwnNumber() {
-        return ownNumber;
+    public String getOwnNumber() {
+        return this.ownNumber;
     }
 
-    public static void saveOwnNumber(Context context) {
+    public void saveOwnNumber(Context context) {
         _context = context;
         mEdit = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
 
@@ -137,11 +137,11 @@ public class PersistenceHandler {
         }
     }
 
-    public static String getToken() {
+    public String getToken() {
         return token;
     }
 
-    public static void saveOwnToken(String token) {
-        PersistenceHandler.token = token;
+    public void saveOwnToken(String token) {
+        this.token = token;
     }
 }

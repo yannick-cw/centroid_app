@@ -20,7 +20,7 @@ public class NumberLogicHandler implements AsyncResponse {
     private static final String POST = "1", GET = "2", SEND = "3";
     private static final String SEND_NUMBER = "/android/registerNumber/",
             SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
-    private static String ownNumber = PersistenceHandler.getOwnNumber();
+    private static String ownNumber = PersistenceHandler.getInstance().getOwnNumber();
     PhoneDataHandler phoneDataHandler;
 
 
