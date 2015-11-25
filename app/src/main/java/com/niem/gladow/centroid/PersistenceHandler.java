@@ -79,20 +79,6 @@ public class PersistenceHandler {
         }
     }
 
-
-    InputStream inputStream;
-/*     InputStream inputStream;
-    String readFile;
-   try {
-        inputStream = context.openFileInput("friend_list");
-        readFile = convertInputStreamToString(inputStream);
-        Log.d("readFile", readFile);
-        new RestConnector(context).execute(GET, INVITE_FRIENDS + ownNumber + PersistenceHandler.getInviteList());
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return true;*/
-
     public Map<String, String> getFriendMap() {
         return friendMap;
     }
