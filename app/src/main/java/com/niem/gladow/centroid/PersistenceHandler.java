@@ -58,6 +58,16 @@ public class PersistenceHandler {
         this.inviteList.add(number);
     }
 
+    public void removeFromInviteList(String number) {
+        for (int i = 0; i < this.inviteList.size(); i++) {
+            if(this.inviteList.get(i).equals(number)){
+                this.inviteList.remove(i);
+                break;
+            }
+        }
+    }
+
+
     InputStream inputStream;
     String readFile;
 /*    try {
