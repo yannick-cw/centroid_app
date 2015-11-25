@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -17,12 +18,16 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
     private GoogleApiClient googleApiClient;
     private Context context;
     private Location lastLocation;
-    private static final String SEND_GPS = "/android/currentGPS/123/", POST = "1";
+    private PhoneDataHandler phoneDataHandler;
+    private static final String SEND_GPS = "/android/currentGPS/", POST = "1";
+    private static String OWN_NUMBER;
 
     public GpsDataHandler (Context context) {
         this.context = context;
         buildGoogleApiClient();
         googleApiClient.connect();
+        phoneDataHandler = new PhoneDataHandler(context);
+        OWN_NUMBER = phoneDataHandler.getOwnNumber();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -35,9 +40,15 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        new RestConnector(context).execute(POST, SEND_GPS +lastLocation.getLatitude()+"/"+lastLocation.getLongitude());
-        Log.d("lastLocation", String.valueOf(lastLocation.getLongitude()));
+        if (OWN_NUMBER.equals("/")){
+            Toast.makeText(context,"Please enter your Number and try again",Toast.LENGTH_LONG).show();
+        }else{
+            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            new RestConnector(context).execute(POST, SEND_GPS + OWN_NUMBER
+                                                              + lastLocation.getLatitude()+"/"
+                                                              + lastLocation.getLongitude());
+            Log.d("lastLocation", String.valueOf(lastLocation.getLongitude()));
+        }
     }
 
 
