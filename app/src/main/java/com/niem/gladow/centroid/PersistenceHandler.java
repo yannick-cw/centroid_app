@@ -79,6 +79,10 @@ public class PersistenceHandler {
         }
     }
 
+    public void clearInviteList(){
+        this.inviteList.clear();
+    }
+
     public Map<String, String> getFriendMap() {
         return friendMap;
     }

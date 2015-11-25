@@ -1,7 +1,6 @@
 package com.niem.gladow.centroid;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,9 +29,9 @@ public class ListViewActivity extends Activity {
 
         final Map<String, String> map = PersistenceHandler.getInstance().getFriendMap();
 
-        final HashMapArrayAdapter adapter = new HashMapArrayAdapter (this,
-                R.layout.list_view_item, new ArrayList(map.entrySet()) );
-
+        final HashMapArrayAdapter adapter = new HashMapArrayAdapter(this,
+                R.layout.list_view_item, new ArrayList(map.entrySet()));
+        adapter.setCheckList(map.size());
         listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -41,27 +40,33 @@ public class ListViewActivity extends Activity {
             public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
 
                 try {
+                    // update state of the views
+                    adapter.updateCheckList(position);
+                    adapter.notifyDataSetChanged();
+
                     TextView clickedItem = (TextView) view.findViewById(R.id.friend_number);
-                    // Workaround to save state in alpha-value because views are stateless
-                    if(view.getAlpha() == 1){
-                        view.setBackgroundColor(Color.GREEN);
-                        Log.d("Name",clickedItem.getText().toString());
+
+                    // check state of view and add/remove it from inviteList
+                    if (adapter.getCheckStatus(position)) {
+                        Log.d("Name", clickedItem.getText().toString());
                         PersistenceHandler.getInstance().addToInviteList(clickedItem.getText().toString());
-                        view.setAlpha(0.9f);
-                    }else{
-                        view.setAlpha(1);
-                        view.setBackgroundColor(Color.RED);
+                    } else {
                         /* TODO would be more elegant to check ListView after pressing send button
                            and only add selected items to inviteList */
                         PersistenceHandler.getInstance().removeFromInviteList(clickedItem.getText().toString());
                     }
-
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     Log.v("Exception ON Click", e.getMessage(), e);
                 }
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed (){
+        //TODO check if this can be made more elegantly (Maybe with onDestroy?)
+        PersistenceHandler.getInstance().clearInviteList(); //cleanup of inviteList
+        super.onBackPressed();
     }
 }

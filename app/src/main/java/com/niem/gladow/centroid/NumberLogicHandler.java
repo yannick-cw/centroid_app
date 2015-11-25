@@ -42,6 +42,8 @@ public class NumberLogicHandler implements AsyncResponse {
     private boolean sendContacts(String contacts) {
         //starts RestConnector async task to send contacts to server
         new RestConnector(context).execute(SEND, SEND_CONTACTS + ownNumber + contacts);
+//        DEBUG HELPER: (if the line above is exchanged for the one below, complete contactsList is given from Server, good to test ListView-Options)
+//        new RestConnector(context).execute(SEND, SEND_CONTACTS + contacts);
         return true;
     }
 
