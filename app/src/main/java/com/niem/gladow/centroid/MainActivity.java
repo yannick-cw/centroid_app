@@ -1,6 +1,7 @@
 package com.niem.gladow.centroid;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -14,10 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity{
+import com.niem.gladow.centroid.gcm.RegistrationIntentService;
+
+public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 12;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,40 +30,22 @@ public class MainActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //TODO additional check if play services installed please
+
+
     }
 
     //Button creates logic handler and send own number to server
-    public void sendOwnNumber(View view) {
-        Log.d("sendButton", "pressed");
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_PHONE_STATE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                // No explanation needed, we can request the permission.
-                Log.d("ALREADY ASKED","Again");
-                Toast.makeText(this,"Please change your \"Phone Permission\" Settings.",Toast.LENGTH_LONG).show();
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-
-            } else {
-                Log.d("NEVER ASKED","go");
-
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-            }
-        }else{
-            new NumberLogicHandler(this).sendOwnNumber();
+    public void syncWithServer(View view) {
+        Log.d("syncWithServer", "pressed");
+        //save own number and save own token and sync with server
+        saveOwnNumber();
+        if (!PersistenceHandler.getInstance().getOwnNumber().equals("/")) {
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        } else {
+            Toast.makeText(this, "Please enter your own number and hit sync", Toast.LENGTH_LONG).show();
         }
-
     }
 
     //Button creates logic handler and starts async task which gets own numbers from contacts and sends them to server
@@ -76,19 +62,19 @@ public class MainActivity extends AppCompatActivity{
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                Toast.makeText(this,"Please change your \"Contacts Permission\" Settings.",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please change your \"Contacts Permission\" Settings.", Toast.LENGTH_LONG).show();
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_CONTACTS},
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             } else {
-                Log.d("NEVER ASKED","go");
+                Log.d("NEVER ASKED", "go");
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_CONTACTS},
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
 
             }
-        }else{
+        } else {
             new NumberLogicHandler(this).executePhoneDataHandler();
         }
     }
@@ -102,11 +88,11 @@ public class MainActivity extends AppCompatActivity{
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Log.d("ALREADY ASKED","Again");
+                Log.d("ALREADY ASKED", "Again");
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                Toast.makeText(this,"Please change your \"Location Permission\" Settings.",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please change your \"Location Permission\" Settings.", Toast.LENGTH_LONG).show();
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
@@ -117,7 +103,7 @@ public class MainActivity extends AppCompatActivity{
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
-        }else{
+        } else {
             new GpsDataHandler(this);
         }
     }
@@ -126,6 +112,7 @@ public class MainActivity extends AppCompatActivity{
         Log.d("List", "pressed");
         Intent intent = new Intent(this, ListViewActivity.class);
         startActivity(intent);
+
     }
 
     @Override
@@ -160,7 +147,7 @@ public class MainActivity extends AppCompatActivity{
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    new NumberLogicHandler(this).sendOwnNumber();
+                    saveOwnNumber();
 
 
                 } else {
@@ -208,6 +195,36 @@ public class MainActivity extends AppCompatActivity{
             }
             // other 'case' lines to check for other
             // permissions this app might request
+        }
+    }
+
+    private void saveOwnNumber (){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_PHONE_STATE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                // No explanation needed, we can request the permission.
+                Log.d("ALREADY ASKED", "Again");
+                Toast.makeText(this, "Please change your \"Phone Permission\" Settings.", Toast.LENGTH_LONG).show();
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
+
+            } else {
+                Log.d("NEVER ASKED", "go");
+
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
+            }
+        } else {
+            PersistenceHandler.getInstance().saveOwnNumber(this);
         }
     }
 

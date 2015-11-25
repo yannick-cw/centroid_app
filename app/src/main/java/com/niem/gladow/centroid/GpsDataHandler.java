@@ -20,14 +20,13 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
     private Location lastLocation;
     private PhoneDataHandler phoneDataHandler;
     private static final String SEND_GPS = "/android/currentGPS/", POST = "1";
-    private static String OWN_NUMBER;
+    private static String OWN_NUMBER = PersistenceHandler.getOwnNumber();
 
     public GpsDataHandler (Context context) {
         this.context = context;
         buildGoogleApiClient();
         googleApiClient.connect();
         phoneDataHandler = new PhoneDataHandler(context);
-        OWN_NUMBER = phoneDataHandler.getOwnNumber();
     }
 
     protected synchronized void buildGoogleApiClient() {

@@ -22,10 +22,8 @@ public final class Util {
     public String cleanNumberString(String numbers) {
         String _tmp = numbers;
         Log.d("NUMBERS", numbers);
-        _tmp = _tmp.replaceAll("[+]", "");
-        _tmp = _tmp.replaceAll("[^0-9]", "");
-        _tmp = _tmp.replaceAll("^[0]{2}", "");
-        _tmp = _tmp.replaceAll("^[0]", "49");
+        _tmp = _tmp.replaceAll("^00|[^0-9]", "");
+        _tmp = _tmp.replaceAll("^0", "49");
 
         //removes leading comma
 

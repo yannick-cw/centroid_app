@@ -1,7 +1,14 @@
 package com.niem.gladow.centroid;
 
+import android.app.Activity;
 import android.content.Context;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -19,6 +26,11 @@ public class PersistenceHandler {
     private static Map<String, String> contactsMap;
     private static Map<String,String> friendMap = new HashMap<>();
     private static List<String> inviteList = new LinkedList<>();
+    private static String ownNumber = "";
+    private static EditText mEdit;
+    private static Context _context;
+    private static String token;
+
 
     private static PersistenceHandler instance;
 
@@ -69,8 +81,9 @@ public class PersistenceHandler {
 
 
     InputStream inputStream;
+/*     InputStream inputStream;
     String readFile;
-/*    try {
+   try {
         inputStream = context.openFileInput("friend_list");
         readFile = convertInputStreamToString(inputStream);
         Log.d("readFile", readFile);
@@ -82,5 +95,53 @@ public class PersistenceHandler {
 
     public Map<String, String> getFriendMap() {
         return friendMap;
+    }
+
+    public static String getOwnNumber() {
+        return ownNumber;
+    }
+
+    public static void saveOwnNumber(Context context) {
+        _context = context;
+        mEdit = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
+
+        TelephonyManager telephonyManager = (TelephonyManager) _context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (ownNumber.equals("")) {
+            ownNumber = Util.getInstance().cleanNumberString(telephonyManager.getLine1Number()) + "/";
+        }
+        Log.d("ownNumber", ownNumber);
+
+        // Check if number was stored correctly in Phone, ask for User Input
+        if (ownNumber.equals("/")) {
+            Log.d("sendOwnNumber", "if");
+            mEdit.setVisibility(View.VISIBLE);
+            mEdit.setOnKeyListener(new View.OnKeyListener() {
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    // If the event is a key-down event on the "enter" button
+                    if ((event.getAction() == KeyEvent.ACTION_DOWN)
+                            && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                        // Perform action on Enter-key press
+                        Toast.makeText(_context, mEdit.getText(), Toast.LENGTH_SHORT).show();
+                        ownNumber = Util.getInstance().cleanNumberString(mEdit.getText().toString()) + "/";
+                        mEdit.setVisibility(View.INVISIBLE);
+
+                        // Hide Keypad after input
+                        InputMethodManager in = (InputMethodManager) _context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        in.hideSoftInputFromWindow(v.getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void saveOwnToken(String token) {
+        PersistenceHandler.token = token;
     }
 }

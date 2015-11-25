@@ -20,7 +20,7 @@ public class NumberLogicHandler implements AsyncResponse {
     private static final String POST = "1", GET = "2", SEND = "3";
     private static final String SEND_NUMBER = "/android/registerNumber/",
             SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
-    private static String ownNumber = "";
+    private static String ownNumber = PersistenceHandler.getOwnNumber();
     PhoneDataHandler phoneDataHandler;
 
 
@@ -45,23 +45,8 @@ public class NumberLogicHandler implements AsyncResponse {
         return true;
     }
 
-//    public boolean inputOwnNumber(){
-//
-//    }
-
-    public boolean sendOwnNumber() {
-        //das hier ist glaube ich noch nicht gut so, sollte nicht einfach eine Methode im Async aufrufen
-        Log.d("sendOwnNumber","else");
-        ownNumber = phoneDataHandler.getOwnNumber();
-        if (ownNumber.equals("/")){
-            Toast.makeText(context,"Please enter your Number and try again",Toast.LENGTH_LONG).show();
-
-            return false;
-        }else{
-            //starts async task RestConnector to send ownNumber to server
-            new RestConnector(context).execute(POST, SEND_NUMBER + ownNumber);
-            return true;
-        }
+    public void syncTokenAndNumber () {
+        new RestConnector(context).execute(POST, SEND_NUMBER + ownNumber + PersistenceHandler.getInstance().getToken());
     }
 
     //reads friendlist from file and starts async task RestConnector to send friend numbers to server
@@ -76,17 +61,5 @@ public class NumberLogicHandler implements AsyncResponse {
         //sends contacts to server after cleanup
         sendContacts(output);
     }
-
-    private String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while ((line = bufferedReader.readLine()) != null)
-            result += line;
-
-        inputStream.close();
-        return result;
-    }
-
 
 }
