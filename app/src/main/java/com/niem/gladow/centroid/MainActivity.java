@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +27,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //TODO firstLoadNumber from file
+        //TODO check if token is still valid
         //TODO additional check if play services installed please
 
-        if ("".equals(PersistenceHandler.getInstance().getOwnNumber())||"".equals(PersistenceHandler.getInstance().getToken())) {
+        if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken(this)) {
             Intent intent = new Intent(this, WelcomeViewActivity.class);
             startActivity(intent);
+        }
+        sendContacts();
+
+    }
+
+    private void sendContacts() {
+        //check for permission, if none do if
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
+        else {
+            new NumberLogicHandler(this).executePhoneDataHandler();
         }
     }
 
@@ -74,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+//TODO stürtzt ab, wenn permission nicht erteilt
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -84,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
                     sendGps(this.getCurrentFocus());
                 } else {
                     Toast.makeText(this, "FINE_LOCATION Denied", Toast.LENGTH_SHORT).show();
+                }
+            }
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    sendContacts();
+                } else {
+                    Toast.makeText(this, "READ_CONTACTS Denied", Toast.LENGTH_SHORT).show();
                 }
             }
         }

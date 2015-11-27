@@ -10,9 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.lang.reflect.Array;
+import com.niem.gladow.centroid.Database.MiniDB;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,9 +26,10 @@ public class PersistenceHandler {
     private Map<String,String> friendMap = new HashMap<>();
     private List<String> inviteList = new LinkedList<>();
     private String ownNumber = "";
-    private EditText mEdit;
-    private Context _context;
     private String token = "";
+    private final String OWN_NUMBER_FILE = "ownNumber";
+    private final String TOKEN_FILE = "ownToken";
+
 
 
     private static PersistenceHandler instance;
@@ -91,9 +91,19 @@ public class PersistenceHandler {
         return this.ownNumber;
     }
 
+    public boolean firstLoadOwnNumberAndToken (Context context) {
+        final MiniDB _miniDb = new MiniDB(context);
+        ownNumber = _miniDb.loadString(OWN_NUMBER_FILE);
+        token = _miniDb.loadString(TOKEN_FILE);
+        if (!ownNumber.isEmpty() && !token.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     public void saveOwnNumber(Context context) {
-        _context = context;
-        mEdit = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
+        final Context _context = context;
+        final EditText _mEdit = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
 
         TelephonyManager telephonyManager = (TelephonyManager) _context.getSystemService(Context.TELEPHONY_SERVICE);
         if (ownNumber.equals("")) {
@@ -104,16 +114,16 @@ public class PersistenceHandler {
         // Check if number was stored correctly in Phone, ask for User Input
         if (ownNumber.equals("/")) {
             Log.d("sendOwnNumber", "if");
-            mEdit.setVisibility(View.VISIBLE);
-            mEdit.setOnKeyListener(new View.OnKeyListener() {
+            _mEdit.setVisibility(View.VISIBLE);
+            _mEdit.setOnKeyListener(new View.OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     // If the event is a key-down event on the "enter" button
                     if ((event.getAction() == KeyEvent.ACTION_DOWN)
                             && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         // Perform action on Enter-key press
-                        Toast.makeText(_context, mEdit.getText(), Toast.LENGTH_SHORT).show();
-                        ownNumber = Util.getInstance().cleanNumberString(mEdit.getText().toString()) + "/";
-                        mEdit.setVisibility(View.INVISIBLE);
+                        Toast.makeText(_context, _mEdit.getText(), Toast.LENGTH_SHORT).show();
+                        ownNumber = Util.getInstance().cleanNumberString(_mEdit.getText().toString()) + "/";
+                        _mEdit.setVisibility(View.INVISIBLE);
 
                         // Hide Keypad after input
                         InputMethodManager in = (InputMethodManager) _context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -125,13 +135,15 @@ public class PersistenceHandler {
                 }
             });
         }
+        new MiniDB(_context).saveString(ownNumber, OWN_NUMBER_FILE);
     }
 
     public String getToken() {
         return token;
     }
 
-    public void saveOwnToken(String token) {
+    public void saveOwnToken(String token, Context context) {
         this.token = token;
+        new MiniDB(context).saveString(token, TOKEN_FILE);
     }
 }

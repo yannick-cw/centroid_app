@@ -25,8 +25,6 @@ public final class Util {
         _tmp = _tmp.replaceAll("^00|[^0-9]", "");
         _tmp = _tmp.replaceAll("^0", "49");
 
-        //removes leading comma
-
         Log.d("afterClean", _tmp);
 
         return _tmp;

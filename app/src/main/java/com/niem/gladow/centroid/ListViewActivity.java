@@ -25,35 +25,35 @@ public class ListViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview_activity);
 
-        final ListView listview = (ListView) findViewById(R.id.listview);
+        final ListView _listView = (ListView) findViewById(R.id.listview);
 
-        final Map<String, String> map = PersistenceHandler.getInstance().getFriendMap();
+        final Map<String, String> _map = PersistenceHandler.getInstance().getFriendMap();
 
-        final HashMapArrayAdapter adapter = new HashMapArrayAdapter(this,
-                R.layout.list_view_item, new ArrayList(map.entrySet()));
-        adapter.setCheckList(map.size());
-        listview.setAdapter(adapter);
+        final HashMapArrayAdapter _adapter = new HashMapArrayAdapter(this,
+                R.layout.list_view_item, new ArrayList(_map.entrySet()));
+        _adapter.setCheckList(_map.size());
+        _listView.setAdapter(_adapter);
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        _listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
 
                 try {
                     // update state of the views
-                    adapter.updateCheckList(position);
-                    adapter.notifyDataSetChanged();
+                    _adapter.toggleCheckList(position);
+                    _adapter.notifyDataSetChanged();
 
-                    TextView clickedItem = (TextView) view.findViewById(R.id.friend_number);
+                    TextView _textViewClicked = (TextView) view.findViewById(R.id.friend_number);
 
                     // check state of view and add/remove it from inviteList
-                    if (adapter.getCheckStatus(position)) {
-                        Log.d("Name", clickedItem.getText().toString());
-                        PersistenceHandler.getInstance().addToInviteList(clickedItem.getText().toString());
+                    if (_adapter.getCheckStatus(position)) {
+                        Log.d("Name", _textViewClicked.getText().toString());
+                        PersistenceHandler.getInstance().addToInviteList(_textViewClicked.getText().toString());
                     } else {
                         /* TODO would be more elegant to check ListView after pressing send button
                            and only add selected items to inviteList */
-                        PersistenceHandler.getInstance().removeFromInviteList(clickedItem.getText().toString());
+                        PersistenceHandler.getInstance().removeFromInviteList(_textViewClicked.getText().toString());
                     }
                 } catch (Exception e) {
                     Log.v("Exception ON Click", e.getMessage(), e);

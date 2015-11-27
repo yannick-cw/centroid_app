@@ -2,7 +2,6 @@ package com.niem.gladow.centroid;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,8 @@ public class HashMapArrayAdapter extends ArrayAdapter {
     private ArrayList<Boolean> checkList;
 
     private static class ViewHolder {
-        TextView tV1;
-        TextView tV2;
+        TextView number;
+        TextView name;
         boolean checked;
     }
 
@@ -34,29 +33,29 @@ public class HashMapArrayAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ViewHolder viewHolder;
+        ViewHolder _viewHolder;
 
         if (convertView == null) {
             /* There is no view at this position, we create a new one.
                In this case by inflating an xml layout */
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_view_item, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.tV1 = (TextView) convertView.findViewById(R.id.friend_number);
-            viewHolder.tV2 = (TextView) convertView.findViewById(R.id.friend_name);
-            convertView.setTag(viewHolder);
+            _viewHolder = new ViewHolder();
+            _viewHolder.number = (TextView) convertView.findViewById(R.id.friend_number);
+            _viewHolder.name = (TextView) convertView.findViewById(R.id.friend_name);
+            convertView.setTag(_viewHolder);
         } else {
             /* We recycle a View that already exists */
-            viewHolder = (ViewHolder) convertView.getTag();
+            _viewHolder = (ViewHolder) convertView.getTag();
         }
 
         // Once we have a reference to the View we are returning, we set its values.
         Map.Entry<String, Object> entry = (Map.Entry<String, Object>) this.getItem(position);
 
-        viewHolder.tV1.setText(entry.getKey());
-        viewHolder.tV2.setText(entry.getValue().toString());
-        viewHolder.checked = checkList.get(position);
+        _viewHolder.number.setText(entry.getKey());
+        _viewHolder.name.setText(entry.getValue().toString());
+        _viewHolder.checked = checkList.get(position);
 
-        if(viewHolder.checked){
+        if(_viewHolder.checked){
             convertView.setBackgroundColor(Color.GREEN);
         }else{
             convertView.setBackgroundColor(Color.WHITE);
@@ -73,7 +72,7 @@ public class HashMapArrayAdapter extends ArrayAdapter {
         notifyDataSetChanged();
     }
 
-    public void updateCheckList(int position) {
+    public void toggleCheckList(int position) {
         this.checkList.set(position, !this.checkList.get(position));
     }
 
