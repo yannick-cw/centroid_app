@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.niem.gladow.centroid.gcm.RegistrationIntentService;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
@@ -31,11 +33,14 @@ public class MainActivity extends AppCompatActivity {
         //TODO additional check if play services installed please
 
         if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken(this)) {
-            Intent intent = new Intent(this, WelcomeViewActivity.class);
-            startActivity(intent);
+            Intent _intent = new Intent(this, WelcomeViewActivity.class);
+            startActivity(_intent);
         }
         else {
             sendContacts();
+            //updates the token
+            Intent _intent = new Intent(this, RegistrationIntentService.class);
+            startService(_intent);
         }
     }
 

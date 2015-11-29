@@ -21,11 +21,11 @@ public final class Util {
     }
     public String cleanNumberString(String numbers) {
         String _tmp = numbers;
-        Log.d("NUMBERS", numbers);
+        //Log.d("NUMBERS", numbers);
         _tmp = _tmp.replaceAll("^00|[^0-9]", "");
         _tmp = _tmp.replaceAll("^0", "49");
 
-        Log.d("afterClean", _tmp);
+        //Log.d("afterClean", _tmp);
 
         return _tmp;
     }
@@ -34,14 +34,5 @@ public final class Util {
         String _tmp = keySet;
         _tmp = _tmp.replaceAll("[^0-9,]", "");
         return _tmp;
-    }
-
-    public  String getKeyByValue(Map<String, String> map, String value) {
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 }
