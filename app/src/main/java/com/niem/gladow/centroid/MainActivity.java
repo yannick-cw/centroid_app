@@ -35,10 +35,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, WelcomeViewActivity.class);
             startActivity(intent);
         }
-        sendContacts();
-
+        else {
+            sendContacts();
+        }
     }
 
+    //TODO DRY
     private void sendContacts() {
         //check for permission, if none do if
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)

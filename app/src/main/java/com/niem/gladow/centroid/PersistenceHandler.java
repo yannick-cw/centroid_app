@@ -66,6 +66,7 @@ public class PersistenceHandler {
       return Util.getInstance().cleanKeySet(inviteList.toString());
     }
 
+    //Todo check if allready on list?
     public void addToInviteList(String number) {
         this.inviteList.add(number);
     }
@@ -95,9 +96,12 @@ public class PersistenceHandler {
         final MiniDB _miniDb = new MiniDB(context);
         ownNumber = _miniDb.loadString(OWN_NUMBER_FILE);
         token = _miniDb.loadString(TOKEN_FILE);
+        Log.i("DB loaded ownNumber", ownNumber);
+        Log.i("DB loaded token", token);
         if (!ownNumber.isEmpty() && !token.isEmpty()) {
             return true;
         }
+        ownNumber = "/";
         return false;
     }
 
@@ -106,7 +110,7 @@ public class PersistenceHandler {
         final EditText _mEdit = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
 
         TelephonyManager telephonyManager = (TelephonyManager) _context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ownNumber.equals("")) {
+        if (ownNumber.equals("/")) {
             ownNumber = Util.getInstance().cleanNumberString(telephonyManager.getLine1Number()) + "/";
         }
         Log.d("ownNumber", ownNumber);
