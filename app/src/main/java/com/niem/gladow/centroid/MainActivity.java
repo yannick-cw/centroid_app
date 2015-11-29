@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //TODO firstLoadNumber from file
         //TODO check if token is still valid
         //TODO additional check if play services installed please
 
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//TODO stürtzt ab, wenn permission nicht erteilt
+//TODO stürtzt ab, wenn permission nicht erteilt (gps)
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {

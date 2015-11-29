@@ -18,15 +18,14 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
     private GoogleApiClient googleApiClient;
     private Context context;
     private Location lastLocation;
-    private PhoneDataHandler phoneDataHandler;
     private static final String SEND_GPS = "/android/currentGPS/", POST = "1";
-    private static String OWN_NUMBER = PersistenceHandler.getInstance().getOwnNumber();
+    private static String OWN_NUMBER;
 
     public GpsDataHandler (Context context) {
         this.context = context;
         buildGoogleApiClient();
         googleApiClient.connect();
-        phoneDataHandler = new PhoneDataHandler(context);
+        OWN_NUMBER = PersistenceHandler.getInstance().getOwnNumber();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -41,6 +40,7 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
     public void onConnected(Bundle connectionHint) {
         if (OWN_NUMBER.equals("/")){
             Toast.makeText(context,"Please enter your Number and try again",Toast.LENGTH_LONG).show();
+            Log.d("GPS_NO_OWN_NUMBER", PersistenceHandler.getInstance().getOwnNumber());
         }else{
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             new RestConnector(context).execute(POST, SEND_GPS + OWN_NUMBER

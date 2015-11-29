@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.niem.gladow.centroid.gcm.RegistrationIntentService;
@@ -31,10 +32,13 @@ public class WelcomeViewActivity extends AppCompatActivity {
     }
 
     public void syncWithServer(View view) {
+        final Button _startCentroidButton = (Button) findViewById(R.id.startCentroid);
         if (!PersistenceHandler.getInstance().getOwnNumber().equals("/")) {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
             sendContacts();
+            _startCentroidButton.setEnabled(true);
+
         } else {
             Toast.makeText(this, "Please enter your own number and hit sync", Toast.LENGTH_LONG).show();
         }

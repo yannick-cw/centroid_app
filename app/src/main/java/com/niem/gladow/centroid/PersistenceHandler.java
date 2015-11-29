@@ -66,7 +66,7 @@ public class PersistenceHandler {
       return Util.getInstance().cleanKeySet(inviteList.toString());
     }
 
-    //Todo check if allready on list?
+    //Todo check if already on list?
     public void addToInviteList(String number) {
         this.inviteList.add(number);
     }
@@ -112,6 +112,7 @@ public class PersistenceHandler {
         TelephonyManager telephonyManager = (TelephonyManager) _context.getSystemService(Context.TELEPHONY_SERVICE);
         if (ownNumber.equals("/")) {
             ownNumber = Util.getInstance().cleanNumberString(telephonyManager.getLine1Number()) + "/";
+            new MiniDB(_context).saveString(ownNumber, OWN_NUMBER_FILE);
         }
         Log.d("ownNumber", ownNumber);
 
@@ -127,6 +128,7 @@ public class PersistenceHandler {
                         // Perform action on Enter-key press
                         Toast.makeText(_context, _mEdit.getText(), Toast.LENGTH_SHORT).show();
                         ownNumber = Util.getInstance().cleanNumberString(_mEdit.getText().toString()) + "/";
+                        new MiniDB(_context).saveString(ownNumber, OWN_NUMBER_FILE);
                         _mEdit.setVisibility(View.INVISIBLE);
 
                         // Hide Keypad after input
@@ -139,7 +141,6 @@ public class PersistenceHandler {
                 }
             });
         }
-        new MiniDB(_context).saveString(ownNumber, OWN_NUMBER_FILE);
     }
 
     public String getToken() {
