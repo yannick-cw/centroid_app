@@ -2,6 +2,10 @@ package com.niem.gladow.centroid;
 
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,5 +38,16 @@ public final class Util {
         String _tmp = keySet;
         _tmp = _tmp.replaceAll("[^0-9,]", "");
         return _tmp;
+    }
+
+    public String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while ((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
     }
 }

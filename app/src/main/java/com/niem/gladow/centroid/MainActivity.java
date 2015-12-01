@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //TODO check if token is still valid
+        //TODO check if token is still valid right now it is reloaded every start (same one)
         //TODO additional check if play services installed please
 
         if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken(this)) {
@@ -37,8 +37,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(_intent);
         }
         else {
+            //updates contacts
+            PersistenceHandler.getInstance().loadFriendMapFromDB(this);
+            Log.d("loaded friend map", PersistenceHandler.getInstance().getFriendMap().toString());
             sendContacts();
-            //updates the token
+            //updates the token every start
             Intent _intent = new Intent(this, RegistrationIntentService.class);
             startService(_intent);
         }
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//TODO stürtzt ab, wenn permission nicht erteilt (gps)
+//TODO stürtzt ab, wenn permission nicht erteilt oder gps aus und erteilt (gps)
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {

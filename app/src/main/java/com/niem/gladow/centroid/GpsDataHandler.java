@@ -43,6 +43,9 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
             Log.d("GPS_NO_OWN_NUMBER", PersistenceHandler.getInstance().getOwnNumber());
         }else{
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+
+            //TODO check if it can be null and if yes catch
+            assert(lastLocation != null);
             new RestConnector(context).execute(POST, SEND_GPS + OWN_NUMBER
                                                               + lastLocation.getLatitude()+"/"
                                                               + lastLocation.getLongitude());

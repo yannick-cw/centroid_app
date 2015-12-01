@@ -10,7 +10,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.niem.gladow.centroid.Database.MapDB;
 import com.niem.gladow.centroid.Database.MiniDB;
+import com.niem.gladow.centroid.Database.StringDB;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,10 +29,11 @@ public class PersistenceHandler {
     private List<String> inviteList = new LinkedList<>();
     private String ownNumber = "";
     private String token = "";
+
+    /* these are the file names */
     private final String OWN_NUMBER_FILE = "ownNumber";
     private final String TOKEN_FILE = "ownToken";
-
-
+    private final String FRIEND_MAP_FILE = "friendMap";
 
     private static PersistenceHandler instance;
 
@@ -46,12 +49,27 @@ public class PersistenceHandler {
 
     public void createFriendMap (String contacts) {
         List<String> numbers = Arrays.asList(contacts.split(","));
+        //TODO old invalid contacts
         for (String str: numbers) {
             if(contactsMap.containsKey(str)){
                 friendMap.put(str, contactsMap.get(str));
             }
         }
-        //ToDo save to file
+    }
+
+    public Map<String, String> getFriendMap() {
+        return friendMap;
+    }
+
+    public boolean loadFriendMapFromDB (Context context) {
+        MapDB _mapDB = new MiniDB(context);
+        friendMap = _mapDB.loadMap(FRIEND_MAP_FILE);
+        return !friendMap.isEmpty();
+    }
+
+    public boolean saveFriendMapToDB (Context context) {
+        MapDB _mapDB = new MiniDB(context);
+        return _mapDB.saveMap(friendMap,FRIEND_MAP_FILE);
     }
 
     public void setContactsMap(Map<String, String> contactsMap) {
@@ -66,8 +84,15 @@ public class PersistenceHandler {
       return Util.getInstance().cleanKeySet(inviteList.toString());
     }
 
-    //Todo check if already on list?
+    /**
+     * adds the number to the invite list, if he is not already on it
+     * */
     public void addToInviteList(String number) {
+        for (String str: inviteList) {
+            if (str == number) {
+                return;
+            }
+        }
         this.inviteList.add(number);
     }
 
@@ -84,18 +109,18 @@ public class PersistenceHandler {
         this.inviteList.clear();
     }
 
-    public Map<String, String> getFriendMap() {
-        return friendMap;
-    }
-
     public String getOwnNumber() {
         return this.ownNumber;
     }
 
+    /**
+     * try to load onwNumber and Token from the database and store them in local value
+     * returns true if both values aren't empty
+    */
     public boolean firstLoadOwnNumberAndToken (Context context) {
-        final MiniDB _miniDb = new MiniDB(context);
-        ownNumber = _miniDb.loadString(OWN_NUMBER_FILE);
-        token = _miniDb.loadString(TOKEN_FILE);
+        final StringDB _stringDb = new MiniDB(context);
+        ownNumber = _stringDb.loadString(OWN_NUMBER_FILE);
+        token = _stringDb.loadString(TOKEN_FILE);
         Log.i("DB loaded ownNumber", ownNumber);
         Log.i("DB loaded token", token);
         if (!ownNumber.isEmpty() && !token.isEmpty()) {
@@ -105,6 +130,10 @@ public class PersistenceHandler {
         return false;
     }
 
+    /**
+     * tries to access the own number from the telephone and saves it
+     * if this is not possible waits for the user input of the number and saves it
+     * */
     public void saveOwnNumber(Context context) {
         final Context _context = context;
         final EditText _mEdit = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);

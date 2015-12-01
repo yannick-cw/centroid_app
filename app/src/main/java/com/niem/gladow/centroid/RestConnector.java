@@ -17,8 +17,11 @@ import java.net.URL;
  */
 public class RestConnector extends AsyncTask<String, String, String> {
     private static final String POST = "1", GET = "2", SEND = "3";
-    private static final String HOST_ADDRESS = "http://192.168.178.50:8080";
+    private static final String HOST_ADDRESS = "http://10.181.26.131:8080/java_rest";
     private Context context;
+    private static boolean postSuccess = false;
+    private static boolean getSuccess = false;
+
 
     public RestConnector(Context context) {
         this.context = context;
@@ -38,6 +41,8 @@ public class RestConnector extends AsyncTask<String, String, String> {
             case SEND:
                 result = restGet(params[1]);
                 PersistenceHandler.getInstance().createFriendMap(result);
+                //TODO optional both in createFriendMap
+                PersistenceHandler.getInstance().saveFriendMapToDB(context);
                 Log.d("friend Map", PersistenceHandler.getInstance().getFriendMap().values().toString());
                 break;
             default:
@@ -50,16 +55,6 @@ public class RestConnector extends AsyncTask<String, String, String> {
         Toast.makeText(context, result, Toast.LENGTH_LONG).show();
     }
 
-    private String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while ((line = bufferedReader.readLine()) != null)
-            result += line;
-
-        inputStream.close();
-        return result;
-    }
 
     private String restPost(String urlString) {
         String result;
@@ -72,7 +67,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
 
             Log.d("responseCode", new Integer(connection.getResponseCode()).toString());
 
-            result = convertInputStreamToString(connection.getInputStream());
+            result = Util.getInstance().convertInputStreamToString(connection.getInputStream());
             Log.d("reader", result);
 
 
@@ -94,7 +89,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
 
             Log.d("responseCode", new Integer(connection.getResponseCode()).toString());
 
-            result = convertInputStreamToString(connection.getInputStream());
+            result = Util.getInstance().convertInputStreamToString(connection.getInputStream());
             Log.d("reader", result);
 
 
@@ -104,4 +99,4 @@ public class RestConnector extends AsyncTask<String, String, String> {
 
         return result;
     }
-} // end CallAPI
+}

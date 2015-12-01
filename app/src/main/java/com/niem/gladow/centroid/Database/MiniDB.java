@@ -8,12 +8,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by yannick_uni on 11/25/15.
  */
-public class MiniDB {
+public class MiniDB implements MapDB, StringDB{
 
     private Context context;
 
@@ -58,5 +62,30 @@ public class MiniDB {
             Log.e("MiniDB", "Can not read file: " + e.toString());
         }
 
-        return ret;        }
+        return ret;
+    }
+
+    public boolean saveMap(Map<String, String> map, String fileName) {
+        try (ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE))) {
+            out.writeObject(map);
+            return true;
+        } catch (IOException e) {
+            Log.e("save map", e.getMessage());
+            return false;
+        }
+    }
+
+    public Map<String, String> loadMap(String fileName) {
+        Map<String, String> map = new HashMap<>();
+
+        try (ObjectInputStream in = new ObjectInputStream(context.openFileInput(fileName))){
+            map = (Map<String, String>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("load map", e.getMessage());
+        } catch (IOException e) {
+            Log.e("load map", e.getMessage());
+        }
+
+        return map;
+    }
 }

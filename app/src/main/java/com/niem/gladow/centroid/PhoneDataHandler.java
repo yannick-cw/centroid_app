@@ -52,6 +52,7 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
         Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         while (phones.moveToNext()) {
             String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            //Todo prefer mobile number, check multiple numbers
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             phoneNumber = Util.getInstance().cleanNumberString(phoneNumber);
             numbersNames.put(phoneNumber,name);
