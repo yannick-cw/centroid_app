@@ -17,7 +17,6 @@ import java.io.InputStreamReader;
  * Created by yannick_uni on 11/10/15.
  */
 public class NumberLogicHandler implements AsyncResponse {
-    private static final String POST = "1", GET = "2", SEND = "3";
     private static final String SEND_NUMBER = "/android/registerNumber/",
             SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
     private static String ownNumber = PersistenceHandler.getInstance().getOwnNumber();
@@ -41,20 +40,20 @@ public class NumberLogicHandler implements AsyncResponse {
 
     private boolean sendContacts(String contacts) {
         //starts RestConnector async task to send contacts to server
-        new RestConnector(context).execute(SEND, SEND_CONTACTS + ownNumber + contacts);
+        new RestConnector(context).execute(RestConnector.SEND, SEND_CONTACTS + ownNumber + contacts);
 //        DEBUG HELPER: (if the line above is exchanged for the one below, complete contactsList is given from Server, good to test ListView-Options)
 //        new RestConnector(context).execute(SEND, SEND_CONTACTS + contacts);
         return true;
     }
 
     public void syncTokenAndNumber () {
-        new RestConnector(context).execute(POST, SEND_NUMBER + ownNumber + PersistenceHandler.getInstance().getToken());
+        new RestConnector(context).execute(RestConnector.POST, SEND_NUMBER + ownNumber + PersistenceHandler.getInstance().getToken());
     }
 
     //reads friendlist from file and starts async task RestConnector to send friend numbers to server
     public boolean inviteFriends() {
 
-        new RestConnector(context).execute(GET, INVITE_FRIENDS + ownNumber + PersistenceHandler.getInstance().getInviteList());
+        new RestConnector(context).execute(RestConnector.GET, INVITE_FRIENDS + ownNumber + PersistenceHandler.getInstance().getInviteList());
         return true;
     }
 

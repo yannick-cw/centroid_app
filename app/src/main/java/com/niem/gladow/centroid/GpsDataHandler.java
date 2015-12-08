@@ -18,7 +18,7 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
     private GoogleApiClient googleApiClient;
     private Context context;
     private Location lastLocation;
-    private static final String SEND_GPS = "/android/currentGPS/", POST = "1";
+    private static final String SEND_GPS = "/android/currentGPS/";
     private static String OWN_NUMBER;
 
     public GpsDataHandler (Context context) {
@@ -46,9 +46,9 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
 
             //TODO check if it can be null and if yes catch
             assert(lastLocation != null);
-            new RestConnector(context).execute(POST, SEND_GPS + OWN_NUMBER
-                                                              + lastLocation.getLatitude()+"/"
-                                                              + lastLocation.getLongitude());
+            new RestConnector(context).execute(RestConnector.POST, SEND_GPS + OWN_NUMBER
+                                                              + lastLocation.getLongitude()+"/"
+                                                              + lastLocation.getLatitude());
             Log.d("lastLocation", String.valueOf(lastLocation.getLongitude()));
         }
     }

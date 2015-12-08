@@ -47,6 +47,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (InviteHandler.ExistsNewInvite()) {
+            //todo put button in variable
+            findViewById(R.id.declineInviteButton).setVisibility(View.VISIBLE);
+            findViewById(R.id.acceptInviteButton).setVisibility(View.VISIBLE);
+        }
+    }
+
     //TODO DRY
     private void sendContacts() {
         //check for permission, if none do if
@@ -70,6 +80,34 @@ public class MainActivity extends AppCompatActivity {
         } else {
             new GpsDataHandler(this);
         }
+    }
+
+    public boolean getGpsPermission () {
+        //check for permission, if none do if
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void responseToInvite(View view) {
+        switch (view.getId()) {
+            case R.id.acceptInviteButton:
+                if (!getGpsPermission()) return;
+                InviteHandler.responseToInvite(InviteReply.ACCEPTED, this);
+                Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.declineInviteButton:
+                InviteHandler.responseToInvite(InviteReply.DECLINED, this);
+                Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        findViewById(R.id.declineInviteButton).setVisibility(View.GONE);
+        findViewById(R.id.acceptInviteButton).setVisibility(View.GONE);
     }
 
     public void seeList(View view) {

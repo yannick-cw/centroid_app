@@ -27,6 +27,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.niem.gladow.centroid.InviteHandler;
 import com.niem.gladow.centroid.R;
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -53,6 +54,7 @@ public class MyGcmListenerService extends GcmListenerService {
          *     - Store message in local database.
          *     - Update UI.
          */
+        InviteHandler.addOpenInvites(message);
     }
     /**
      * Create and show a simple notification containing the received GCM message.
@@ -68,8 +70,9 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle("GCM Message")
-                .setContentText(message)
+                .setContentTitle("centroid invite")
+                //TODO number (from message) to name
+                .setContentText("you got invited by" + message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

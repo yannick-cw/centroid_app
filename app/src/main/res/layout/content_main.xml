@@ -24,4 +24,28 @@
         android:id="@+id/button4"
         android:onClick="sendGps"
         android:layout_alignParentTop="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ACCEPT"
+        android:id="@+id/acceptInviteButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="responseToInvite"
+        android:visibility="gone"
+        android:layout_marginBottom="116dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NO WAY!"
+        android:id="@+id/declineInviteButton"
+        android:layout_alignTop="@+id/acceptInviteButton"
+        android:layout_alignRight="@+id/acceptInviteButton"
+        android:layout_alignEnd="@+id/acceptInviteButton"
+        android:onClick="responseToInvite"
+        android:visibility="gone"
+        android:layout_marginTop="63dp" />
+
 </RelativeLayout>
