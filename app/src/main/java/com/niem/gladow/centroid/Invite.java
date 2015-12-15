@@ -2,24 +2,28 @@ package com.niem.gladow.centroid;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
 
-import java.util.Date;
 
 /**
- * Created by yannick_uni on 12/15/15.
+ * This class represents invites
  */
+
 public class Invite {
-    private String inviteNumber;
+    //is the unique id of the invite
     private long startTime;
+    //number of person who invited
+    private String inviteNumber;
     private Centroid centroid;
     private InviteReply status = InviteReply.UNANSWERED;
     private boolean existsCentroid = false;
 
+    //todo add all participants numbers, no need for invite number only
     public Invite(String inviteNumber, long startTime) {
         this.inviteNumber = inviteNumber;
         this.startTime = startTime;
     }
 
     public Centroid getCentroid() {
+        assert(centroid != null);
         return centroid;
     }
 
@@ -42,10 +46,6 @@ public class Invite {
 
     public boolean existsCentroid() {
         return existsCentroid;
-    }
-
-    public void setExistsCentroid(boolean existsCentroid) {
-        this.existsCentroid = existsCentroid;
     }
 
     public void setStatus(InviteReply status) {

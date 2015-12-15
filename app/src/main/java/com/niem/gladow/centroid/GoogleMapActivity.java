@@ -4,8 +4,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -20,6 +18,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GoogleMapActivity extends FragmentActivity implements
@@ -31,6 +30,7 @@ public class GoogleMapActivity extends FragmentActivity implements
     protected LocationRequest mLocationRequest;
     private LatLng centroid;
     protected GoogleMap map;
+    private boolean isFirstStart = true;
 
     private boolean locationUpdateStarted = false;
 
@@ -43,6 +43,8 @@ public class GoogleMapActivity extends FragmentActivity implements
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //gets the centroid latlng Object, which was attached to the intent
         centroid = getIntent().getParcelableExtra("centroid");
         buildGoogleApiClient();
     }
@@ -66,12 +68,21 @@ public class GoogleMapActivity extends FragmentActivity implements
     }
 
     private void updateUI() {
+        LatLng _location = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
+        //is executed only on the first UI update to set bounds and zoom
+        if (isFirstStart) {
+            LatLngBounds.Builder _builder = new LatLngBounds.Builder();
+            _builder.include(centroid);
+            _builder.include(_location);
+            LatLngBounds _latLngBounds = _builder.build();
+            map.moveCamera(CameraUpdateFactory.newLatLngBounds(_latLngBounds, 10));
+            isFirstStart = false;
+        }
         try {
-            LatLng location = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 0F));
             map.clear();
+            //adds two markers, one with own position and one with centroid
             map.addMarker(new MarkerOptions()
-                    .position(location)
+                    .position(_location)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                     .alpha(0.5F)
                     .title("you"));
@@ -135,8 +146,8 @@ public class GoogleMapActivity extends FragmentActivity implements
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(100000);
+        mLocationRequest.setFastestInterval(50000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
     }

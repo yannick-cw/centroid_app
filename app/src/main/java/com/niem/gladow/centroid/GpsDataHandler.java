@@ -11,7 +11,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 /**
- * Created by yannick_uni on 11/17/15.
+ * The GpsDataHandler is the central point to manage the phones GPS data
  */
 public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -21,11 +21,12 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
     private static final String SEND_GPS = "/android/currentGPS/";
     private static String OWN_NUMBER;
 
+    //the gps data is send on creation of the class
     public GpsDataHandler (Context context) {
         this.context = context;
         buildGoogleApiClient();
         googleApiClient.connect();
-        OWN_NUMBER = PersistenceHandler.getInstance().getOwnNumber() + "/";
+        OWN_NUMBER = PersistenceHandler.getInstance().getOwnNumber() ;
     }
 
     protected synchronized void buildGoogleApiClient() {

@@ -21,6 +21,8 @@ import com.niem.gladow.centroid.gcm.RegistrationIntentService;
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
+    private View declineInviteButton;
+    private View acceptInviteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        declineInviteButton = findViewById(R.id.declineInviteButton);
+        acceptInviteButton = findViewById(R.id.acceptInviteButton);
+
         //TODO check if token is still valid right now it is reloaded every start (same one)
         //TODO additional check if play services installed please
 
@@ -50,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //makes buttons visible if invite exits
+        //todo move to list
         if (InviteHandler.existsNewInvite()) {
-            //todo put button in variable
-            findViewById(R.id.declineInviteButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.acceptInviteButton).setVisibility(View.VISIBLE);
+            declineInviteButton.setVisibility(View.VISIBLE);
+            acceptInviteButton.setVisibility(View.VISIBLE);
         }
     }
 
-    //TODO DRY
     private void sendContacts() {
         //check for permission, if none do if
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //is called when accept or decline button is pressed
     public void responseToInvite(View view) {
         switch (view.getId()) {
             case R.id.acceptInviteButton:
@@ -106,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
                 break;
         }
-        findViewById(R.id.declineInviteButton).setVisibility(View.GONE);
-        findViewById(R.id.acceptInviteButton).setVisibility(View.GONE);
+        declineInviteButton.setVisibility(View.GONE);
+        acceptInviteButton.setVisibility(View.GONE);
     }
 
     public void showCentroidOnMap(View view) {
