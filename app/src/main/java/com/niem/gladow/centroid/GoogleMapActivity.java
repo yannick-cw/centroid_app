@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -28,11 +29,11 @@ public class GoogleMapActivity extends FragmentActivity implements
     protected GoogleApiClient mGoogleApiClient;
     protected Location mCurrentLocation;
     protected LocationRequest mLocationRequest;
+    private LatLng centroid;
     protected GoogleMap map;
 
     private boolean locationUpdateStarted = false;
-    private TextView text1;
-    private TextView text2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,7 @@ public class GoogleMapActivity extends FragmentActivity implements
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        createViews();
+        centroid = getIntent().getParcelableExtra("centroid");
         buildGoogleApiClient();
     }
 
@@ -67,15 +67,18 @@ public class GoogleMapActivity extends FragmentActivity implements
 
     private void updateUI() {
         try {
-            text1.setVisibility(View.VISIBLE);
-            text2.setVisibility(View.VISIBLE);
-            text1.setText("48.150805");
-            text2.setText("11.594600");
-            LatLng location = new LatLng(48.150805,11.594600);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+            LatLng location = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 0F));
+            map.clear();
             map.addMarker(new MarkerOptions()
                     .position(location)
-                    .title("Marker"));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    .alpha(0.5F)
+                    .title("you"));
+            map.addMarker(new MarkerOptions()
+                    .position(centroid)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .title("centroid"));
         } catch (Exception e) {Log.e("Error", e.toString());}
 
     }
@@ -136,10 +139,5 @@ public class GoogleMapActivity extends FragmentActivity implements
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-    }
-
-    private void createViews() {
-        text1 = (TextView) findViewById(R.id.textView1);
-        text2 = (TextView) findViewById(R.id.textView2);
     }
 }

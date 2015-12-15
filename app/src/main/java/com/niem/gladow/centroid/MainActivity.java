@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.gcm.RegistrationIntentService;
 
 
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (InviteHandler.ExistsNewInvite()) {
+        if (InviteHandler.existsNewInvite()) {
             //todo put button in variable
             findViewById(R.id.declineInviteButton).setVisibility(View.VISIBLE);
             findViewById(R.id.acceptInviteButton).setVisibility(View.VISIBLE);
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showCentroidOnMap(View view) {
         Intent intent = new Intent(this, GoogleMapActivity.class);
+        intent.putExtra("centroid", InviteHandler.getLatestInviteWithActiveAwesomeCentroid().getCentroid().getLatLng());
         startActivity(intent);
     }
 

@@ -27,12 +27,21 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.niem.gladow.centroid.Enums.InviteReply;
+import com.niem.gladow.centroid.Enums.MessageType;
 import com.niem.gladow.centroid.InviteHandler;
+import com.niem.gladow.centroid.PersistenceHandler;
+import com.niem.gladow.centroid.PhoneDataHandler;
 import com.niem.gladow.centroid.R;
+import com.niem.gladow.centroid.Util;
+
 
 public class MyGcmListenerService extends GcmListenerService {
 
-    private static final String TAG = "MyGcmListenerService";
+    private final String CENTROID = "centroid";
+    private final String TIME = "time";
+    private final String INVITE_NUMBER = "number";
+    private final String MESSAGE_TYPE = "type";
 
     /**
      * Called when message is received.
@@ -44,24 +53,45 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("message");
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
-        sendNotification(message);
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
-        InviteHandler.addOpenInvites(message);
+        //there always have to be two types of data
+        //assert(data.keySet().size() == 2);
+
+        String _messageType = data.get(MESSAGE_TYPE).toString();
+        long _startTime = Long.parseLong(data.get(TIME).toString());
+
+        switch (MessageType.valueOf(_messageType)) {
+            case INVITE:
+                //TODO number (from message) to name
+                String _inviteNumber = data.get(INVITE_NUMBER).toString();
+
+                InviteHandler.addOpenInvites(_inviteNumber, _startTime);
+
+                if (_inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
+                    InviteHandler.getInviteByTime(_startTime).setStatus(InviteReply.ACCEPTED);
+                    sendNotification("you created a centroid, awesome!", "centroid created");
+                }
+                else {
+                    sendNotification("you got invited by: " + _inviteNumber, "centroid invite");
+                }
+                break;
+            case CENTROID:
+                String _centroid = data.get(CENTROID).toString();
+                InviteHandler.addCentroidToInvite(_startTime, _centroid);
+                Log.d(MyGcmListenerService.class.getName(), "Centroid: " + _centroid);
+                Log.d(MyGcmListenerService.class.getName(), "Time: " + _startTime);
+                sendNotification("you got a new centroid!", "centroid arrived");
+                break;
+            default:
+                //todo error
+                break;
+        }
     }
     /**
      * Create and show a simple notification containing the received GCM message.
      *
      * @param message GCM message received.
      */
-    private void sendNotification(String message) {
+    private void sendNotification(String message, String title) {
         Intent intent = new Intent(this, com.niem.gladow.centroid.MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -70,9 +100,8 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle("centroid invite")
-                //TODO number (from message) to name
-                .setContentText("you got invited by" + message)
+                .setContentTitle(title)
+                .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

@@ -18,6 +18,7 @@ import java.net.URL;
 public class RestConnector extends AsyncTask<String, String, String> {
     public static final String POST = "1", GET = "2", SEND = "3";
     private static final String HOST_ADDRESS = "http://10.181.26.131:8080/java_rest";
+    //private static final String HOST_ADDRESS = "http://schnutentier.ddns.net";
     private Context context;
 
     public RestConnector(Context context) {
@@ -76,7 +77,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
     }
 
     private String restGet(String urlString) {
-        String result;
+        String result = "";
         try {
             Log.d("urlparams", urlString);
             URL url = new URL(HOST_ADDRESS+urlString);
@@ -85,8 +86,9 @@ public class RestConnector extends AsyncTask<String, String, String> {
             connection.setRequestMethod("GET");
 
             Log.d("responseCode", new Integer(connection.getResponseCode()).toString());
-
-            result = Util.getInstance().convertInputStreamToString(connection.getInputStream());
+            if (new Integer(connection.getResponseCode()) == 200) {
+                result = Util.getInstance().convertInputStreamToString(connection.getInputStream());
+            }
             Log.d("reader", result);
 
 

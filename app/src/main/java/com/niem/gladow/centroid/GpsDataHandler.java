@@ -25,7 +25,7 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
         this.context = context;
         buildGoogleApiClient();
         googleApiClient.connect();
-        OWN_NUMBER = PersistenceHandler.getInstance().getOwnNumber();
+        OWN_NUMBER = PersistenceHandler.getInstance().getOwnNumber() + "/";
     }
 
     protected synchronized void buildGoogleApiClient() {

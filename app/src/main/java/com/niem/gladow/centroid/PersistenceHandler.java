@@ -140,7 +140,8 @@ public class PersistenceHandler {
 
         TelephonyManager telephonyManager = (TelephonyManager) _context.getSystemService(Context.TELEPHONY_SERVICE);
         if (ownNumber.equals("/")) {
-            ownNumber = Util.getInstance().cleanNumberString(telephonyManager.getLine1Number()) + "/";
+            ownNumber = Util.getInstance().cleanNumberString(telephonyManager.getLine1Number());
+            if ("".equals(ownNumber)) ownNumber = "/";
             new MiniDB(_context).saveString(ownNumber, OWN_NUMBER_FILE);
         }
         Log.d("ownNumber", ownNumber);
@@ -156,7 +157,7 @@ public class PersistenceHandler {
                             && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         // Perform action on Enter-key press
                         Toast.makeText(_context, _mEdit.getText(), Toast.LENGTH_SHORT).show();
-                        ownNumber = Util.getInstance().cleanNumberString(_mEdit.getText().toString()) + "/";
+                        ownNumber = Util.getInstance().cleanNumberString(_mEdit.getText().toString());
                         new MiniDB(_context).saveString(ownNumber, OWN_NUMBER_FILE);
                         _mEdit.setVisibility(View.INVISIBLE);
 

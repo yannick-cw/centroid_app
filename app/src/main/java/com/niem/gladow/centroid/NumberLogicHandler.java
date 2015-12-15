@@ -1,17 +1,6 @@
 package com.niem.gladow.centroid;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  * Created by yannick_uni on 11/10/15.
@@ -19,7 +8,7 @@ import java.io.InputStreamReader;
 public class NumberLogicHandler implements AsyncResponse {
     private static final String SEND_NUMBER = "/android/registerNumber/",
             SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
-    private static String ownNumber = PersistenceHandler.getInstance().getOwnNumber();
+    private static String ownNumberWithSlash = PersistenceHandler.getInstance().getOwnNumber() + "/";
     PhoneDataHandler phoneDataHandler;
 
 
@@ -40,20 +29,21 @@ public class NumberLogicHandler implements AsyncResponse {
 
     private boolean sendContacts(String contacts) {
         //starts RestConnector async task to send contacts to server
-        new RestConnector(context).execute(RestConnector.SEND, SEND_CONTACTS + ownNumber + contacts);
+        new RestConnector(context).execute(RestConnector.SEND, SEND_CONTACTS + ownNumberWithSlash + contacts);
 //        DEBUG HELPER: (if the line above is exchanged for the one below, complete contactsList is given from Server, good to test ListView-Options)
 //        new RestConnector(context).execute(SEND, SEND_CONTACTS + contacts);
         return true;
     }
 
     public void syncTokenAndNumber () {
-        new RestConnector(context).execute(RestConnector.POST, SEND_NUMBER + ownNumber + PersistenceHandler.getInstance().getToken());
+        new RestConnector(context).execute(RestConnector.POST, SEND_NUMBER + ownNumberWithSlash + PersistenceHandler.getInstance().getToken());
     }
 
     //reads friendlist from file and starts async task RestConnector to send friend numbers to server
     public boolean inviteFriends() {
 
-        new RestConnector(context).execute(RestConnector.GET, INVITE_FRIENDS + ownNumber + PersistenceHandler.getInstance().getInviteList());
+        new RestConnector(context).execute(RestConnector.GET, INVITE_FRIENDS + ownNumberWithSlash + PersistenceHandler.getInstance().getInviteList());
+        new GpsDataHandler(context);
         return true;
     }
 
