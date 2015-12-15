@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +107,11 @@ public class MainActivity extends AppCompatActivity {
         }
         findViewById(R.id.declineInviteButton).setVisibility(View.GONE);
         findViewById(R.id.acceptInviteButton).setVisibility(View.GONE);
+    }
+
+    public void showCentroidOnMap(View view) {
+        Intent intent = new Intent(this, GoogleMapActivity.class);
+        startActivity(intent);
     }
 
     public void seeList(View view) {
