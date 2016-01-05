@@ -42,6 +42,8 @@ public class MyGcmListenerService extends GcmListenerService {
     private final String TIME = "time";
     private final String INVITE_NUMBER = "number";
     private final String MESSAGE_TYPE = "type";
+    private final String ALL_NUMBERS = "all_numbers";
+
 
     /**
      * Called when message is received.
@@ -63,8 +65,9 @@ public class MyGcmListenerService extends GcmListenerService {
             case INVITE:
                 //TODO number (from message) to name
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
+                String _allNumbers = data.get(ALL_NUMBERS).toString();
 
-                InviteHandler.addOpenInvites(_inviteNumber, _startTime);
+                InviteHandler.addOpenInvites(_inviteNumber, _startTime, _allNumbers);
 
                 if (_inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
                     InviteHandler.getInviteByTime(_startTime).setStatus(InviteReply.ACCEPTED);

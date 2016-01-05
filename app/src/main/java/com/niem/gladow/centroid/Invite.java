@@ -2,6 +2,12 @@ package com.niem.gladow.centroid;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * This class represents invites
@@ -15,11 +21,32 @@ public class Invite {
     private Centroid centroid;
     private InviteReply status = InviteReply.UNANSWERED;
     private boolean existsCentroid = false;
+    private List<String> allMembers;
 
-    //todo add all participants numbers, no need for invite number only
-    public Invite(String inviteNumber, long startTime) {
+    public Invite(String inviteNumber, long startTime, String allMembers) {
         this.inviteNumber = inviteNumber;
         this.startTime = startTime;
+        this.allMembers = new LinkedList<>(Arrays.asList(allMembers.split(",")));
+        //ownnumber has to be removed from list
+        String _ownNumber = PersistenceHandler.getInstance().getOwnNumber();
+        this.allMembers.remove(_ownNumber);
+        //try to replace as many numbers as possible with names
+        findRealNames(this.allMembers);
+    }
+
+    //check with the persistence handler friendMap, if numbers can be replaced with names
+    private void findRealNames(List<String> allMembers) {
+        List<String> tmp = new LinkedList<>(allMembers);
+        Map<String,String> _friendMap = PersistenceHandler.getInstance().getFriendMap();
+        //replace all possible numbers with real names
+        for (String _number: tmp) {
+            String _name;
+            _name = _friendMap.get(_number);
+            if(_name != null) {
+                allMembers.remove(_number);
+                allMembers.add(_name);
+            }
+        }
     }
 
     public Centroid getCentroid() {
@@ -52,5 +79,7 @@ public class Invite {
         this.status = status;
     }
 
-
+    public List<String> getAllMembers() {
+        return allMembers;
+    }
 }

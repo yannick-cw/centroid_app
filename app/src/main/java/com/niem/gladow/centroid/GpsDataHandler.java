@@ -47,7 +47,7 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
 
             //TODO check if it can be null and if yes catch
             assert(lastLocation != null);
-            new RestConnector(context).execute(RestConnector.POST, SEND_GPS + OWN_NUMBER
+            new RestConnector(context).execute(RestConnector.POST, SEND_GPS + OWN_NUMBER +"/"
                                                               + lastLocation.getLongitude()+"/"
                                                               + lastLocation.getLatitude());
             Log.d("lastLocation", String.valueOf(lastLocation.getLongitude()));

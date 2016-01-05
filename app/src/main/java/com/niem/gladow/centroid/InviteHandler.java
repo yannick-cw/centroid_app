@@ -57,9 +57,9 @@ public class InviteHandler {
         openInvites.remove(invite.getStartTime());
     }
 
-    public static void addOpenInvites(String inviteNumber, long startTime) {
+    public static void addOpenInvites(String inviteNumber, long startTime, String allMembers) {
         //add invite with start time and host number
-        InviteHandler.openInvites.put(startTime, new Invite(inviteNumber, startTime));
+        InviteHandler.openInvites.put(startTime, new Invite(inviteNumber, startTime, allMembers));
     }
 
     public static void addCentroidToInvite(long startTime, String latLong) {
@@ -69,9 +69,8 @@ public class InviteHandler {
     //todo multiple invites handling
     public static void responseToInvite(InviteReply inviteReply, Context context) {
         //send reply
-        //todo response with time id and not inviteNumber
         new RestConnector(context).execute(RestConnector.POST, INVITE_RESPONSE +
-                PersistenceHandler.getInstance().getOwnNumber() + "/" + getLatestInvite().getInviteNumber() + "/" +
+                PersistenceHandler.getInstance().getOwnNumber() + "/" + getLatestInvite().getStartTime() + "/" +
                 inviteReply);
 
         //if the users accepts the invite his latest gps signal is transmitted to the server

@@ -25,6 +25,7 @@ import java.util.Map;
  */
 public class PersistenceHandler {
     private Map<String, String> contactsMap;
+    //consists of number,name
     private Map<String,String> friendMap = new HashMap<>();
     private List<String> inviteList = new LinkedList<>();
     private String ownNumber = "";
