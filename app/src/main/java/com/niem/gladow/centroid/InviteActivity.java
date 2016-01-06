@@ -44,7 +44,7 @@ public class InviteActivity extends Activity {
         invite = InviteHandler.getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
         Log.d("Input Intent:",getIntent().getStringExtra("InviteId"));
 
-        //setting up needed Views
+        //setting up needed Views (Buttons etc.)
         declineInviteButton = findViewById(R.id.declineInviteButton);
         acceptInviteButton = findViewById(R.id.acceptInviteButton);
         inviteHeader = findViewById(R.id.showAcceptedStatus);
@@ -79,7 +79,32 @@ public class InviteActivity extends Activity {
         }
     }
 
+    public void showCentroidOnMap(View view) {
+        Intent intent = new Intent(this, GoogleMapActivity.class);
+        intent.putExtra("centroid", InviteHandler.getInviteByTime(invite.getStartTime()).getCentroid().getLatLng());
+        startActivity(intent);
+    }
 
+    //is called when accept or decline button is pressed
+    public void responseToInvite(View view) {
+        switch (view.getId()) {
+            case R.id.acceptInviteButton:
+                if (!getGpsPermission()) return;
+                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.ACCEPTED, this);
+                Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.declineInviteButton:
+                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.DECLINED, this);
+                Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        declineInviteButton.setVisibility(View.GONE);
+        acceptInviteButton.setVisibility(View.GONE);
+        //TODO check if centroid is active
+        onResume();
+    }
+
+    //TODO put GPS Permission in one nice place
     //TODO check if can be refactored together with sendGps()
     public boolean getGpsPermission () {
         //check for permission, if none do if
@@ -117,31 +142,7 @@ public class InviteActivity extends Activity {
         }
     }
 
-    //is called when accept or decline button is pressed
-    public void responseToInvite(View view) {
-        switch (view.getId()) {
-            case R.id.acceptInviteButton:
-                if (!getGpsPermission()) return;
-                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.ACCEPTED, this);
-                Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.declineInviteButton:
-                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.DECLINED, this);
-                Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        declineInviteButton.setVisibility(View.GONE);
-        acceptInviteButton.setVisibility(View.GONE);
-        //TODO check if centroid is active
-        onResume();
-    }
-
-    public void showCentroidOnMap(View view) {
-        Intent intent = new Intent(this, GoogleMapActivity.class);
-        intent.putExtra("centroid", InviteHandler.getInviteByTime(invite.getStartTime()).getCentroid().getLatLng());
-        startActivity(intent);
-    }
-
+    //TODO check if normal ArrayAdapter<String> is sufficient, maybe change to Hashmap if status of friends should be displayed too
     private class StableArrayAdapter extends ArrayAdapter<String> {
 
         HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();

@@ -28,7 +28,6 @@ public class InviteListViewActivity extends Activity {
 
         final InviteHashMapArrayAdapter _adapter = new InviteHashMapArrayAdapter(this,
                 R.layout.invite_list_view_item, new ArrayList(_map.entrySet()));
-        _adapter.setCheckList(_map.size());
         _listView.setAdapter(_adapter);
 
         _listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -37,9 +36,9 @@ public class InviteListViewActivity extends Activity {
             public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
 
                 try {
-                    // update state of the views
-                    _adapter.toggleCheckList(position);
-                    _adapter.notifyDataSetChanged();
+//                    // update state of the views
+//                    _adapter.toggleCheckList(position);
+//                    _adapter.notifyDataSetChanged();
 
                     TextView _textViewClicked = (TextView) view.findViewById(R.id.invite_id);
                     TextView _textViewClicked1 = (TextView) view.findViewById(R.id.invite_friend);

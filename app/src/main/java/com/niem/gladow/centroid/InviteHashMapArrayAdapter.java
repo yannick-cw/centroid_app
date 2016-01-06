@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.niem.gladow.centroid.Enums.InviteReply;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,12 +20,10 @@ import java.util.Map;
  * Created by clem on 24/11/15.
  */
 public class InviteHashMapArrayAdapter extends ArrayAdapter {
-    private ArrayList<Boolean> checkList;
 
     private static class ViewHolder {
         TextView number;
         TextView name;
-        boolean checked;
     }
 
     public InviteHashMapArrayAdapter(Context context, int textViewResourceId, List<Map.Entry<Long, Object>> objects) {
@@ -50,13 +50,14 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
 
         // Once we have a reference to the View we are returning, we set its values.
         Map.Entry<Long, Invite> entry = (Map.Entry<Long, Invite>) this.getItem(position);
+        // get the corresponding Invite for this Element
+        Invite _invite = InviteHandler.getInviteByTime(entry.getKey());
+
         //TODO Display Date and StartTime(=TimeStamp) as ID at the same time
         _viewHolder.number.setText(entry.getKey().toString());
         _viewHolder.name.setText(entry.getValue().getStatus().toString());
-        // TODO change checked to answered or not
-        _viewHolder.checked = checkList.get(position);
 
-        if(_viewHolder.checked){
+        if(_invite.getStatus() != InviteReply.UNANSWERED){
             convertView.setBackgroundColor(Color.GREEN);
         }else{
             convertView.setBackgroundColor(Color.WHITE);
@@ -64,21 +65,4 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
 
         return convertView;
     }
-
-
-    // setter, getter and updater for state of the views
-    public void setCheckList(int size){
-        this.checkList = new ArrayList<>(Arrays.asList(new Boolean[size]));
-        Collections.fill(this.checkList, Boolean.FALSE); // initiate list with False
-        notifyDataSetChanged();
-    }
-
-    public void toggleCheckList(int position) {
-        this.checkList.set(position, !this.checkList.get(position));
-    }
-
-    public boolean getCheckStatus(int position){
-        return this.checkList.get(position);
-    }
-
 }
