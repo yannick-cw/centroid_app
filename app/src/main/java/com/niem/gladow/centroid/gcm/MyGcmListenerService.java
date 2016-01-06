@@ -31,9 +31,7 @@ import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.MessageType;
 import com.niem.gladow.centroid.InviteHandler;
 import com.niem.gladow.centroid.PersistenceHandler;
-import com.niem.gladow.centroid.PhoneDataHandler;
 import com.niem.gladow.centroid.R;
-import com.niem.gladow.centroid.Util;
 
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -67,7 +65,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
 
-                InviteHandler.addOpenInvites(_inviteNumber, _startTime, _allNumbers);
+                InviteHandler.addInvite(_inviteNumber, _startTime, _allNumbers);
 
                 if (_inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
                     InviteHandler.getInviteByTime(_startTime).setStatus(InviteReply.ACCEPTED);

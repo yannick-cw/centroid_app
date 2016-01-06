@@ -17,7 +17,7 @@ import java.net.URL;
  */
 public class RestConnector extends AsyncTask<String, String, String> {
     public static final String POST = "1", GET = "2", SEND = "3";
-    //private static final String HOST_ADDRESS = "http://10.181.26.131:8080/java_rest";
+//    private static final String HOST_ADDRESS = "http://192.168.26.10:8080";
     private static final String HOST_ADDRESS = "http://schnutentier.ddns.net";
     private Context context;
 

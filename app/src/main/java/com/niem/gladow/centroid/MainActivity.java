@@ -14,15 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.gcm.RegistrationIntentService;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
-    private View declineInviteButton;
-    private View acceptInviteButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        declineInviteButton = findViewById(R.id.declineInviteButton);
-        acceptInviteButton = findViewById(R.id.acceptInviteButton);
+
 
         //TODO check if token is still valid right now it is reloaded every start (same one)
         //TODO additional check if play services installed please
@@ -52,16 +49,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //makes buttons visible if invite exits
-        //todo move to list
-        if (InviteHandler.existsNewInvite()) {
-            declineInviteButton.setVisibility(View.VISIBLE);
-            acceptInviteButton.setVisibility(View.VISIBLE);
-        }
-    }
+
 
     private void sendContacts() {
         //check for permission, if none do if
@@ -99,34 +87,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //is called when accept or decline button is pressed
-    public void responseToInvite(View view) {
-        switch (view.getId()) {
-            case R.id.acceptInviteButton:
-                if (!getGpsPermission()) return;
-                InviteHandler.responseToInvite(InviteReply.ACCEPTED, this);
-                Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.declineInviteButton:
-                InviteHandler.responseToInvite(InviteReply.DECLINED, this);
-                Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        declineInviteButton.setVisibility(View.GONE);
-        acceptInviteButton.setVisibility(View.GONE);
-    }
+//    //is called when accept or decline button is pressed
+//    public void responseToInvite(View view) {
+//        switch (view.getId()) {
+//            case R.id.acceptInviteButton:
+//                if (!getGpsPermission()) return;
+//                InviteHandler.responseToInvite(InviteReply.ACCEPTED, this);
+//                Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.declineInviteButton:
+//                InviteHandler.responseToInvite(InviteReply.DECLINED, this);
+//                Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
+//                break;
+//        }
+//        declineInviteButton.setVisibility(View.GONE);
+//        acceptInviteButton.setVisibility(View.GONE);
+//    }
 
-    public void showCentroidOnMap(View view) {
-        Intent intent = new Intent(this, GoogleMapActivity.class);
-        intent.putExtra("centroid", InviteHandler.getLatestInviteWithActiveAwesomeCentroid().getCentroid().getLatLng());
-        startActivity(intent);
-    }
+//    public void showCentroidOnMap(View view) {
+//        Intent intent = new Intent(this, GoogleMapActivity.class);
+//        intent.putExtra("centroid", InviteHandler.getLatestInviteWithActiveAwesomeCentroid().getCentroid().getLatLng());
+//        startActivity(intent);
+//    }
 
     public void seeList(View view) {
         Log.d("List", "pressed");
-        Intent intent = new Intent(this, ListViewActivity.class);
+        Intent intent = new Intent(this, InviteFriendsActivity.class);
         startActivity(intent);
     }
+
+    public void seeInviteList(View view) {
+        Log.d("InviteList", "pressed");
+        Intent intent = new Intent(this, InviteListViewActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

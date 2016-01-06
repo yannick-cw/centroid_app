@@ -22,7 +22,7 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:mode="twoLine">
 
-    <TextView android:id="@+id/friend_name"
+    <TextView android:id="@+id/invite_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
@@ -30,12 +30,12 @@
         android:layout_marginTop="6dip"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
-    <TextView android:id="@+id/friend_number"
+    <TextView android:id="@+id/invite_friend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/friend_name"
-        android:layout_alignStart="@+id/friend_name"
-        android:layout_alignLeft="@+id/friend_name"
+        android:layout_below="@+id/invite_id"
+        android:layout_alignStart="@+id/invite_id"
+        android:layout_alignLeft="@+id/invite_id"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
 </TwoLineListItem>

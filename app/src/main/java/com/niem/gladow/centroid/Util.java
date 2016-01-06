@@ -1,5 +1,6 @@
 package com.niem.gladow.centroid;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -7,8 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -53,4 +56,13 @@ public final class Util {
         inputStream.close();
         return result;
     }
+
+    public String getDate(long time) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time);
+        String date = DateFormat.format("dd-MM-yyyy", cal).toString();
+        return date;
+    }
+
+
 }

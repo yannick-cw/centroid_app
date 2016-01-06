@@ -12,7 +12,7 @@ public class Centroid {
 
     public Centroid(String latLong) {
         //input string from server is splitted
-        double _lat = Double.valueOf(latLong.split(",")[0]);
+        double _lat  = Double.valueOf(latLong.split(",")[0]);
         double _long = Double.valueOf(latLong.split(",")[1]);
 
         latLng = new LatLng(_lat, _long);
