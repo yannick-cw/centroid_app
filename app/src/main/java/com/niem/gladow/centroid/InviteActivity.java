@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
+import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -90,11 +91,12 @@ public class InviteActivity extends Activity {
         switch (view.getId()) {
             case R.id.acceptInviteButton:
                 if (!getGpsPermission()) return;
-                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.ACCEPTED, this);
+                chooseTransportationMode();
+                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.ACCEPTED,invite.getTransportationMode(), this);
                 Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.declineInviteButton:
-                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.DECLINED, this);
+                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.DECLINED,invite.getTransportationMode(), this);
                 Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
                 onBackPressed();
                 break;
@@ -102,7 +104,12 @@ public class InviteActivity extends Activity {
         declineInviteButton.setVisibility(View.GONE);
         acceptInviteButton.setVisibility(View.GONE);
         //TODO check if centroid is active
-        onResume();
+        onBackPressed();
+    }
+
+    private void chooseTransportationMode(){
+        // TODO POPUP with choices of TransportationMode
+        invite.setTransportationMode(TransportationMode.BIKE);
     }
 
     //TODO put GPS Permission in one nice place

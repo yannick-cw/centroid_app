@@ -1,6 +1,7 @@
 package com.niem.gladow.centroid;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
+import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ public class Invite {
     private String inviteNumber;
     private Centroid centroid;
     private InviteReply status = InviteReply.UNANSWERED;
+    private TransportationMode transportationMode = TransportationMode.DEFAULT;
     private boolean existsCentroid = false;
     private List<String> allMembers;
 
@@ -32,6 +34,51 @@ public class Invite {
         this.allMembers.remove(_ownNumber);
         //try to replace as many numbers as possible with names
         findRealNames(this.allMembers);
+    }
+
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+
+    public Centroid getCentroid() {
+        assert(centroid != null);
+        return centroid;
+    }
+
+    public void setCentroid(Centroid centroid) {
+        this.centroid = centroid;
+        existsCentroid = true;
+    }
+
+    public boolean existsCentroid() {
+        return existsCentroid;
+    }
+
+    public String getInviteNumber() {
+        return inviteNumber;
+    }
+
+    public void setStatus(InviteReply status) {
+        this.status = status;
+    }
+
+
+    public InviteReply getStatus() {
+        return status;
+    }
+
+    public TransportationMode getTransportationMode() {
+        return transportationMode;
+    }
+
+    public void setTransportationMode(TransportationMode transportationMode) {
+        this.transportationMode = transportationMode;
+    }
+
+    public List<String> getAllMembers() {
+        return allMembers;
     }
 
     //check with the persistence handler friendMap, if numbers can be replaced with names
@@ -47,39 +94,5 @@ public class Invite {
                 allMembers.add(_name);
             }
         }
-    }
-
-    public Centroid getCentroid() {
-        assert(centroid != null);
-        return centroid;
-    }
-
-    public void setCentroid(Centroid centroid) {
-        this.centroid = centroid;
-        existsCentroid = true;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public String getInviteNumber() {
-        return inviteNumber;
-    }
-
-    public InviteReply getStatus() {
-        return status;
-    }
-
-    public boolean existsCentroid() {
-        return existsCentroid;
-    }
-
-    public void setStatus(InviteReply status) {
-        this.status = status;
-    }
-
-    public List<String> getAllMembers() {
-        return allMembers;
     }
 }

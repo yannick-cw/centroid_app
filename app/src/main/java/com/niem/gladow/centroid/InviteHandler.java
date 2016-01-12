@@ -2,6 +2,8 @@ package com.niem.gladow.centroid;
 
 import android.content.Context;
 import com.niem.gladow.centroid.Enums.InviteReply;
+import com.niem.gladow.centroid.Enums.TransportationMode;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,11 +61,12 @@ public class InviteHandler {
     }
 
     //todo multiple invites handling
-    public static void responseToInvite(long startTime, InviteReply inviteReply, Context context) {
+    public static void responseToInvite(long startTime, InviteReply inviteReply
+                                        ,TransportationMode transportationMode, Context context) {
         //send reply
         new RestConnector(context).execute(RestConnector.POST, INVITE_RESPONSE +
                 PersistenceHandler.getInstance().getOwnNumber() + "/" + startTime + "/" +
-                inviteReply);
+                inviteReply + "/" + transportationMode);
 
         //sets the invite status either accepted or declined
         getInviteByTime(startTime).setStatus(inviteReply);
