@@ -1,17 +1,18 @@
 package com.niem.gladow.centroid;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class InviteActivity extends Activity {
     private View declineInviteButton;
     private View acceptInviteButton;
     private View inviteHeader;
+    private ImageView transportationModeImage;
 
 
     @Override
@@ -48,9 +50,10 @@ public class InviteActivity extends Activity {
         //setting up needed Views (Buttons etc.)
         declineInviteButton = findViewById(R.id.declineInviteButton);
         acceptInviteButton = findViewById(R.id.acceptInviteButton);
-        inviteHeader = findViewById(R.id.showAcceptedStatus);
-        TextView _inviteStatus1 = (TextView) findViewById(R.id.InviteStatusText1);
-        TextView _inviteStatus2 = (TextView) findViewById(R.id.InviteStatusText2);
+        inviteHeader = findViewById(R.id.inviteHeader);
+        transportationModeImage = (ImageView) findViewById(R.id.transportationModeImage);
+        TextView _inviteStatus1 = (TextView)  findViewById(R.id.InviteStatusText1);
+        TextView _inviteStatus2 = (TextView)  findViewById(R.id.InviteStatusText2);
         _inviteStatus1.setText(Util.getInstance().getDate(invite.getStartTime()));
         _inviteStatus2.setText(invite.getStatus().toString());
         showCentroidButton = findViewById(R.id.showCentroidButton);
@@ -68,8 +71,9 @@ public class InviteActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        //makes buttons visible if invite exits
+        //makes buttons visible if invite exits and chooses correct Image
         if (invite.getStatus() != InviteReply.UNANSWERED) {
+            setTransportationModeImage(invite.getTransportationMode());
             declineInviteButton.setVisibility(View.GONE);
             acceptInviteButton.setVisibility(View.GONE);
             inviteHeader.setVisibility(View.VISIBLE);
@@ -80,10 +84,26 @@ public class InviteActivity extends Activity {
         }
     }
 
-    public void showCentroidOnMap(View view) {
-        Intent intent = new Intent(this, GoogleMapActivity.class);
-        intent.putExtra("centroid", InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLatLng());
-        startActivity(intent);
+    //sets the transportationMode ImageView to the corresponding Image
+    //TODO nice images with variable Resolutions
+    private void setTransportationModeImage(TransportationMode transportationMode){
+        switch (transportationMode){
+            case FOOT:
+                transportationModeImage.setImageResource(R.drawable.feet);
+                break;
+            case BIKE:
+                transportationModeImage.setImageResource(R.drawable.bike);
+                break;
+            case CAR:
+                transportationModeImage.setImageResource(R.drawable.car);
+                break;
+            case PUBLIC:
+                transportationModeImage.setImageResource(R.drawable.publictransport);
+                break;
+            case DEFAULT:
+                transportationModeImage.setImageResource(R.drawable.my_selector);
+                break;
+        }
     }
 
     //is called when accept or decline button is pressed
@@ -91,12 +111,11 @@ public class InviteActivity extends Activity {
         switch (view.getId()) {
             case R.id.acceptInviteButton:
                 if (!getGpsPermission()) return;
-                chooseTransportationMode();
-                InviteHandler.getInstance().responseToInvite(invite.getStartTime(),InviteReply.ACCEPTED,invite.getTransportationMode(), this);
+                InviteHandler.getInstance().responseToInvite(invite.getStartTime(), InviteReply.ACCEPTED, invite.getTransportationMode(), this);
                 Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.declineInviteButton:
-                InviteHandler.getInstance().responseToInvite(invite.getStartTime(),InviteReply.DECLINED,invite.getTransportationMode(), this);
+                InviteHandler.getInstance().responseToInvite(invite.getStartTime(), InviteReply.DECLINED, invite.getTransportationMode(), this);
                 Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
                 onBackPressed();
                 break;
@@ -107,9 +126,43 @@ public class InviteActivity extends Activity {
         onBackPressed();
     }
 
-    private void chooseTransportationMode(){
+    public void chooseTransportationMode(View view){
         // TODO POPUP with choices of TransportationMode
-        invite.setTransportationMode(TransportationMode.BIKE);
+        final View _view = view;
+        CharSequence transportationModes[] = new CharSequence[] {"Feet", "Bike", "Car", "Public Transportation"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick a transportation Mode");
+        builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
+            boolean _hasChosen = false;
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // the user clicked on colors[which]
+                switch (which) {
+                    case 0:
+                        invite.setTransportationMode(TransportationMode.FOOT);
+                        _hasChosen = true;
+                        break;
+                    case 1:
+                        invite.setTransportationMode(TransportationMode.BIKE);
+                        _hasChosen = true;
+                        break;
+                    case 2:
+                        invite.setTransportationMode(TransportationMode.CAR);
+                        _hasChosen = true;
+                        break;
+                    case 3:
+                        invite.setTransportationMode(TransportationMode.PUBLIC);
+                        _hasChosen = true;
+                        break;
+                    default:
+                        break;
+                }
+                if(_hasChosen){
+                    responseToInvite(_view);
+                }
+            }
+        });
+        builder.show();
     }
 
     //TODO put GPS Permission in one nice place
