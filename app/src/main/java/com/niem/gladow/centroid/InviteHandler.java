@@ -63,6 +63,7 @@ public class InviteHandler {
 
     public void addCentroidToInvite(long startTime, String latLong) {
         activeInvites.get(startTime).setCentroid(new Centroid(latLong));
+        PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 
     //todo multiple invites handling
@@ -82,5 +83,6 @@ public class InviteHandler {
         if (inviteReply.equals(InviteReply.ACCEPTED)) {
             new GpsDataHandler(context);
         }
+        PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 }
