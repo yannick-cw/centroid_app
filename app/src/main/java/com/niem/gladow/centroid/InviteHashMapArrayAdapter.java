@@ -51,7 +51,7 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         // Once we have a reference to the View we are returning, we set its values.
         Map.Entry<Long, Invite> entry = (Map.Entry<Long, Invite>) this.getItem(position);
         // get the corresponding Invite for this Element
-        Invite _invite = InviteHandler.getInviteByTime(entry.getKey());
+        Invite _invite = InviteHandler.getInstance().getInviteByTime(entry.getKey());
 
         //TODO Display Date and StartTime(=TimeStamp) as ID at the same time
         _viewHolder.number.setText(entry.getKey().toString());

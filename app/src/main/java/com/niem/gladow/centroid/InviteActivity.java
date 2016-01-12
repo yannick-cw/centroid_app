@@ -42,7 +42,7 @@ public class InviteActivity extends Activity {
         setContentView(R.layout.invite_activity);
 
         //getting the current invite, by Id that was passed in this activity via putExtra(String)
-        invite = InviteHandler.getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
+        invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
         Log.d("Input Intent:",getIntent().getStringExtra("InviteId"));
 
         //setting up needed Views (Buttons etc.)
@@ -82,7 +82,7 @@ public class InviteActivity extends Activity {
 
     public void showCentroidOnMap(View view) {
         Intent intent = new Intent(this, GoogleMapActivity.class);
-        intent.putExtra("centroid", InviteHandler.getInviteByTime(invite.getStartTime()).getCentroid().getLatLng());
+        intent.putExtra("centroid", InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLatLng());
         startActivity(intent);
     }
 
@@ -92,11 +92,11 @@ public class InviteActivity extends Activity {
             case R.id.acceptInviteButton:
                 if (!getGpsPermission()) return;
                 chooseTransportationMode();
-                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.ACCEPTED,invite.getTransportationMode(), this);
+                InviteHandler.getInstance().responseToInvite(invite.getStartTime(),InviteReply.ACCEPTED,invite.getTransportationMode(), this);
                 Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.declineInviteButton:
-                InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.DECLINED,invite.getTransportationMode(), this);
+                InviteHandler.getInstance().responseToInvite(invite.getStartTime(),InviteReply.DECLINED,invite.getTransportationMode(), this);
                 Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
                 onBackPressed();
                 break;

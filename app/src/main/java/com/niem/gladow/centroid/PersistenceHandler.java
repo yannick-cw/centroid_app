@@ -35,6 +35,7 @@ public class PersistenceHandler {
     private final String OWN_NUMBER_FILE = "ownNumber";
     private final String TOKEN_FILE = "ownToken";
     private final String FRIEND_MAP_FILE = "friendMap";
+    private final String ACTIVE_INVITES_FILE = "activeInvites";
 
     private static PersistenceHandler instance;
 
@@ -62,15 +63,13 @@ public class PersistenceHandler {
         return friendMap;
     }
 
-    public boolean loadFriendMapFromDB (Context context) {
-        MapDB _mapDB = new MiniDB(context);
-        friendMap = _mapDB.loadMap(FRIEND_MAP_FILE);
+    public boolean loadFriendMapFromDB () {
+        friendMap = MiniDB.getInstance().loadMap(FRIEND_MAP_FILE);
         return !friendMap.isEmpty();
     }
 
-    public boolean saveFriendMapToDB (Context context) {
-        MapDB _mapDB = new MiniDB(context);
-        return _mapDB.saveMap(friendMap,FRIEND_MAP_FILE);
+    public boolean saveFriendMapToDB () {
+        return MiniDB.getInstance().saveMap(friendMap, FRIEND_MAP_FILE);
     }
 
     public void setContactsMap(Map<String, String> contactsMap) {
@@ -118,10 +117,9 @@ public class PersistenceHandler {
      * try to load onwNumber and Token from the database and store them in local value
      * returns true if both values aren't empty
     */
-    public boolean firstLoadOwnNumberAndToken (Context context) {
-        final StringDB _stringDb = new MiniDB(context);
-        ownNumber = _stringDb.loadString(OWN_NUMBER_FILE);
-        token = _stringDb.loadString(TOKEN_FILE);
+    public boolean firstLoadOwnNumberAndToken () {
+        ownNumber = MiniDB.getInstance().loadString(OWN_NUMBER_FILE);
+        token = MiniDB.getInstance().loadString(TOKEN_FILE);
         Log.i("DB loaded ownNumber", ownNumber);
         Log.i("DB loaded token", token);
         if (!ownNumber.isEmpty() && !token.isEmpty()) {
@@ -144,7 +142,7 @@ public class PersistenceHandler {
         if (ownNumber.equals("/")) {
             ownNumber = Util.getInstance().cleanNumberString(telephonyManager.getLine1Number());
             if ("".equals(ownNumber)) ownNumber = "/";
-            new MiniDB(_context).saveString(ownNumber, OWN_NUMBER_FILE);
+            MiniDB.getInstance().saveString(ownNumber, OWN_NUMBER_FILE);
         }
         Log.d("ownNumber", ownNumber);
 
@@ -160,7 +158,7 @@ public class PersistenceHandler {
                         // Perform action on Enter-key press
                         Toast.makeText(_context, _mEdit.getText(), Toast.LENGTH_SHORT).show();
                         ownNumber = Util.getInstance().cleanNumberString(_mEdit.getText().toString());
-                        new MiniDB(_context).saveString(ownNumber, OWN_NUMBER_FILE);
+                        MiniDB.getInstance().saveString(ownNumber, OWN_NUMBER_FILE);
                         _mEdit.setVisibility(View.INVISIBLE);
 
                         // Hide Keypad after input
@@ -181,6 +179,14 @@ public class PersistenceHandler {
 
     public void saveOwnToken(String token, Context context) {
         this.token = token;
-        new MiniDB(context).saveString(token, TOKEN_FILE);
+        MiniDB.getInstance().saveString(token, TOKEN_FILE);
+    }
+
+    public void saveActiveInvites(Map<Long, Invite> activeInvites) {
+        MiniDB.getInstance().saveMap(activeInvites, ACTIVE_INVITES_FILE);
+    }
+
+    public Map<Long, Invite> loadActiveInvites() {
+        return MiniDB.getInstance().loadMap(ACTIVE_INVITES_FILE);
     }
 }

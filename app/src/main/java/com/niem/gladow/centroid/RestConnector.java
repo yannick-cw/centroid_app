@@ -40,7 +40,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
                 result = restGet(params[1]);
                 PersistenceHandler.getInstance().createFriendMap(result);
                 //TODO optional both in createFriendMap
-                PersistenceHandler.getInstance().saveFriendMapToDB(context);
+                PersistenceHandler.getInstance().saveFriendMapToDB();
                 Log.d("friend Map", PersistenceHandler.getInstance().getFriendMap().values().toString());
                 break;
             default:

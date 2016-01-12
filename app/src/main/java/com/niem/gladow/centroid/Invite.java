@@ -3,6 +3,7 @@ package com.niem.gladow.centroid;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -14,7 +15,7 @@ import java.util.Map;
  * This class represents invites
  */
 
-public class Invite {
+public class Invite implements Serializable {
     //is the unique id of the invite
     private long startTime;
     //number of person who invited
@@ -95,4 +96,5 @@ public class Invite {
             }
         }
     }
+
 }

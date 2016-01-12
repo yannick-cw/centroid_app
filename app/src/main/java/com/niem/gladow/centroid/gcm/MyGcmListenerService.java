@@ -65,10 +65,10 @@ public class MyGcmListenerService extends GcmListenerService {
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
 
-                InviteHandler.addInvite(_inviteNumber, _startTime, _allNumbers);
+                InviteHandler.getInstance().addInvite(_inviteNumber, _startTime, _allNumbers);
 
                 if (_inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
-                    InviteHandler.getInviteByTime(_startTime).setStatus(InviteReply.ACCEPTED);
+                    InviteHandler.getInstance().getInviteByTime(_startTime).setStatus(InviteReply.ACCEPTED);
                     sendNotification("you created a centroid, awesome!", "centroid created");
                 }
                 else {
@@ -77,7 +77,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 break;
             case CENTROID:
                 String _centroid = data.get(CENTROID).toString();
-                InviteHandler.addCentroidToInvite(_startTime, _centroid);
+                InviteHandler.getInstance().addCentroidToInvite(_startTime, _centroid);
                 Log.d(MyGcmListenerService.class.getName(), "Centroid: " + _centroid);
                 Log.d(MyGcmListenerService.class.getName(), "Time: " + _startTime);
                 sendNotification("you got a new centroid!", "centroid arrived");

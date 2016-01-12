@@ -20,10 +20,22 @@ import java.util.Map;
 public class MiniDB implements MapDB, StringDB{
 
     private Context context;
+    private static MiniDB instance;
 
-    public MiniDB (Context context) {
-        this.context = context;
+    private MiniDB() {
     }
+
+    public static void init(Context context) {
+        assert(instance == null);
+        instance = new MiniDB();
+        instance.context = context;
+    }
+
+    public static MiniDB getInstance() {
+        assert (instance != null);
+        return instance;
+    }
+
 
     public void saveString (String string, String fileName) {
         try {
@@ -65,7 +77,7 @@ public class MiniDB implements MapDB, StringDB{
         return ret;
     }
 
-    public boolean saveMap(Map<String, String> map, String fileName) {
+    public boolean saveMap(Map map, String fileName) {
         try (ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE))) {
             out.writeObject(map);
             return true;
@@ -75,11 +87,11 @@ public class MiniDB implements MapDB, StringDB{
         }
     }
 
-    public Map<String, String> loadMap(String fileName) {
-        Map<String, String> map = new HashMap<>();
+    public <T,L> Map<T, L> loadMap(String fileName) {
+        Map<T, L> map = new HashMap<>();
 
         try (ObjectInputStream in = new ObjectInputStream(context.openFileInput(fileName))){
-            map = (Map<String, String>) in.readObject();
+            map = (Map<T, L>) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("load map", e.getMessage());
         } catch (IOException e) {

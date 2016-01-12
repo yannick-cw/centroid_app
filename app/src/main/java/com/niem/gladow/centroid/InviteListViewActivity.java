@@ -26,7 +26,7 @@ public class InviteListViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invite_listview_activity);
         _listView = (ListView) findViewById(R.id.listView);
-        _map = InviteHandler.getActiveInvites();
+        _map = InviteHandler.getInstance().getActiveInvites();
         _adapter = new InviteHashMapArrayAdapter(this,
                 R.layout.invite_list_view_item, new ArrayList(_map.entrySet()));
 
@@ -70,7 +70,7 @@ public class InviteListViewActivity extends Activity {
     @Override
     protected void onResume(){
         super.onResume();
-        _map = InviteHandler.getActiveInvites();
+        _map = InviteHandler.getInstance().getActiveInvites();
         _adapter.notifyDataSetChanged();
         _listView.invalidateViews();
     }

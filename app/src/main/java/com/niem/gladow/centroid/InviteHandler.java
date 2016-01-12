@@ -1,6 +1,7 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
+
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
@@ -14,10 +15,13 @@ public class InviteHandler {
     private static final String INVITE_RESPONSE = "/android/responseToInvite/";
     //Invite objects are saved in this map, with start time as key
     private static Map<Long, Invite> activeInvites = new HashMap<>();
-
     private static InviteHandler instance;
 
     private InviteHandler() {
+        Map<Long, Invite> tmp = PersistenceHandler.getInstance().loadActiveInvites();
+        if (tmp != null) {
+            activeInvites = tmp;
+        }
     }
 
     public static InviteHandler getInstance() {
@@ -26,9 +30,9 @@ public class InviteHandler {
         }
         return instance;
     }
-
+    
     //if there is at least one unanswered invite return true
-    public static boolean existsUnansweredInvite() {
+    public boolean existsUnansweredInvite() {
         for (Invite _invite: activeInvites.values()) {
             if (_invite.getStatus().equals(InviteReply.UNANSWERED)) {
                 return true;
@@ -39,29 +43,30 @@ public class InviteHandler {
 
     //todo save activeInvites and load
 
-    public static Map<Long, Invite> getActiveInvites() {
+    public Map<Long, Invite> getActiveInvites() {
         return activeInvites;
     }
 
-    public static Invite getInviteByTime (long startTime) {
+    public Invite getInviteByTime (long startTime) {
         return activeInvites.get(startTime);
     }
 
-    public static void addInvite(String inviteNumber, long startTime, String allMembers) {
+    public void addInvite(String inviteNumber, long startTime, String allMembers) {
         //add invite with start time and host number
         InviteHandler.activeInvites.put(startTime, new Invite(inviteNumber, startTime, allMembers));
+        PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 
-    public static void removeInvite(Long startTime) {
+    public void removeInvite(Long startTime) {
         activeInvites.remove(startTime);
     }
 
-    public static void addCentroidToInvite(long startTime, String latLong) {
+    public void addCentroidToInvite(long startTime, String latLong) {
         activeInvites.get(startTime).setCentroid(new Centroid(latLong));
     }
 
     //todo multiple invites handling
-    public static void responseToInvite(long startTime, InviteReply inviteReply
+    public void responseToInvite(long startTime, InviteReply inviteReply
                                         ,TransportationMode transportationMode, Context context) {
         //send reply
         new RestConnector(context).execute(RestConnector.POST, INVITE_RESPONSE +
@@ -78,5 +83,4 @@ public class InviteHandler {
             new GpsDataHandler(context);
         }
     }
-
 }

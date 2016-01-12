@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.niem.gladow.centroid.Database.MiniDB;
 import com.niem.gladow.centroid.gcm.RegistrationIntentService;
 
 
@@ -29,18 +30,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        MiniDB.init(this);
 
 
         //TODO check if token is still valid right now it is reloaded every start (same one)
         //TODO additional check if play services installed please
 
-        if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken(this)) {
+        if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
             Intent _intent = new Intent(this, WelcomeViewActivity.class);
             startActivity(_intent);
         }
         else {
             //updates contacts
-            PersistenceHandler.getInstance().loadFriendMapFromDB(this);
+            PersistenceHandler.getInstance().loadFriendMapFromDB();
             Log.d("loaded friend map", PersistenceHandler.getInstance().getFriendMap().toString());
             sendContacts();
             //updates the token every start
@@ -49,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     private void sendContacts() {
         //check for permission, if none do if
