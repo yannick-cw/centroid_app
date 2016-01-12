@@ -61,6 +61,14 @@ public class Invite implements Serializable {
         return inviteNumber;
     }
 
+    public String getInviteNumberName() {
+        String _name = PersistenceHandler.getInstance().getFriendMap().get(inviteNumber);
+        if(inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
+            _name = "You";
+        }
+        return _name != null ? _name : inviteNumber;
+    }
+
     public void setStatus(InviteReply status) {
         this.status = status;
     }

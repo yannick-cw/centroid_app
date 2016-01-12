@@ -41,8 +41,6 @@ public class InviteHandler {
         return false;
     }
 
-    //todo save activeInvites and load
-
     public Map<Long, Invite> getActiveInvites() {
         return activeInvites;
     }
@@ -63,6 +61,7 @@ public class InviteHandler {
 
     public void addCentroidToInvite(long startTime, String latLong) {
         activeInvites.get(startTime).setCentroid(new Centroid(latLong));
+        activeInvites.get(startTime).setStatus(InviteReply.READY);
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 
@@ -71,7 +70,6 @@ public class InviteHandler {
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 
-    //todo multiple invites handling
     public void responseToInvite(long startTime, InviteReply inviteReply
                                         ,TransportationMode transportationMode, Context context) {
         //send reply
@@ -84,7 +82,6 @@ public class InviteHandler {
 
         //if the users accepts the invite his latest gps signal is transmitted to the server
         //and the status is set to accepted
-        //todo latest is not good enough, needs to be a valid one
         if (inviteReply.equals(InviteReply.ACCEPTED)) {
             new GpsDataHandler(context);
         }

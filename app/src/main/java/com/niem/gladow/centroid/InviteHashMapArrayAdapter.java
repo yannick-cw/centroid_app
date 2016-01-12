@@ -23,7 +23,7 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
 
     private static class ViewHolder {
         TextView number;
-        TextView name;
+        TextView information;
     }
 
     public InviteHashMapArrayAdapter(Context context, int textViewResourceId, List<Map.Entry<Long, Object>> objects) {
@@ -41,7 +41,7 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.invite_list_view_item, parent, false);
             _viewHolder = new ViewHolder();
             _viewHolder.number = (TextView) convertView.findViewById(R.id.invite_id);
-            _viewHolder.name = (TextView) convertView.findViewById(R.id.invite_friend);
+            _viewHolder.information = (TextView) convertView.findViewById(R.id.invite_friend);
             convertView.setTag(_viewHolder);
         } else {
             /* We recycle a View that already exists */
@@ -55,7 +55,10 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
 
         //TODO Display Date and StartTime(=TimeStamp) as ID at the same time
         _viewHolder.number.setText(entry.getKey().toString());
-        _viewHolder.name.setText(entry.getValue().getStatus().toString());
+        _viewHolder.number.setVisibility(View.GONE);
+        _viewHolder.information.setText(Util.getInstance().getDate(entry.getKey())
+                + "\ninvited by: " + entry.getValue().getInviteNumberName()
+                + "\nstatus: " + entry.getValue().getStatus().toString());
 
         if(_invite.getStatus() != InviteReply.UNANSWERED){
             convertView.setBackgroundColor(Color.GREEN);

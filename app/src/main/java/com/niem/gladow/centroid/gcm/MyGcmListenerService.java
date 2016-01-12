@@ -61,7 +61,6 @@ public class MyGcmListenerService extends GcmListenerService {
 
         switch (MessageType.valueOf(_messageType)) {
             case INVITE:
-                //TODO number (from message) to name
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
 
@@ -72,7 +71,11 @@ public class MyGcmListenerService extends GcmListenerService {
                     sendNotification("you created a centroid, awesome!", "centroid created");
                 }
                 else {
-                    sendNotification("you got invited by: " + _inviteNumber, "centroid invite");
+                    String _inviteName = PersistenceHandler.getInstance().getFriendMap().get(_inviteNumber);
+                    if (_inviteName == null) {
+                        _inviteName = _inviteNumber;
+                    }
+                    sendNotification("you got invited by: " + _inviteName, "centroid invite");
                 }
                 break;
             case CENTROID:
@@ -83,7 +86,6 @@ public class MyGcmListenerService extends GcmListenerService {
                 sendNotification("you got a new centroid!", "centroid arrived");
                 break;
             default:
-                //todo error
                 break;
         }
     }
