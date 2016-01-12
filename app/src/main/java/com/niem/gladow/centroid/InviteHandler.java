@@ -65,14 +65,15 @@ public class InviteHandler {
                 PersistenceHandler.getInstance().getOwnNumber() + "/" + startTime + "/" +
                 inviteReply);
 
+        //sets the invite status either accepted or declined
+        getInviteByTime(startTime).setStatus(inviteReply);
+
         //if the users accepts the invite his latest gps signal is transmitted to the server
+        //and the status is set to accepted
+        //todo latest is not good enough, needs to be a valid one
         if (inviteReply.equals(InviteReply.ACCEPTED)) {
-            getInviteByTime(startTime).setStatus(InviteReply.ACCEPTED);
             new GpsDataHandler(context);
         }
-        //if the invite was declined, remove the invite from local map
-        //todo remove by time
-        //else removeInvite(startTime);
     }
 
 }
