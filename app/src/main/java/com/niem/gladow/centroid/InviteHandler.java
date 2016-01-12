@@ -72,7 +72,7 @@ public class InviteHandler {
         }
         //if the invite was declined, remove the invite from local map
         //todo remove by time
-        else removeInvite(startTime);
+        //else removeInvite(startTime);
     }
 
 }

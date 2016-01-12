@@ -60,8 +60,7 @@ public final class Util {
     public String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);
-        String date = DateFormat.format("dd-MM-yyyy", cal).toString();
-        return date;
+        return DateFormat.format("dd-MM-yyyy", cal).toString();
     }
 
 

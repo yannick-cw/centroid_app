@@ -96,6 +96,7 @@ public class InviteActivity extends Activity {
             case R.id.declineInviteButton:
                 InviteHandler.responseToInvite(invite.getStartTime(),InviteReply.DECLINED, this);
                 Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
+                onBackPressed();
                 break;
         }
         declineInviteButton.setVisibility(View.GONE);
