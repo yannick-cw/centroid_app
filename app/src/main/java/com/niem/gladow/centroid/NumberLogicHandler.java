@@ -2,6 +2,8 @@ package com.niem.gladow.centroid;
 
 import android.content.Context;
 
+import com.niem.gladow.centroid.Enums.TransportationMode;
+
 /**
  * Created by yannick_uni on 11/10/15.
  */
@@ -36,13 +38,16 @@ public class NumberLogicHandler implements AsyncResponse {
     }
 
     public void syncTokenAndNumber () {
-        new RestConnector(context).execute(RestConnector.POST, SEND_NUMBER + ownNumberWithSlash + PersistenceHandler.getInstance().getToken());
+        new RestConnector(context).execute(RestConnector.POST, SEND_NUMBER + ownNumberWithSlash
+                                            + PersistenceHandler.getInstance().getToken());
     }
 
     //reads friendlist from file and starts async task RestConnector to send friend numbers to server
-    public boolean inviteFriends() {
+    public boolean inviteFriends(TransportationMode transportationMode) {
 
-        new RestConnector(context).execute(RestConnector.GET, INVITE_FRIENDS + ownNumberWithSlash + PersistenceHandler.getInstance().getInviteList());
+        new RestConnector(context).execute(RestConnector.GET, INVITE_FRIENDS + ownNumberWithSlash
+                                            + PersistenceHandler.getInstance().getInviteList()
+                                            + "/" + transportationMode);
         new GpsDataHandler(context);
         return true;
     }

@@ -137,17 +137,15 @@ public class InviteActivity extends Activity {
         onBackPressed();
     }
 
-    public void chooseTransportationMode(View view){
-        // TODO POPUP with choices of TransportationMode
-        final View _view = view;
-        CharSequence transportationModes[] = new CharSequence[] {"Feet", "Bike", "Car", "Public Transportation"};
+    public void chooseTransportationMode(final View _view){
+        CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a transportation Mode");
         builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
             boolean _hasChosen = false;
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // the user clicked on colors[which]
+                // the user clicked on transportationModes[which]
                 switch (which) {
                     case 0:
                         invite.setTransportationMode(TransportationMode.FOOT);
@@ -164,8 +162,6 @@ public class InviteActivity extends Activity {
                     case 3:
                         invite.setTransportationMode(TransportationMode.PUBLIC);
                         _hasChosen = true;
-                        break;
-                    default:
                         break;
                 }
                 if(_hasChosen){

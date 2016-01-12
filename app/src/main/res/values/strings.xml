@@ -5,4 +5,10 @@
     <string name="decline">Decline</string>
     <string name="show_centroid">Show centroid</string>
     <string name="invite_Button">Invite</string>
+<string-array name="transportation_modes">
+    <item>Feet</item>
+    <item>Bike</item>
+    <item>Car</item>
+    <item>Public Transportation</item>
+</string-array>
 </resources>

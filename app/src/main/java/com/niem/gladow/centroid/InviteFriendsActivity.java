@@ -2,16 +2,21 @@ package com.niem.gladow.centroid;
 
 import android.*;
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,15 +27,51 @@ import java.util.Map;
 public class InviteFriendsActivity extends Activity {
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
 
-
     public void inviteFriends(View view) {
         Log.d("inviteFriends", "pressed");
         if (getGpsPermission()) {
-            new NumberLogicHandler(this).inviteFriends();
+            chooseTransportationMode(this);
         }else{
             Toast.makeText(this,"GPS Permission Needed",Toast.LENGTH_SHORT).show();
         }
-        onBackPressed();
+    }
+
+    public void chooseTransportationMode(final Context _context){
+        CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick a transportation Mode");
+        builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
+            TransportationMode _transportationMode = TransportationMode.DEFAULT;
+            boolean _hasChosen = false;
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // the user clicked on transportationModes[which]
+                switch (which) {
+                    case 0:
+                        _transportationMode = TransportationMode.FOOT;
+                        _hasChosen = true;
+                        break;
+                    case 1:
+                        _transportationMode = TransportationMode.BIKE;
+                        _hasChosen = true;
+                        break;
+                    case 2:
+                        _transportationMode = TransportationMode.CAR;
+                        _hasChosen = true;
+                        break;
+                    case 3:
+                        _transportationMode = TransportationMode.PUBLIC;
+                        _hasChosen = true;
+                        break;
+                }
+                if(_hasChosen){
+                    new NumberLogicHandler(_context).inviteFriends(_transportationMode);
+                    onBackPressed();
+                }
+            }
+
+        });
+        builder.show();
     }
 
     //TODO put GPS Permission in a good Place and make it nice
