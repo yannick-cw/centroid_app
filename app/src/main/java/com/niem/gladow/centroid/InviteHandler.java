@@ -66,6 +66,11 @@ public class InviteHandler {
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 
+    public void setInviteStatus(long startTime, InviteReply inviteReply) {
+        activeInvites.get(startTime).setStatus(inviteReply);
+        PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
+    }
+
     //todo multiple invites handling
     public void responseToInvite(long startTime, InviteReply inviteReply
                                         ,TransportationMode transportationMode, Context context) {

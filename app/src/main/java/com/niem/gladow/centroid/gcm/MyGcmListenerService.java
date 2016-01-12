@@ -68,7 +68,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 InviteHandler.getInstance().addInvite(_inviteNumber, _startTime, _allNumbers);
 
                 if (_inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
-                    InviteHandler.getInstance().getInviteByTime(_startTime).setStatus(InviteReply.ACCEPTED);
+                    InviteHandler.getInstance().setInviteStatus(_startTime, InviteReply.ACCEPTED);
                     sendNotification("you created a centroid, awesome!", "centroid created");
                 }
                 else {
