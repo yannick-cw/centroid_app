@@ -1,9 +1,11 @@
 package com.niem.gladow.centroid;
 
+import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
@@ -86,8 +89,8 @@ public class InviteActivity extends Activity {
 
     //sets the transportationMode ImageView to the corresponding Image
     //TODO nice images with variable Resolutions
-    private void setTransportationModeImage(TransportationMode transportationMode){
-        switch (transportationMode){
+    private void setTransportationModeImage(TransportationMode transportationMode) {
+        switch (transportationMode) {
             case FOOT:
                 transportationModeImage.setImageResource(R.drawable.feet);
                 break;
@@ -104,6 +107,14 @@ public class InviteActivity extends Activity {
                 transportationModeImage.setImageResource(R.drawable.my_selector);
                 break;
         }
+    }
+
+    public void showCentroidOnMap(View view) {
+        Intent intent = new Intent(this, GoogleMapActivity.class);
+        intent.putExtra("centroid", new LatLng(
+                InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()
+                ,InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude()));
+        startActivity(intent);
     }
 
     //is called when accept or decline button is pressed
