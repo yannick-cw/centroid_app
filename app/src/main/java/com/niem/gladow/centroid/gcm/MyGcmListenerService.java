@@ -29,6 +29,7 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.MessageType;
+import com.niem.gladow.centroid.Enums.TransportationMode;
 import com.niem.gladow.centroid.Invite;
 import com.niem.gladow.centroid.InviteHandler;
 import com.niem.gladow.centroid.PersistenceHandler;
@@ -45,8 +46,7 @@ public class MyGcmListenerService extends GcmListenerService {
     private final String UPDATE_NUMBER = "update_number";
     private final String UPDATE_STATUS = "update_status";
     private final String PLACE = "place";
-
-
+    private final String HOST_TRANSPORT = "host_transport";
 
     /**
      * Called when message is received.
@@ -73,7 +73,9 @@ public class MyGcmListenerService extends GcmListenerService {
                 inviteHandler.addInvite(_inviteNumber, _startTime, _allNumbers);
 
                 if (_inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
+                    TransportationMode _trans = TransportationMode.valueOf(data.get(HOST_TRANSPORT).toString());
                     inviteHandler.setInviteStatus(_startTime, InviteReply.ACCEPTED);
+                    inviteHandler.getInviteByTime(_startTime).setTransportationMode(_trans);
                     sendNotification("you created a centroid, awesome!", "centroid created");
                 }
                 else {
