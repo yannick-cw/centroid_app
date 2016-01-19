@@ -15,10 +15,14 @@ import com.niem.gladow.centroid.Database.MiniDB;
 import com.niem.gladow.centroid.Database.StringDB;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
 
 /**
  * Created by yannick_uni on 11/17/15.
@@ -59,8 +63,9 @@ public class PersistenceHandler {
         }
     }
 
+
     public Map<String, String> getFriendMap() {
-        return friendMap;
+        return Util.sortByValue(friendMap);
     }
 
     public boolean loadFriendMapFromDB () {

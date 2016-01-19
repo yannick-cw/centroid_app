@@ -10,14 +10,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by clem on 11.11.15.
  */
 public class InviteListViewActivity extends Activity {
     private ListView _listView;
-    private Map<Long, Invite> _map;
+    private TreeMap<Long, Invite> _sortedMap;
     private InviteHashMapArrayAdapter _adapter;
 
 
@@ -26,9 +28,12 @@ public class InviteListViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invite_listview_activity);
         _listView = (ListView) findViewById(R.id.listView);
-        _map = InviteHandler.getInstance().getActiveInvites();
+        //sorts the map in descending order
+        _sortedMap = new TreeMap<>(Collections.reverseOrder());
+        _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
+
         _adapter = new InviteHashMapArrayAdapter(this,
-                R.layout.invite_list_view_item, new ArrayList(_map.entrySet()));
+                R.layout.invite_list_view_item, new ArrayList(_sortedMap.entrySet()));
 
         _listView.setAdapter(_adapter);
 
@@ -48,16 +53,6 @@ public class InviteListViewActivity extends Activity {
 
                     startInviteActivity(_textViewClicked.getText().toString());
 
-
-//                    // check state of view and add/remove it from inviteList
-//                    if (_adapter.getCheckStatus(position)) {
-//                        Log.d("Name", _textViewClicked.getText().toString());
-//                        PersistenceHandler.getInstance().addToInviteList(_textViewClicked.getText().toString());
-//                    } else {
-//                        /* TODO would be more elegant to check ListView after pressing send button
-//                           and only add selected items to inviteList */
-//                        PersistenceHandler.getInstance().removeFromInviteList(_textViewClicked.getText().toString());
-//                    }
                 } catch (Exception e) {
                     Log.v("Exception ON Click", e.getMessage(), e);
                 }
@@ -70,7 +65,7 @@ public class InviteListViewActivity extends Activity {
     @Override
     protected void onResume(){
         super.onResume();
-        _map = InviteHandler.getInstance().getActiveInvites();
+        _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
         _adapter.notifyDataSetChanged();
         _listView.invalidateViews();
     }
@@ -82,10 +77,4 @@ public class InviteListViewActivity extends Activity {
         startActivity(intent);
     }
 
-    @Override
-    public void onBackPressed (){
-        //TODO check if this can be made more elegantly (Maybe with onDestroy?)
-        //PersistenceHandler.getInstance().clearInviteList(); //cleanup of inviteList
-        super.onBackPressed();
-    }
 }

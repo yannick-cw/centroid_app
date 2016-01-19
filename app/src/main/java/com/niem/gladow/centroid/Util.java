@@ -10,16 +10,23 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by yannick_uni on 11/17/15.
  */
 public final class Util {
     private static Util instance;
+
     private Util() {
     }
 
@@ -29,6 +36,7 @@ public final class Util {
         }
         return instance;
     }
+
     public String cleanNumberString(String numbers) {
         String _tmp = numbers;
         //Log.d("NUMBERS", numbers);
@@ -63,4 +71,20 @@ public final class Util {
         return DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
     }
 
+    public static <K, V extends Comparable<? super V>> Map<K, V>
+    sortByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list =
+                new LinkedList<Map.Entry<K, V>>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        Map<K, V> result = new LinkedHashMap<K, V>();
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
 }
