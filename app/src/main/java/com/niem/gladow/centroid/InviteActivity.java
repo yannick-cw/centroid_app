@@ -23,8 +23,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by clem on 05/01/16.
@@ -62,12 +64,12 @@ public class InviteActivity extends Activity {
         showCentroidButton = findViewById(R.id.showCentroidButton);
 
         //extracting members names from this invite
-        final List<String> _list = invite.getAllMembers();
+        final Map<String, InviteReply> _memberMap = invite.getAllMembers();
         Log.d("members",invite.getAllMembers().toString());
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
-        final StableArrayAdapter _adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, _list);
+        final HashMapArrayAdapter _adapter = new HashMapArrayAdapter(this,
+                android.R.layout.simple_list_item_1, new ArrayList(_memberMap.entrySet()));
         _listView.setAdapter(_adapter);
     }
 

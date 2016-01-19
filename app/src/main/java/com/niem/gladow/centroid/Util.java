@@ -58,10 +58,9 @@ public final class Util {
     }
 
     public String getDate(long time) {
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.setTimeInMillis(time);
-        return DateFormat.format("dd-MM-yyyy", cal).toString();
+        return DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
     }
-
 
 }

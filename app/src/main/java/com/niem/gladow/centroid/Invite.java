@@ -6,6 +6,7 @@ import com.niem.gladow.centroid.Enums.TransportationMode;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,17 +25,22 @@ public class Invite implements Serializable {
     private InviteReply status = InviteReply.UNANSWERED;
     private TransportationMode transportationMode = TransportationMode.DEFAULT;
     private boolean existsCentroid = false;
-    private List<String> allMembers;
+    //todo sollte eine map sein, die vom server geupdated wird
+    private Map<String, InviteReply> allMembers;
 
     public Invite(String inviteNumber, long startTime, String allMembers) {
         this.inviteNumber = inviteNumber;
         this.startTime = startTime;
-        this.allMembers = new LinkedList<>(Arrays.asList(allMembers.split(",")));
+        List<String> _allMembers = new LinkedList<>(Arrays.asList(allMembers.split(",")));
         //ownnumber has to be removed from list
         String _ownNumber = PersistenceHandler.getInstance().getOwnNumber();
-        this.allMembers.remove(_ownNumber);
+        _allMembers.remove(_ownNumber);
         //try to replace as many numbers as possible with names
-        findRealNames(this.allMembers);
+        findRealNames(_allMembers);
+        this.allMembers = new HashMap<>();
+        for (String str: _allMembers) {
+            this.allMembers.put(str, InviteReply.UNANSWERED);
+        }
     }
 
 
@@ -86,7 +92,7 @@ public class Invite implements Serializable {
         this.transportationMode = transportationMode;
     }
 
-    public List<String> getAllMembers() {
+    public Map<String, InviteReply> getAllMembers() {
         return allMembers;
     }
 
