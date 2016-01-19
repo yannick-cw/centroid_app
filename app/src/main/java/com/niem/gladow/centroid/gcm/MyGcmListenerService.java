@@ -29,6 +29,7 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.MessageType;
+import com.niem.gladow.centroid.Invite;
 import com.niem.gladow.centroid.InviteHandler;
 import com.niem.gladow.centroid.PersistenceHandler;
 import com.niem.gladow.centroid.R;
@@ -79,6 +80,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     }
                     sendNotification("you got invited by: " + _inviteName, "centroid invite");
                 }
+                InviteHandler.getInstance().updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED);
                 break;
             case CENTROID:
                 String _centroid = data.get(CENTROID).toString();
@@ -91,6 +93,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 String _updateNumber = data.get(UPDATE_NUMBER).toString();
                 InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
                 InviteHandler.getInstance().updateMemberStatus(_startTime, _updateNumber, _updateStatus);
+                break;
             default:
                 break;
         }

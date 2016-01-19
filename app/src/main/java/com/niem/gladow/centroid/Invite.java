@@ -37,6 +37,7 @@ public class Invite implements Serializable {
         _allMembers.remove(_ownNumber);
         //try to replace as many numbers as possible with names
         findRealNames(_allMembers);
+        //put list in map, InviteReply status is added
         this.allMembers = new HashMap<>();
         for (String str: _allMembers) {
             this.allMembers.put(str, InviteReply.UNANSWERED);
