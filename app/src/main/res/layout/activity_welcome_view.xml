@@ -37,9 +37,11 @@
         android:text="START"
         android:onClick="startCentroid"
         android:id="@+id/startCentroid"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:enabled="false" />
+        android:enabled="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"

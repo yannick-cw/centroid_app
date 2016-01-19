@@ -12,18 +12,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="See ListView"
+        android:text="invite friends"
         android:id="@+id/button5"
         android:onClick="seeList"
-        android:layout_marginTop="57dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send current GPS"
-        android:id="@+id/button4"
-        android:onClick="sendGps"
-        android:layout_alignParentTop="true" />
+        android:layout_marginTop="57dp"
+        android:layout_alignRight="@+id/inviteListViewButton"
+        android:layout_alignEnd="@+id/inviteListViewButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
     <!--<Button-->
@@ -40,10 +36,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="See InviteListView"
+        android:text="centroids"
         android:id="@+id/inviteListViewButton"
         android:onClick="seeInviteList"
-        android:layout_below="@+id/button5"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
