@@ -11,8 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.niem.gladow.centroid.gcm.RegistrationIntentService;
-
 public class WelcomeViewActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 12;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;

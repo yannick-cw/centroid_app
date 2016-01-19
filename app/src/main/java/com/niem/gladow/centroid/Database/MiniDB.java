@@ -3,8 +3,11 @@ package com.niem.gladow.centroid.Database;
 import android.content.Context;
 import android.util.Log;
 
+import com.niem.gladow.centroid.MainActivity;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,9 +29,10 @@ public class MiniDB implements MapDB, StringDB{
     }
 
     public static void init(Context context) {
-        assert(instance == null);
-        instance = new MiniDB();
-        instance.context = context;
+        if(instance == null) {
+            instance = new MiniDB();
+            instance.context = context;
+        }
     }
 
     public static MiniDB getInstance() {
@@ -95,7 +99,7 @@ public class MiniDB implements MapDB, StringDB{
         } catch (ClassNotFoundException e) {
             Log.e("load map", e.getMessage());
         } catch (IOException e) {
-            Log.e("load map", e.getMessage());
+            //Log.e("load map", e.getMessage());
         }
 
         return map;

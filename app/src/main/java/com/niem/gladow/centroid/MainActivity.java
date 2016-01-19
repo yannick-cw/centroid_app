@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.niem.gladow.centroid.Database.MiniDB;
-import com.niem.gladow.centroid.gcm.RegistrationIntentService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        MiniDB.init(this);
-
+        initMiniDb();
 
         //TODO check if token is still valid right now it is reloaded every start (same one)
         //TODO additional check if play services installed please
@@ -54,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+//        if(!(this.getIntent().getExtras()==null)) {
+//            String goTo = (String) this.getIntent().getExtras().get("goTo");
+//            if (goTo.equals("InviteListViewActivity")) {
+//                Intent _intent = new Intent(this, InviteListViewActivity.class);
+//                startActivity(_intent);
+//            }
+//        }
     }
 
     private void sendContacts() {
@@ -148,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initMiniDb() {
+        MiniDB.init(this);
     }
 
 //TODO stürtzt ab, wenn permission nicht erteilt oder gps aus und erteilt (gps)

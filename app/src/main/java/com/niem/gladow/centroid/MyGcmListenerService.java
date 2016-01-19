@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.niem.gladow.centroid.gcm;
+package com.niem.gladow.centroid;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,13 +27,10 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.niem.gladow.centroid.Database.MiniDB;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.MessageType;
 import com.niem.gladow.centroid.Enums.TransportationMode;
-import com.niem.gladow.centroid.Invite;
-import com.niem.gladow.centroid.InviteHandler;
-import com.niem.gladow.centroid.PersistenceHandler;
-import com.niem.gladow.centroid.R;
 
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -58,8 +55,7 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        //there always have to be two types of data
-        //assert(data.keySet().size() == 2);
+        MiniDB.init(this);
 
         String _messageType = data.get(MESSAGE_TYPE).toString();
         long _startTime = Long.parseLong(data.get(TIME).toString());

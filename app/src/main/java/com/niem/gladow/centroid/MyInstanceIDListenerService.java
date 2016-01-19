@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.niem.gladow.centroid.gcm;
+package com.niem.gladow.centroid;
 
 import android.content.Intent;
 
