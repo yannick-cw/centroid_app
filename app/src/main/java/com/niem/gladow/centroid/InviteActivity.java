@@ -41,7 +41,7 @@ import java.util.Map;
 public class InviteActivity extends Activity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int PLACE_PICKER_REQUEST = 1;
-    public static final String ADD_PLACE = "addPlace";
+    public static final String ADD_PLACE = "/android/addPlace";
 
     private Invite invite;
 
