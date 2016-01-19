@@ -49,6 +49,7 @@ public class InviteActivity extends Activity {
 
     private View showCentroidButton;
     private View navigateToCentroidButton;
+    private View navigateToPlaceButton;
     private View declineInviteButton;
     private View acceptInviteButton;
     private View inviteHeader;
@@ -75,6 +76,7 @@ public class InviteActivity extends Activity {
         _inviteStatus2.setText(invite.getStatus().toString());
         showCentroidButton = findViewById(R.id.showCentroidButton);
         navigateToCentroidButton = findViewById(R.id.navigateToCentroid);
+        navigateToPlaceButton = findViewById(R.id.navigateToPlace);
 
         //extracting members names from this invite
         final Map<String, InviteReply> _memberMap = invite.getAllMembers();
@@ -107,6 +109,7 @@ public class InviteActivity extends Activity {
             TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
             _placesTextView.setVisibility(View.VISIBLE);
             _placesTextView.setText(toReadableContent(invite.getChosenPlace()));
+            navigateToPlaceButton.setEnabled(true);
         }
     }
 
@@ -168,6 +171,18 @@ public class InviteActivity extends Activity {
         }
     }
 
+    public void navigateToPlace(View view) {
+        String [] _placeInfo = invite.getChosenPlace().split(",");
+
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + _placeInfo[_placeInfo.length-2]
+                + "," + _placeInfo[_placeInfo.length-1] + "&mode=" + invite.getTransportationMode().getMode());
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
@@ -210,7 +225,7 @@ public class InviteActivity extends Activity {
         String _content;
         _content = content.replaceAll(" ",":");
         _content = _content.replaceAll("/","");
-        _content = _content.replaceAll("\\(","");
+        _content = _content.replaceAll("\\(",",");
         _content = _content.replaceAll("\\)","");
         return _content;
     }

@@ -74,6 +74,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:text="@string/navigate_toPlace"
+        android:id="@+id/navigateToPlace"
+        android:layout_weight="0.2"
+        android:onClick="navigateToPlace"
+        android:enabled="false" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:text="@string/show_centroid"
         android:id="@+id/showCentroidButton"
         android:layout_weight="0.2"
