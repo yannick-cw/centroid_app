@@ -1,6 +1,5 @@
 package com.niem.gladow.centroid;
 
-import android.*;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -118,9 +118,10 @@ public class InviteFriendsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.listview_activity);
+        setContentView(R.layout.invite_friends_activity);
 
         final ListView _listView = (ListView) findViewById(R.id.listView);
+        final Button _inviteFriendsButton = (Button) findViewById(R.id.inviteFriendsButton);
 
         final Map<String, String> _map = PersistenceHandler.getInstance().getFriendMap();
 
@@ -150,6 +151,13 @@ public class InviteFriendsActivity extends Activity {
                            and only add selected items to inviteList */
                         PersistenceHandler.getInstance().removeFromInviteList(_textViewClicked.getText().toString());
                     }
+
+                    if(!PersistenceHandler.getInstance().getInviteList().isEmpty()){
+                        _inviteFriendsButton.setEnabled(true);
+                    }else{
+                        _inviteFriendsButton.setEnabled(false);
+                    }
+
                 } catch (Exception e) {
                     Log.v("Exception ON Click", e.getMessage(), e);
                 }
