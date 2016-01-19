@@ -39,9 +39,9 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
         if (convertView == null) {
             /* There is no view at this position, we create a new one.
                In this case by inflating an xml layout */
-            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.member_list_item, parent, false);
             _viewHolder = new ViewHolder();
-            _viewHolder.member = (TextView) convertView.findViewById(R.id.textView1);
+            _viewHolder.member = (TextView) convertView.findViewById(R.id.textIdMember);
             convertView.setTag(_viewHolder);
         } else {
             /* We recycle a View that already exists */

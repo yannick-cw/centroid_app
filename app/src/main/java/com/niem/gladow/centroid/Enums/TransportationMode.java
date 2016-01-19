@@ -5,6 +5,4 @@ package com.niem.gladow.centroid.Enums;
  */
 public enum TransportationMode {
     FOOT, CAR, BIKE, PUBLIC, DEFAULT;
-
-
 }

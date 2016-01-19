@@ -69,7 +69,7 @@ public class InviteActivity extends Activity {
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
         final MemberStatusHashMapArrayAdapter _adapter = new MemberStatusHashMapArrayAdapter(this,
-                android.R.layout.simple_list_item_1, new ArrayList(_memberMap.entrySet()));
+               R.layout.member_list_item, new ArrayList(_memberMap.entrySet()));
 //        _adapter.setCheckList(_memberMap.size());
 
         _listView.setAdapter(_adapter);

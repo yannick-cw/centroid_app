@@ -111,4 +111,10 @@ public class Invite implements Serializable {
         }
     }
 
+    public void updateMember(String updateNumber, InviteReply updateStatus) {
+        List<String> tmp = new LinkedList<>();
+        tmp.add(updateNumber);
+        findRealNames(tmp);
+        allMembers.put(tmp.get(0), updateStatus);
+    }
 }

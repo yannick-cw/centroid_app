@@ -41,6 +41,8 @@ public class MyGcmListenerService extends GcmListenerService {
     private final String INVITE_NUMBER = "number";
     private final String MESSAGE_TYPE = "type";
     private final String ALL_NUMBERS = "all_numbers";
+    private final String UPDATE_NUMBER = "update_number";
+    private final String UPDATE_STATUS = "update_status";
 
 
     /**
@@ -85,6 +87,10 @@ public class MyGcmListenerService extends GcmListenerService {
                 Log.d(MyGcmListenerService.class.getName(), "Time: " + _startTime);
                 sendNotification("you got a new centroid!", "centroid arrived");
                 break;
+            case UPDATE:
+                String _updateNumber = data.get(UPDATE_NUMBER).toString();
+                InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
+                InviteHandler.getInstance().updateMemberStatus(_startTime, _updateNumber, _updateStatus);
             default:
                 break;
         }

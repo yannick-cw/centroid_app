@@ -87,4 +87,9 @@ public class InviteHandler {
         }
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
+
+    public void updateMemberStatus(long startTime, String updateNumber, InviteReply updateStatus) {
+        activeInvites.get(startTime).updateMember(updateNumber, updateStatus);
+        PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
+    }
 }
