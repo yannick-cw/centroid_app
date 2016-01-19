@@ -31,6 +31,7 @@ import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class InviteActivity extends Activity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int PLACE_PICKER_REQUEST = 1;
     public static final String ADD_PLACE = "/android/addPlace";
+    public static final String IS_EMPTY = "isEmpty";
 
     private Invite invite;
 
@@ -104,7 +106,7 @@ public class InviteActivity extends Activity {
         if(invite.getChosenPlace() != null) {
             TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
             _placesTextView.setVisibility(View.VISIBLE);
-            _placesTextView.setText(invite.getChosenPlace());
+            _placesTextView.setText(toReadableContent(invite.getChosenPlace()));
         }
     }
 
@@ -177,26 +179,52 @@ public class InviteActivity extends Activity {
         if(place == null) {
             return;
         }
-        String content = "Your chosen location: \n";
+        String content = "";
         if (!TextUtils.isEmpty(place.getName())) {
-            content += "Name: " + place.getName() + "\n";
+            content += place.getName().toString().replaceAll(",", " ") + ",";
+        } else {
+            content += IS_EMPTY + ",";
         }
         if (!TextUtils.isEmpty(place.getAddress())) {
-            content += "Address: " + place.getAddress() + "\n";
+            content += place.getAddress().toString().replaceAll(",", " ") + ",";
+        } else {
+            content += IS_EMPTY + ",";
         }
         if (!TextUtils.isEmpty(place.getPhoneNumber())) {
-            content += "Phone: " + place.getPhoneNumber() + "\n";
+            content += place.getPhoneNumber().toString().replaceAll(",", " ") + ",";
+        } else {
+            content += IS_EMPTY + ",";
         }
-
         content += place.getLatLng();
-
+        content = transportReady(content);
         InviteHandler.getInstance().setChosenPlace(content, invite);
         TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
         _placesTextView.setVisibility(View.VISIBLE);
-        _placesTextView.setText(content);
+        _placesTextView.setText(toReadableContent(content));
 
         new RestConnector(this).execute(RestConnector.POST, ADD_PLACE + "/" + invite.getStartTime()
                 + "/" + invite.getChosenPlace());
+    }
+
+    private String transportReady(String content) {
+        String _content;
+        _content = content.replaceAll(" ",":");
+        _content = _content.replaceAll("/","");
+        _content = _content.replaceAll("\\(","");
+        _content = _content.replaceAll("\\)","");
+        return _content;
+    }
+
+    private String toReadableContent(String content) {
+        content = content.replaceAll(":"," ");
+        List<String> _contentList = Arrays.asList(content.split(","));
+        String _content = "Your chosen location: \n";
+            _content += "Name: " + _contentList.get(0) + "\n";
+
+            _content += "Address: " + _contentList.get(1) + "\n";
+
+            _content += "Phone: " + _contentList.get(2) + "\n";
+        return _content;
     }
 
     //is called when accept or decline button is pressed

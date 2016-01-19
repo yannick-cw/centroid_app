@@ -60,7 +60,6 @@ public class RestConnector extends AsyncTask<String, String, String> {
             Log.d("urlparams", urlString);
             URL url = new URL(HOST_ADDRESS+urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
             connection.setRequestMethod("POST");
 
             Log.d("responseCode", new Integer(connection.getResponseCode()).toString());
