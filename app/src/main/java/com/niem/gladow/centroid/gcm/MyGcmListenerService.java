@@ -44,6 +44,8 @@ public class MyGcmListenerService extends GcmListenerService {
     private final String ALL_NUMBERS = "all_numbers";
     private final String UPDATE_NUMBER = "update_number";
     private final String UPDATE_STATUS = "update_status";
+    private final String PLACE = "place";
+
 
 
     /**
@@ -62,15 +64,16 @@ public class MyGcmListenerService extends GcmListenerService {
         String _messageType = data.get(MESSAGE_TYPE).toString();
         long _startTime = Long.parseLong(data.get(TIME).toString());
 
+        InviteHandler inviteHandler = InviteHandler.getInstance();
         switch (MessageType.valueOf(_messageType)) {
             case INVITE:
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
 
-                InviteHandler.getInstance().addInvite(_inviteNumber, _startTime, _allNumbers);
+                inviteHandler.addInvite(_inviteNumber, _startTime, _allNumbers);
 
                 if (_inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
-                    InviteHandler.getInstance().setInviteStatus(_startTime, InviteReply.ACCEPTED);
+                    inviteHandler.setInviteStatus(_startTime, InviteReply.ACCEPTED);
                     sendNotification("you created a centroid, awesome!", "centroid created");
                 }
                 else {
@@ -80,11 +83,11 @@ public class MyGcmListenerService extends GcmListenerService {
                     }
                     sendNotification("you got invited by: " + _inviteName, "centroid invite");
                 }
-                InviteHandler.getInstance().updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED);
+                inviteHandler.updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED);
                 break;
             case CENTROID:
                 String _centroid = data.get(CENTROID).toString();
-                InviteHandler.getInstance().addCentroidToInvite(_startTime, _centroid);
+                inviteHandler.addCentroidToInvite(_startTime, _centroid);
                 Log.d(MyGcmListenerService.class.getName(), "Centroid: " + _centroid);
                 Log.d(MyGcmListenerService.class.getName(), "Time: " + _startTime);
                 sendNotification("you got a new centroid!", "centroid arrived");
@@ -92,7 +95,11 @@ public class MyGcmListenerService extends GcmListenerService {
             case UPDATE:
                 String _updateNumber = data.get(UPDATE_NUMBER).toString();
                 InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
-                InviteHandler.getInstance().updateMemberStatus(_startTime, _updateNumber, _updateStatus);
+                inviteHandler.updateMemberStatus(_startTime, _updateNumber, _updateStatus);
+                break;
+            case PLACE:
+                String _place = data.get(PLACE).toString();
+                inviteHandler.setChosenPlace(_place, inviteHandler.getInviteByTime(_startTime));
                 break;
             default:
                 break;

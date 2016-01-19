@@ -92,4 +92,9 @@ public class InviteHandler {
         activeInvites.get(startTime).updateMember(updateNumber, updateStatus);
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
+
+    public void setChosenPlace(String place, Invite invite) {
+        invite.setChosenPlace(place);
+        PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
+    }
 }

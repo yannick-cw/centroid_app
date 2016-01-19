@@ -27,6 +27,7 @@ public class Invite implements Serializable {
     private boolean existsCentroid = false;
     //todo sollte eine map sein, die vom server geupdated wird
     private Map<String, InviteReply> allMembers;
+    private String chosenPlace;
 
     public Invite(String inviteNumber, long startTime, String allMembers) {
         this.inviteNumber = inviteNumber;
@@ -117,5 +118,13 @@ public class Invite implements Serializable {
         tmp.add(updateNumber);
         findRealNames(tmp);
         allMembers.put(tmp.get(0), updateStatus);
+    }
+
+    public String getChosenPlace() {
+        return chosenPlace;
+    }
+
+    public void setChosenPlace(String chosenPlace) {
+        this.chosenPlace = chosenPlace;
     }
 }

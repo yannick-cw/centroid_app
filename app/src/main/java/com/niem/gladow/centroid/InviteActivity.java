@@ -41,6 +41,7 @@ import java.util.Map;
 public class InviteActivity extends Activity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int PLACE_PICKER_REQUEST = 1;
+    public static final String ADD_PLACE = "addPlace";
 
     private Invite invite;
 
@@ -100,6 +101,11 @@ public class InviteActivity extends Activity {
             showCentroidButton.setEnabled(true);
             navigateToCentroidButton.setEnabled(true);
         }
+        if(invite.getChosenPlace() != null) {
+            TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
+            _placesTextView.setVisibility(View.VISIBLE);
+            _placesTextView.setText(invite.getChosenPlace());
+        }
     }
 
     //sets the transportationMode ImageView to the corresponding Image
@@ -125,26 +131,28 @@ public class InviteActivity extends Activity {
     }
 
     public void showCentroidOnMap(View view) {
-//        Intent intent = new Intent(this, GoogleMapActivity.class);
-//        intent.putExtra("centroid", new LatLng(
-//                InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()
-//                , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude()));
-//        startActivity(intent);
-
-        //todo google api client?? Ist der hier immer schon da?
-        LatLng _southWest = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()-0.003
-                , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() - 0.003);
-        LatLng _northEast = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat() + 0.003
-                , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() + 0.003);
-        LatLngBounds _latLngBounds = new LatLngBounds(_southWest, _northEast);
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        builder.setLatLngBounds(_latLngBounds);
-        try {
-            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
+        if(invite.getInviteNumber().equals(PersistenceHandler.getInstance().getOwnNumber())) {
+            //todo google api client?? Ist der hier immer schon da?
+            LatLng _southWest = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()-0.003
+                    , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() - 0.003);
+            LatLng _northEast = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat() + 0.003
+                    , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() + 0.003);
+            LatLngBounds _latLngBounds = new LatLngBounds(_southWest, _northEast);
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            builder.setLatLngBounds(_latLngBounds);
+            try {
+                startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            }
+        } else {
+        Intent intent = new Intent(this, GoogleMapActivity.class);
+        intent.putExtra("centroid", new LatLng(
+                InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()
+                , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude()));
+        startActivity(intent);
         }
     }
 
@@ -160,31 +168,36 @@ public class InviteActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        showCentroidOnMap(new View(this));
-//        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-//            displayPlace(PlacePicker.getPlace(data, this));
-//        }
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            displayPlace(PlacePicker.getPlace(data, this));
+        }
     }
 
-//    private void displayPlace(Place place) {
-//        if(place == null) {
-//            return;
-//        }
-//        String content = "Your chosen location: \n";
-//        if (!TextUtils.isEmpty(place.getName())) {
-//            content += "Name: " + place.getName() + "\n";
-//        }
-//        if (!TextUtils.isEmpty(place.getAddress())) {
-//            content += "Address: " + place.getAddress() + "\n";
-//        }
-//        if (!TextUtils.isEmpty(place.getPhoneNumber())) {
-//            content += "Phone: " + place.getPhoneNumber();
-//        }
-//
-//        TextView text3 = (TextView) findViewById(R.id.textView3);
-//        text3.setText(content);
-//
-//    }
+    private void displayPlace(Place place) {
+        if(place == null) {
+            return;
+        }
+        String content = "Your chosen location: \n";
+        if (!TextUtils.isEmpty(place.getName())) {
+            content += "Name: " + place.getName() + "\n";
+        }
+        if (!TextUtils.isEmpty(place.getAddress())) {
+            content += "Address: " + place.getAddress() + "\n";
+        }
+        if (!TextUtils.isEmpty(place.getPhoneNumber())) {
+            content += "Phone: " + place.getPhoneNumber() + "\n";
+        }
+
+        content += place.getLatLng();
+
+        InviteHandler.getInstance().setChosenPlace(content, invite);
+        TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
+        _placesTextView.setVisibility(View.VISIBLE);
+        _placesTextView.setText(content);
+
+        new RestConnector(this).execute(RestConnector.POST, ADD_PLACE + "/" + invite.getStartTime()
+                + "/" + invite.getChosenPlace());
+    }
 
     //is called when accept or decline button is pressed
     public void responseToInvite(View view) {
@@ -278,32 +291,4 @@ public class InviteActivity extends Activity {
             }
         }
     }
-
-//    //TODO check if normal ArrayAdapter<String> is sufficient, maybe change to Hashmap if status of friends should be displayed too
-//    private class StableArrayAdapter extends ArrayAdapter<String> {
-//
-//        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-//
-//        public StableArrayAdapter(Context context, int textViewResourceId,
-//                                  List<String> objects) {
-//            super(context, textViewResourceId, objects);
-//            for (int i = 0; i < objects.size(); ++i) {
-//                mIdMap.put(objects.get(i), i);
-//            }
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            String item = getItem(position);
-//            return mIdMap.get(item);
-//        }
-//
-//        @Override
-//        public boolean hasStableIds() {
-//            return true;
-//        }
-//
-//    }
-
-
 }
