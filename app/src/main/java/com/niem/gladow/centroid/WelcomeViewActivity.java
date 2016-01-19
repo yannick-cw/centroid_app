@@ -22,7 +22,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_view);
 
-        /*TODO only activate start button if really successful, and ad more return false/true and handling for everything */
+        /*TODO only activate start button if really successfull, and ad more return false/true and handling for everything */
         saveOwnNumber();
         syncWithServer(this.getCurrentFocus());
     }

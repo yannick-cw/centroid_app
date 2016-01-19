@@ -98,6 +98,7 @@ public class InviteFriendsActivity extends Activity {
             new GpsDataHandler(this);
         }
     }
+
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {

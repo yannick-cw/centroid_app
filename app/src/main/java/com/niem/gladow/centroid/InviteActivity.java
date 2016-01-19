@@ -68,8 +68,10 @@ public class InviteActivity extends Activity {
         Log.d("members",invite.getAllMembers().toString());
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
-        final HashMapArrayAdapter _adapter = new HashMapArrayAdapter(this,
+        final MemberStatusHashMapArrayAdapter _adapter = new MemberStatusHashMapArrayAdapter(this,
                 android.R.layout.simple_list_item_1, new ArrayList(_memberMap.entrySet()));
+//        _adapter.setCheckList(_memberMap.size());
+
         _listView.setAdapter(_adapter);
     }
 
@@ -212,31 +214,31 @@ public class InviteActivity extends Activity {
         }
     }
 
-    //TODO check if normal ArrayAdapter<String> is sufficient, maybe change to Hashmap if status of friends should be displayed too
-    private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-    }
+//    //TODO check if normal ArrayAdapter<String> is sufficient, maybe change to Hashmap if status of friends should be displayed too
+//    private class StableArrayAdapter extends ArrayAdapter<String> {
+//
+//        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+//
+//        public StableArrayAdapter(Context context, int textViewResourceId,
+//                                  List<String> objects) {
+//            super(context, textViewResourceId, objects);
+//            for (int i = 0; i < objects.size(); ++i) {
+//                mIdMap.put(objects.get(i), i);
+//            }
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            String item = getItem(position);
+//            return mIdMap.get(item);
+//        }
+//
+//        @Override
+//        public boolean hasStableIds() {
+//            return true;
+//        }
+//
+//    }
 
 
 }
