@@ -227,6 +227,8 @@ public class InviteActivity extends Activity {
         _content = _content.replaceAll("/","");
         _content = _content.replaceAll("\\(",",");
         _content = _content.replaceAll("\\)","");
+        _content = _content.replaceAll("-","");
+        _content = _content.replaceAll("ß","ss");
         return _content;
     }
 
