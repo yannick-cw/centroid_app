@@ -25,7 +25,6 @@ public class Invite implements Serializable {
     private InviteReply status = InviteReply.UNANSWERED;
     private TransportationMode transportationMode = TransportationMode.DEFAULT;
     private boolean existsCentroid = false;
-    //todo sollte eine map sein, die vom server geupdated wird
     private Map<String, InviteReply> allMembers;
     private String chosenPlace;
 
@@ -33,9 +32,6 @@ public class Invite implements Serializable {
         this.inviteNumber = inviteNumber;
         this.startTime = startTime;
         List<String> _allMembers = new LinkedList<>(Arrays.asList(allMembers.split(",")));
-        //ownnumber has to be removed from list
-        String _ownNumber = PersistenceHandler.getInstance().getOwnNumber();
-        _allMembers.remove(_ownNumber);
         //try to replace as many numbers as possible with names
         findRealNames(_allMembers);
         //put list in map, InviteReply status is added
@@ -95,6 +91,7 @@ public class Invite implements Serializable {
     }
 
     public Map<String, InviteReply> getAllMembers() {
+        allMembers.remove(PersistenceHandler.getInstance().getOwnNumber());
         return allMembers;
     }
 
