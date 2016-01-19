@@ -12,9 +12,9 @@ public class InviteTests {
 
     @Test
     public void getLatestInviteTest(){
-        InviteHandler.addInvite("1234", 12345, "Clemens,01234,Yannick");
-        InviteHandler.getInviteByTime(12345).setStatus(InviteReply.ACCEPTED);
-        Assert.assertEquals("1234",InviteHandler.getInviteByTime(12345).getInviteNumber());
+        InviteHandler.getInstance().addInvite("1234", 12345, "Clemens,01234,Yannick");
+        InviteHandler.getInstance().getInviteByTime(12345).setStatus(InviteReply.ACCEPTED);
+        Assert.assertEquals("1234",InviteHandler.getInstance().getInviteByTime(12345).getInviteNumber());
     }
 
 }

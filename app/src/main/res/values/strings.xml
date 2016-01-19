@@ -4,6 +4,7 @@
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
     <string name="show_centroid">Show centroid</string>
+    <string name="navigate_to">Navigate to Centroid</string>
     <string name="invite_Button">Invite</string>
 <string-array name="transportation_modes">
     <item>Feet</item>
