@@ -20,7 +20,6 @@ import java.util.Map;
  * Created by clem on 24/11/15.
  */
 public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
-    private ArrayList<InviteReply> inviteReplyArrayList;
 
     private static class ViewHolder {
         TextView member;

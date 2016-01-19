@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by clem on 05/01/16.
@@ -79,7 +80,7 @@ public class InviteActivity extends Activity {
         navigateToPlaceButton = findViewById(R.id.navigateToPlace);
 
         //extracting members names from this invite
-        final Map<String, InviteReply> _memberMap = invite.getAllMembers();
+        final TreeMap<String, InviteReply> _memberMap = new TreeMap<>(invite.getAllMembers());
         Log.d("members",invite.getAllMembers().toString());
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
