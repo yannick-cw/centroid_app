@@ -3,9 +3,11 @@ package com.niem.gladow.centroid;
 import android.*;
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -112,6 +114,7 @@ public class InviteActivity extends Activity {
             _placesTextView.setText(toReadableContent(invite.getChosenPlace()));
             navigateToPlaceButton.setEnabled(true);
         }
+        this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
     }
 
     //sets the transportationMode ImageView to the corresponding Image
@@ -337,4 +340,20 @@ public class InviteActivity extends Activity {
             }
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.unregisterReceiver(broadcastReceiver);
+    }
+
+    //Broadcast handler
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //calls onCreate to update the view
+            onCreate(Bundle.EMPTY);
+            onResume();
+        }
+    };
 }

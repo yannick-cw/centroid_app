@@ -35,6 +35,7 @@ import com.niem.gladow.centroid.Enums.TransportationMode;
 
 public class MyGcmListenerService extends GcmListenerService {
 
+    public static final String BROADCAST_UPDATE = "broadcast_update";
     private final String CENTROID = "centroid";
     private final String TIME = "time";
     private final String INVITE_NUMBER = "number";
@@ -102,6 +103,7 @@ public class MyGcmListenerService extends GcmListenerService {
             default:
                 break;
         }
+        broadcastToActivities();
     }
     /**
      * Create and show a simple notification containing the received GCM message.
@@ -127,5 +129,10 @@ public class MyGcmListenerService extends GcmListenerService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void broadcastToActivities() {
+        Intent _intent = new Intent(BROADCAST_UPDATE);
+        this.sendBroadcast(_intent);
     }
 }

@@ -1,7 +1,10 @@
 package com.niem.gladow.centroid;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +24,7 @@ public class InviteListViewActivity extends Activity {
     private ListView _listView;
     private TreeMap<Long, Invite> _sortedMap;
     private InviteHashMapArrayAdapter _adapter;
-
+    //todo delete invites from list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,14 @@ public class InviteListViewActivity extends Activity {
         _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
         _adapter.notifyDataSetChanged();
         _listView.invalidateViews();
+        this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.unregisterReceiver(broadcastReceiver);
     }
 
     public void startInviteActivity(String inviteId){
@@ -76,5 +87,14 @@ public class InviteListViewActivity extends Activity {
         intent.putExtra("InviteId", inviteId);
         startActivity(intent);
     }
+
+    //Broadcast handler
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //calls onCreate to update the view
+            onCreate(Bundle.EMPTY);
+        }
+    };
 
 }
