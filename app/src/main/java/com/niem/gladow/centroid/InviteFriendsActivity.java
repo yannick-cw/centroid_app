@@ -3,12 +3,16 @@ package com.niem.gladow.centroid;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -29,6 +33,8 @@ import java.util.TreeMap;
  */
 public class InviteFriendsActivity extends Activity {
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
+    private GestureDetectorCompat gestureDetectorCompat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,13 @@ public class InviteFriendsActivity extends Activity {
         setContentView(R.layout.invite_friends_activity);
 
         final ListView _listView = (ListView) findViewById(R.id.listView);
+        _listView.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InviteFriendsActivity.this.onTouchEvent(event);
+                return false;
+            }
+        });
         final Button _inviteFriendsButton = (Button) findViewById(R.id.inviteFriendsButton);
 
         final Map<String, String> _map = PersistenceHandler.getInstance().getFriendMap();
@@ -67,9 +80,9 @@ public class InviteFriendsActivity extends Activity {
                         PersistenceHandler.getInstance().removeFromInviteList(_textViewClicked.getText().toString());
                     }
 
-                    if(!PersistenceHandler.getInstance().getInviteList().isEmpty()){
+                    if (!PersistenceHandler.getInstance().getInviteList().isEmpty()) {
                         _inviteFriendsButton.setEnabled(true);
-                    }else{
+                    } else {
                         _inviteFriendsButton.setEnabled(false);
                     }
 
@@ -79,13 +92,16 @@ public class InviteFriendsActivity extends Activity {
 
             }
         });
+
+        gestureDetectorCompat = new GestureDetectorCompat(this, new MyGestureListener());
     }
 
     @Override
     public void onBackPressed (){
         //TODO check if this can be made more elegantly (Maybe with onDestroy?)
         PersistenceHandler.getInstance().clearInviteList(); //cleanup of inviteList
-        super.onBackPressed();
+        Intent intent = new Intent(InviteFriendsActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void inviteFriends(View view) {
@@ -170,6 +186,30 @@ public class InviteFriendsActivity extends Activity {
                     Toast.makeText(this, "FINE_LOCATION Denied", Toast.LENGTH_SHORT).show();
                 }
             }
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.gestureDetectorCompat.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        //handle 'swipe left' action only
+
+        @Override
+        public boolean onFling(MotionEvent event1, MotionEvent event2,
+                               float velocityX, float velocityY) {
+
+            if(event2.getX() < event1.getX()){
+                //switch another activity
+                Intent intent = new Intent(InviteFriendsActivity.this, InviteListViewActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_slide_in, R.anim.left_slide_out);
+            }
+
+            return true;
         }
     }
 }
