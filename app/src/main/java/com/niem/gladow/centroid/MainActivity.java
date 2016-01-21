@@ -124,12 +124,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d("List", "pressed");
         Intent intent = new Intent(this, InviteFriendsActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void seeInviteList(View view) {
         Log.d("InviteList", "pressed");
         Intent intent = new Intent(this, InviteListViewActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
@@ -182,4 +184,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

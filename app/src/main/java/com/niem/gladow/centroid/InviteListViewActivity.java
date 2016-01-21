@@ -128,6 +128,7 @@ public class InviteListViewActivity extends AppCompatActivity {
                 Intent intent = new Intent(InviteListViewActivity.this, InviteFriendsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.left_slide_in, R.anim.right_slide_out);
+                finish();
             }
 
             return true;
@@ -138,5 +139,6 @@ public class InviteListViewActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(InviteListViewActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

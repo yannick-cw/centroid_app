@@ -107,6 +107,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
         PersistenceHandler.getInstance().clearInviteList(); //cleanup of inviteList
         Intent intent = new Intent(InviteFriendsActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void inviteFriends(View view) {
@@ -212,6 +213,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
                 Intent intent = new Intent(InviteFriendsActivity.this, InviteListViewActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_slide_in, R.anim.left_slide_out);
+                finish();
             }
 
             return true;

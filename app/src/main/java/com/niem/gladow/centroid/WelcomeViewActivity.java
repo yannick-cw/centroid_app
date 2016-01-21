@@ -25,6 +25,8 @@ public class WelcomeViewActivity extends AppCompatActivity {
         syncWithServer(this.getCurrentFocus());
     }
 
+    //todo explain
+
     public void startCentroid (View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
