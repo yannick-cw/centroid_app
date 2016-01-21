@@ -55,13 +55,13 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 
         switch (_viewHolder.inviteReply){
             case DECLINED:
-                convertView.setBackgroundColor(Color.RED);
+                convertView.setBackgroundResource(R.color.declined);
                 break;
             case ACCEPTED:
-                convertView.setBackgroundColor(Color.GREEN);
+                convertView.setBackgroundResource(R.color.accepted);
                 break;
             default:
-                convertView.setBackgroundColor(Color.LTGRAY);
+                convertView.setBackgroundResource(R.color.unanswered);
                 break;
         }
 

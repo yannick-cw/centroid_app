@@ -56,9 +56,9 @@ public class HashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.checked = checkList.get(position);
 
         if(_viewHolder.checked){
-            convertView.setBackgroundColor(Color.GREEN);
+            convertView.setBackgroundResource(R.color.accepted);
         }else{
-            convertView.setBackgroundColor(Color.WHITE);
+            convertView.setBackgroundResource(R.color.unanswered);
         }
 
         return convertView;

@@ -60,11 +60,17 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
                 + "\ninvited by: " + entry.getValue().getInviteNumberName()
                 + "\nstatus: " + entry.getValue().getStatus().toString());
 
-        if(_invite.getStatus() != InviteReply.UNANSWERED){
-            convertView.setBackgroundColor(Color.GREEN);
-        }else{
-            convertView.setBackgroundColor(Color.WHITE);
-        }
+            switch (_invite.getStatus()){
+                case DECLINED:
+                    convertView.setBackgroundResource(R.color.declined);
+                    break;
+                case READY:
+                    convertView.setBackgroundResource(R.color.accepted);
+                    break;
+                default:
+                    convertView.setBackgroundResource(R.color.unanswered);
+                    break;
+            }
 
         return convertView;
     }
