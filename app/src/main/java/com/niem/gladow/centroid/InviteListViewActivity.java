@@ -36,6 +36,13 @@ public class InviteListViewActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         _listView = (ListView) findViewById(R.id.listView);
+
+        gestureDetectorCompat = new GestureDetectorCompat(this, new MyGestureListener());
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
         //sorts the map in descending order
         _sortedMap = new TreeMap<>(Collections.reverseOrder());
         _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
@@ -74,12 +81,6 @@ public class InviteListViewActivity extends AppCompatActivity {
             }
         });
 
-        gestureDetectorCompat = new GestureDetectorCompat(this, new MyGestureListener());
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
         _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
         _adapter.notifyDataSetChanged();
         _listView.invalidateViews();
@@ -105,7 +106,7 @@ public class InviteListViewActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             //calls onCreate to update the view
-            onCreate(Bundle.EMPTY);
+            onResume();
         }
     };
 
