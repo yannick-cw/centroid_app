@@ -10,7 +10,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/centroidButton"
         android:text="sync"
         android:onClick="syncWithServer"
         android:id="@+id/button"
@@ -35,7 +34,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/centroidButton"
         android:text="START"
         android:onClick="startCentroid"
         android:id="@+id/startCentroid"
