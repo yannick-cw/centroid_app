@@ -53,7 +53,6 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         // get the corresponding Invite for this Element
         Invite _invite = InviteHandler.getInstance().getInviteByTime(entry.getKey());
 
-        //TODO Display Date and StartTime(=TimeStamp) as ID at the same time
         _viewHolder.number.setText(entry.getKey().toString());
         _viewHolder.number.setVisibility(View.GONE);
         _viewHolder.information.setText(Util.getInstance().getDate(entry.getKey())

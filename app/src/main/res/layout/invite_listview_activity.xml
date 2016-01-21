@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".InviteListViewActivity">
 
-    <!--<Button android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/testButton"-->
-        <!--android:text="@string/invite_Button"-->
-        <!--android:onClick="inviteFriends"-->
-        <!--android:layout_alignParentTop="true" />-->
-
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/listView"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/inviteFriendsButton" />
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-</RelativeLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/invite_listview_activity_content" />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -39,7 +41,6 @@ public class RestConnector extends AsyncTask<String, String, String> {
             case SEND:
                 result = restGet(params[1]);
                 PersistenceHandler.getInstance().createFriendMap(result);
-                //TODO optional both in createFriendMap
                 PersistenceHandler.getInstance().saveFriendMapToDB();
                 Log.d("friend Map", PersistenceHandler.getInstance().getFriendMap().values().toString());
                 break;
@@ -61,6 +62,10 @@ public class RestConnector extends AsyncTask<String, String, String> {
             URL url = new URL(HOST_ADDRESS+urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+            out.write("test");
+            out.close();
 
             Log.d("responseCode", new Integer(connection.getResponseCode()).toString());
 

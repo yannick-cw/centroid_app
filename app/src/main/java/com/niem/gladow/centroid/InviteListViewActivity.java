@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -21,17 +23,18 @@ import java.util.TreeMap;
 /**
  * Created by clem on 11.11.15.
  */
-public class InviteListViewActivity extends Activity {
+public class InviteListViewActivity extends AppCompatActivity {
     private ListView _listView;
     private TreeMap<Long, Invite> _sortedMap;
     private InviteHashMapArrayAdapter _adapter;
     private GestureDetectorCompat gestureDetectorCompat;
-    //todo delete invites from list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invite_listview_activity);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         _listView = (ListView) findViewById(R.id.listView);
         //sorts the map in descending order
         _sortedMap = new TreeMap<>(Collections.reverseOrder());

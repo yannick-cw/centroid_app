@@ -141,7 +141,6 @@ public class InviteActivity extends Activity {
 
     public void showCentroidOnMap(View view) {
         if(invite.getInviteNumber().equals(PersistenceHandler.getInstance().getOwnNumber())) {
-            //todo google api client?? Ist der hier immer schon da?
             LatLng _southWest = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()-0.003
                     , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() - 0.003);
             LatLng _northEast = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat() + 0.003
@@ -264,8 +263,9 @@ public class InviteActivity extends Activity {
         }
         declineInviteButton.setVisibility(View.GONE);
         acceptInviteButton.setVisibility(View.GONE);
-        //TODO check if centroid is active
-        onBackPressed();
+        //TODO is this working
+        onCreate(Bundle.EMPTY);
+        onResume();
     }
 
     public void chooseTransportationMode(final View _view){

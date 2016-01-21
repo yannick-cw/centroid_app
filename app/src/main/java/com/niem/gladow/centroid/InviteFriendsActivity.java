@@ -10,6 +10,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -31,7 +33,7 @@ import java.util.TreeMap;
 /**
  * Created by clem on 11.11.15.
  */
-public class InviteFriendsActivity extends Activity {
+public class InviteFriendsActivity extends AppCompatActivity {
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private GestureDetectorCompat gestureDetectorCompat;
 
@@ -40,6 +42,9 @@ public class InviteFriendsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invite_friends_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         final ListView _listView = (ListView) findViewById(R.id.listView);
         _listView.setOnTouchListener(new View.OnTouchListener(){

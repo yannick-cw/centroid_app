@@ -55,7 +55,6 @@ public class PersistenceHandler {
 
     public void createFriendMap (String contacts) {
         List<String> numbers = Arrays.asList(contacts.split(","));
-        //TODO old invalid contacts
         for (String str: numbers) {
             if(contactsMap.containsKey(str)){
                 friendMap.put(str, contactsMap.get(str));
@@ -138,7 +137,6 @@ public class PersistenceHandler {
      * tries to access the own number from the telephone and saves it
      * if this is not possible waits for the user input of the number and saves it
      * */
-    //todo remake ownnumber without / shit
     public void saveOwnNumber(Context context) {
         final Context _context = context;
         final EditText _mEdit = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
