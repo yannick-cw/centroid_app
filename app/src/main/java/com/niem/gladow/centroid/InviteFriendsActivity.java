@@ -207,7 +207,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
 
-            if(event2.getX() < event1.getX()){
+            if(event2.getX() < event1.getX() && event1.getX() - event2.getX() > 200){
                 //switch another activity
                 Intent intent = new Intent(InviteFriendsActivity.this, InviteListViewActivity.class);
                 startActivity(intent);

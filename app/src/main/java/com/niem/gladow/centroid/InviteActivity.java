@@ -58,6 +58,7 @@ public class InviteActivity extends Activity {
     private View inviteHeader;
     private ImageView transportationModeImage;
 
+    //todo string for location shit
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
