@@ -264,7 +264,6 @@ public class InviteActivity extends Activity {
         }
         declineInviteButton.setVisibility(View.GONE);
         acceptInviteButton.setVisibility(View.GONE);
-        //TODO is this working
         onCreate(Bundle.EMPTY);
         onResume();
     }
