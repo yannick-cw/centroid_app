@@ -30,6 +30,9 @@ import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -196,29 +199,35 @@ public class InviteActivity extends Activity {
             content += IS_EMPTY + ",";
         }
         content += place.getLatLng();
-        content = transportReady(content);
-        InviteHandler.getInstance().setChosenPlace(content, invite);
         TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
         _placesTextView.setVisibility(View.VISIBLE);
-        _placesTextView.setText(toReadableContent(content));
+        _placesTextView.setText(content);
 
+        //content = transportReady(content);
+        try {
+            content = URLEncoder.encode(content, "UTF-8");
+            content = transportReady(content);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        InviteHandler.getInstance().setChosenPlace(content, invite);
         new RestConnector(this).execute(RestConnector.POST, ADD_PLACE + "/" + invite.getStartTime()
-                + "/" + invite.getChosenPlace());
+                + "/" + content);
     }
 
     private String transportReady(String content) {
         String _content;
-        _content = content.replaceAll(" ", ":");
-        _content = _content.replaceAll("/", "");
-        _content = _content.replaceAll("\\(",",");
-        _content = _content.replaceAll("\\)","");
-        _content = _content.replaceAll("-","");
-        _content = _content.replaceAll("ß","ss");
+        _content = content.replaceAll("%", ";");
         return _content;
     }
 
     private String toReadableContent(String content) {
-        content = content.replaceAll(":"," ");
+        content = content.replaceAll(";","%");
+        try {
+            content = URLDecoder.decode(content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         List<String> _contentList = Arrays.asList(content.split(","));
         String _content = "Your chosen location: \n";
             _content += "Name: " + _contentList.get(0) + "\n";
