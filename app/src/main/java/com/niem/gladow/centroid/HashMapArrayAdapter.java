@@ -2,17 +2,23 @@ package com.niem.gladow.centroid;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by clem on 24/11/15.
@@ -23,7 +29,9 @@ public class HashMapArrayAdapter extends ArrayAdapter {
     private static class ViewHolder {
         TextView number;
         TextView name;
+        ImageView image;
         boolean checked;
+        TextDrawable textDrawable;
     }
 
     public HashMapArrayAdapter(Context context, int textViewResourceId, List<Map.Entry<String, Object>> objects) {
@@ -34,26 +42,37 @@ public class HashMapArrayAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder _viewHolder;
-
+        ColorGenerator _colorGenerator = ColorGenerator.MATERIAL;
         if (convertView == null) {
             /* There is no view at this position, we create a new one.
                In this case by inflating an xml layout */
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_view_item, parent, false);
             _viewHolder = new ViewHolder();
+            _viewHolder.image = (ImageView) convertView.findViewById(R.id.listView_image);
             _viewHolder.number = (TextView) convertView.findViewById(R.id.friend_number);
             _viewHolder.name = (TextView) convertView.findViewById(R.id.friend_name);
             convertView.setTag(_viewHolder);
         } else {
             /* We recycle a View that already exists */
             _viewHolder = (ViewHolder) convertView.getTag();
+
         }
 
         // Once we have a reference to the View we are returning, we set its values.
         Map.Entry<String, Object> entry = (Map.Entry<String, Object>) this.getItem(position);
 
+        //build image
+        String _name = entry.getValue().toString();
+        int _color = _colorGenerator.getColor(_name);
+        _viewHolder.textDrawable = TextDrawable.builder()
+                .buildRound(_name.substring(0,1), _color);
+        _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
+
         _viewHolder.number.setText(entry.getKey());
-        _viewHolder.name.setText(entry.getValue().toString());
+        _viewHolder.name.setText(_name);
         _viewHolder.checked = checkList.get(position);
+
+
 
         if(_viewHolder.checked){
             convertView.setBackgroundResource(R.color.accepted);

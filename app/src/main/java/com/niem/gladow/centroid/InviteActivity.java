@@ -120,6 +120,7 @@ public class InviteActivity extends Activity {
 
     //sets the transportationMode ImageView to the corresponding Image
     //TODO nice images with variable Resolutions
+    // TODO Declined Image
     private void setTransportationModeImage(TransportationMode transportationMode) {
         switch (transportationMode) {
             case FOOT:
@@ -268,6 +269,7 @@ public class InviteActivity extends Activity {
         onResume();
     }
 
+    //TODO wird nicht geupdatet wenn man noch in der inviteActivity ist und die gcm bekommt.
     public void chooseTransportationMode(final View _view){
         CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -317,29 +319,29 @@ public class InviteActivity extends Activity {
         }
     }
 
-    public void sendGps(View view) {
-        Log.d("sendOwnGps", "pressed");
-        //check for permission, if none do if
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        } else {
-            new GpsDataHandler(this);
-        }
-    }
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    sendGps(this.getCurrentFocus());
-                } else {
-                    Toast.makeText(this, "FINE_LOCATION Denied", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
+//    public void sendGps(View view) {
+//        Log.d("sendOwnGps", "pressed");
+//        //check for permission, if none do if
+//        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+//        } else {
+//            new GpsDataHandler(this);
+//        }
+//    }
+//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    sendGps(this.getCurrentFocus());
+//                } else {
+//                    Toast.makeText(this, "FINE_LOCATION Denied", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    }
 
     @Override
     protected void onPause() {

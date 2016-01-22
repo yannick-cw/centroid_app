@@ -80,8 +80,6 @@ public class InviteFriendsActivity extends AppCompatActivity {
                         Log.d("Name", _textViewClicked.getText().toString());
                         PersistenceHandler.getInstance().addToInviteList(_textViewClicked.getText().toString());
                     } else {
-                        /* TODO would be more elegant to check ListView after pressing send button
-                           and only add selected items to inviteList */
                         PersistenceHandler.getInstance().removeFromInviteList(_textViewClicked.getText().toString());
                     }
 
@@ -103,7 +101,6 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed (){
-        //TODO check if this can be made more elegantly (Maybe with onDestroy?)
         PersistenceHandler.getInstance().clearInviteList(); //cleanup of inviteList
         Intent intent = new Intent(InviteFriendsActivity.this, MainActivity.class);
         startActivity(intent);
