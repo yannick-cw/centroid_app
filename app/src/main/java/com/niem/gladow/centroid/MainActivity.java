@@ -151,6 +151,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //todo
+            new RestConnector(this).execute(RestConnector.SYNC_ALL,
+                    "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                            + InviteHandler.getInstance().getActiveInvitesString());
             return true;
         }
 

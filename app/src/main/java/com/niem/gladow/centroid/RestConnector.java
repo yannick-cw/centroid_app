@@ -19,8 +19,9 @@ import java.net.URL;
  */
 public class RestConnector extends AsyncTask<String, String, String> {
     public static final String POST = "1", GET = "2", SEND = "3", SYNC = "4";
-//    private static final String HOST_ADDRESS = "http://192.168.26.10:8080";
+    //    private static final String HOST_ADDRESS = "http://192.168.26.10:8080";
     private static final String HOST_ADDRESS = "http://schnutentier.ddns.net";
+    public static final String SYNC_ALL = "5";
     private Context context;
 
     public RestConnector(Context context) {
@@ -47,6 +48,11 @@ public class RestConnector extends AsyncTask<String, String, String> {
             case SYNC:
                 result = restGet(params[1]);
                 InviteHandler.getInstance().syncInvite(result, context);
+                break;
+            case SYNC_ALL:
+                result = restGet(params[1]);
+                InviteHandler.getInstance().syncAllInvites(result, context);
+                break;
             default:
                 result = "wrong input";
         }

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
+import com.niem.gladow.centroid.Enums.InviteStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,10 +49,10 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
         }
 
         // Once we have a reference to the View we are returning, we set its values.
-        Map.Entry<String, InviteReply> entry = (Map.Entry<String, InviteReply>) this.getItem(position);
+        Map.Entry<String, InviteStatus> entry = (Map.Entry<String, InviteStatus>) this.getItem(position);
 
-        _viewHolder.member.setText(entry.getKey());
-        _viewHolder.inviteReply = entry.getValue();
+        _viewHolder.member.setText(entry.getValue().getRealName() + " "  +entry.getKey() + " "  + entry.getValue().getTransportationMode());
+        _viewHolder.inviteReply = entry.getValue().getInviteReply();
 
         switch (_viewHolder.inviteReply){
             case DECLINED:

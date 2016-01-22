@@ -3,6 +3,7 @@ package com.niem.gladow.centroid;
 import android.util.Log;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
+import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.io.Serializable;
@@ -27,20 +28,19 @@ public class Invite implements Serializable {
     private InviteReply status = InviteReply.UNANSWERED;
     private TransportationMode transportationMode = TransportationMode.DEFAULT;
     private boolean existsCentroid = false;
-    private Map<String, InviteReply> allMembers;
+    private Map<String, InviteStatus> allMembers;
     private String chosenPlace;
 
     public Invite(String inviteNumber, long startTime, String allMembers) {
         this.inviteNumber = inviteNumber;
         this.startTime = startTime;
         List<String> _allMembers = new LinkedList<>(Arrays.asList(allMembers.split(",")));
-        //try to replace as many numbers as possible with names
-        findRealNames(_allMembers);
         //put list in map, InviteReply status is added
         this.allMembers = new HashMap<>();
         for (String str: _allMembers) {
-            this.allMembers.put(str, InviteReply.UNANSWERED);
+            this.allMembers.put(str, new InviteStatus());
         }
+        findRealNames(this.allMembers);
     }
 
 //todo numbers to name
@@ -92,33 +92,29 @@ public class Invite implements Serializable {
         this.transportationMode = transportationMode;
     }
 
-    public Map<String, InviteReply> getAllMembers() {
-        allMembers.remove(PersistenceHandler.getInstance().getOwnNumber());
-        return allMembers;
+    public Map<String, InviteStatus> getAllMembersWithoutSelf() {
+        Map<String, InviteStatus> tmp = new HashMap<>(allMembers);
+        tmp.remove(PersistenceHandler.getInstance().getOwnNumber());
+        return tmp;
     }
 
     //check with the persistence handler friendMap, if numbers can be replaced with names
-    private void findRealNames(List<String> allMembers) {
-        List<String> tmp = new LinkedList<>(allMembers);
+    private void findRealNames(Map<String, InviteStatus> allMembers) {
         Map<String,String> _friendMap = PersistenceHandler.getInstance().getFriendMap();
         //replace all possible numbers with real names
-        for (String _number: tmp) {
+        for (Map.Entry<String, InviteStatus> _entry: allMembers.entrySet()) {
             String _name;
-            _name = _friendMap.get(_number);
+            _name = _friendMap.get(_entry.getKey());
             if(_name != null) {
-                allMembers.remove(_number);
-                allMembers.add(_name);
+                _entry.getValue().setRealName(_name);
             }
         }
     }
 
-    public void updateMember(String updateNumber, InviteReply updateStatus) {
-        Log.d("XXXX", "in update");
-        List<String> tmp = new LinkedList<>();
-        tmp.add(updateNumber);
-        findRealNames(tmp);
-        Log.d("XXXX", "real name: " + tmp.get(0));
-        allMembers.put(tmp.get(0), updateStatus);
+    public void updateMember(String updateNumber, InviteReply updateStatus, TransportationMode transportationMode) {
+        allMembers.get(updateNumber).setInviteReply(updateStatus);
+        allMembers.get(updateNumber).setTransportationMode(transportationMode);
+        findRealNames(this.allMembers);
     }
 
     public String getChosenPlace() {

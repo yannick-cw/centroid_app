@@ -1,7 +1,5 @@
 package com.niem.gladow.centroid;
 
-import android.*;
-import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,7 +15,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,13 +27,12 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.niem.gladow.centroid.Enums.InviteReply;
+import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -83,8 +79,8 @@ public class InviteActivity extends Activity {
         navigateToPlaceButton = findViewById(R.id.navigateToPlace);
 
         //extracting members names from this invite
-        final TreeMap<String, InviteReply> _memberMap = new TreeMap<>(invite.getAllMembers());
-        Log.d("members",invite.getAllMembers().toString());
+        final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembersWithoutSelf());
+        Log.d("members",invite.getAllMembersWithoutSelf().toString());
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
         final MemberStatusHashMapArrayAdapter _adapter = new MemberStatusHashMapArrayAdapter(this,

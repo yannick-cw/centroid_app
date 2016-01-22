@@ -10,6 +10,7 @@ import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -93,8 +94,8 @@ public class InviteHandler {
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 
-    public void updateMemberStatus(long startTime, String updateNumber, InviteReply updateStatus) {
-        activeInvites.get(startTime).updateMember(updateNumber, updateStatus);
+    public void updateMemberStatus(long startTime, String updateNumber, InviteReply updateStatus, TransportationMode transportationMode) {
+        activeInvites.get(startTime).updateMember(updateNumber, updateStatus, transportationMode);
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 
@@ -115,10 +116,13 @@ public class InviteHandler {
             List<String> _list = Arrays.asList(result.split(":"));
             long id = Long.parseLong(_list.get(0));
             Log.d("XXXX", "Invite exists? " + activeInvites.containsKey(id));
-            Map<String, String> _numberStatus = new HashMap();
+            Map<String, List<String>> _numberStatus = new HashMap();
             String[] _pairNumberStatus = _list.get(2).split(",");
             for (String str: _pairNumberStatus) {
-                _numberStatus.put(str.split("&")[0], str.split("&")[1]);
+                List<String> _tupel = new LinkedList();
+                _tupel.add(str.split("&")[1]);
+                _tupel.add(str.split("&")[2]);
+                _numberStatus.put(str.split("&")[0], _tupel);
             }
             StringBuilder _allNumbers = new StringBuilder();
             for (String str: _numberStatus.keySet()) {
@@ -131,12 +135,13 @@ public class InviteHandler {
                 activeInvites.put(id, new Invite(_list.get(1), id, _allNumbers.toString()));
 
                 //check ownNumber status, set accordingly
-                activeInvites.get(id).setStatus(InviteReply.valueOf(_numberStatus.get(PersistenceHandler.getInstance().getOwnNumber())));
+                activeInvites.get(id).setStatus(InviteReply.valueOf(_numberStatus.get(PersistenceHandler.getInstance().getOwnNumber()).get(0)));
+                activeInvites.get(id).setTransportationMode(TransportationMode.valueOf(_numberStatus.get(PersistenceHandler.getInstance().getOwnNumber()).get(1)));
             }
 
             //update status and centroid
             for (String str: _numberStatus.keySet()) {
-                activeInvites.get(id).updateMember(str, InviteReply.valueOf(_numberStatus.get(str)));
+                activeInvites.get(id).updateMember(str, InviteReply.valueOf(_numberStatus.get(str).get(0)), TransportationMode.valueOf(_numberStatus.get(str).get(1)));
             }
             if(!_list.get(3).equals("null")) {
                 activeInvites.get(id).setCentroid(new Centroid(_list.get(3)));
@@ -144,6 +149,24 @@ public class InviteHandler {
             PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
             Intent _intent = new Intent(MyGcmListenerService.BROADCAST_UPDATE);
             context.sendBroadcast(_intent);
+        }
+    }
+
+    public String getActiveInvitesString() {
+        StringBuilder _ids = new StringBuilder();
+        for (long id: activeInvites.keySet()) {
+            _ids.append(id + ",");
+        }
+        _ids.deleteCharAt(_ids.length() - 1);
+        return _ids.toString();
+    }
+
+    public void syncAllInvites(String result, Context context) {
+        if(result != null && !"".equals(result)) {
+            List<String> ids = Arrays.asList(result.split(","));
+            for (String id: ids) {
+                new RestConnector(context).execute(RestConnector.SYNC, "/android/updateInvite/" + id);
+            }
         }
     }
 }
