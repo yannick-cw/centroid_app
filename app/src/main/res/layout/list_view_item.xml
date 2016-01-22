@@ -14,28 +14,39 @@
      limitations under the License.
 -->
 
-<TwoLineListItem xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingTop="2dip"
-    android:paddingBottom="2dip"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:mode="twoLine">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="2dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minHeight="?android:attr/listPreferredItemHeight">
 
-    <TextView android:id="@+id/friend_name"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/listView_image"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:layout_margin="5dp"
+        android:contentDescription="desc"
+
+        />
+
+
+    <TextView
+        android:id="@+id/friend_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
-        android:layout_marginLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:layout_marginTop="6dip"
-        android:textAppearance="?android:attr/textAppearanceListItem" />
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/listView_image"
+        android:layout_toRightOf="@+id/listView_image"
+        android:paddingLeft="20dp"
+        android:paddingBottom="10dp"
+        android:textSize="20sp" />
 
     <TextView android:id="@+id/friend_number"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/friend_name"
-        android:layout_alignStart="@+id/friend_name"
         android:layout_alignLeft="@+id/friend_name"
-        android:textAppearance="?android:attr/textAppearanceListItem" />
+        android:paddingLeft="20dp"
+        android:layout_below="@+id/friend_name"
+        android:textSize="16sp" />
 
-</TwoLineListItem>
+</RelativeLayout>
