@@ -77,7 +77,6 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.statusImage
                 .setImageResource(Util.getInstance()
                 .getResIdForTransportationImage(_invite.getTransportationMode()));
-
         return convertView;
     }
 }
