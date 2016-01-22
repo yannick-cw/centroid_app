@@ -1,6 +1,5 @@
 package com.niem.gladow.centroid;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -67,8 +66,8 @@ public class InviteListViewActivity extends AppCompatActivity {
                     // update state of the views
                     _adapter.notifyDataSetChanged();
 
-                    TextView _textViewClicked = (TextView) view.findViewById(R.id.invite_id);
-                    TextView _textViewClicked1 = (TextView) view.findViewById(R.id.invite_friend);
+                    TextView _textViewClicked = (TextView) view.findViewById(R.id.inviteListItemInviteId);
+                    TextView _textViewClicked1 = (TextView) view.findViewById(R.id.inviteListItemHints);
                     Log.d("Textview.gettext:", _textViewClicked.getText().toString()); //start_time/invite_id
                     Log.d("Textview1.gettext:", _textViewClicked1.getText().toString());
 

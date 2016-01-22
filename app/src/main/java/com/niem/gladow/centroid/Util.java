@@ -3,6 +3,8 @@ package com.niem.gladow.centroid;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.niem.gladow.centroid.Enums.TransportationMode;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by yannick_uni on 11/17/15.
@@ -69,6 +72,36 @@ public final class Util {
         Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.setTimeInMillis(time);
         return DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
+    }
+
+    public String getShortDate(long inviteTime) {
+        long _currentTime = System.currentTimeMillis();
+        Calendar cal = Calendar.getInstance(Locale.GERMAN);
+        cal.setTimeInMillis(inviteTime);
+        //TODO exchange lines below
+        //if(_currentTime-inviteTime < TimeUnit.DAYS.toMillis(1)){
+        if(_currentTime-inviteTime < TimeUnit.MINUTES.toMillis(30)){
+            return DateFormat.format("HH:mm:ss", cal).toString();
+        }else{
+            return DateFormat.format("dd. MMM", cal).toString();
+        }
+    }
+
+    public int getResIdForTransportationImage(TransportationMode transportationMode){
+        switch (transportationMode) {
+            case FOOT:
+                return R.drawable.feet;
+            case BIKE:
+                return R.drawable.bike;
+            case CAR:
+                return R.drawable.car;
+            case PUBLIC:
+                return R.drawable.publictransport;
+            case DEFAULT:
+                return R.drawable.ic_media_play;
+            default:
+                return R.drawable.ic_media_pause;
+        }
     }
 
     public static <K, V extends Comparable<? super V>> Map<K, V>

@@ -1,6 +1,5 @@
 package com.niem.gladow.centroid;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,10 +24,7 @@ import android.widget.Toast;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by clem on 11.11.15.
@@ -58,7 +54,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
         final Map<String, String> _map = PersistenceHandler.getInstance().getFriendMap();
 
-        final HashMapArrayAdapter _adapter = new HashMapArrayAdapter(this,
+        final InviteFriendsHashMapArrayAdapter _adapter = new InviteFriendsHashMapArrayAdapter(this,
                 R.layout.list_view_item, new ArrayList(_map.entrySet()));
         _adapter.setCheckList(_map.size());
         _listView.setAdapter(_adapter);
@@ -80,8 +76,6 @@ public class InviteFriendsActivity extends AppCompatActivity {
                         Log.d("Name", _textViewClicked.getText().toString());
                         PersistenceHandler.getInstance().addToInviteList(_textViewClicked.getText().toString());
                     } else {
-                        /* TODO would be more elegant to check ListView after pressing send button
-                           and only add selected items to inviteList */
                         PersistenceHandler.getInstance().removeFromInviteList(_textViewClicked.getText().toString());
                     }
 
@@ -103,7 +97,6 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed (){
-        //TODO check if this can be made more elegantly (Maybe with onDestroy?)
         PersistenceHandler.getInstance().clearInviteList(); //cleanup of inviteList
         Intent intent = new Intent(InviteFriendsActivity.this, MainActivity.class);
         startActivity(intent);
