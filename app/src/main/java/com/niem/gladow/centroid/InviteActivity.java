@@ -227,8 +227,8 @@ public class InviteActivity extends Activity {
 
     private String transportReady(String content) {
         String _content;
-        _content = content.replaceAll(" ",":");
-        _content = _content.replaceAll("/","");
+        _content = content.replaceAll(" ", ":");
+        _content = _content.replaceAll("/", "");
         _content = _content.replaceAll("\\(",",");
         _content = _content.replaceAll("\\)","");
         _content = _content.replaceAll("-","");
@@ -274,6 +274,7 @@ public class InviteActivity extends Activity {
         builder.setTitle("Pick a transportation Mode");
         builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
             boolean _hasChosen = false;
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // the user clicked on transportationModes[which]
@@ -295,7 +296,7 @@ public class InviteActivity extends Activity {
                         _hasChosen = true;
                         break;
                 }
-                if(_hasChosen){
+                if (_hasChosen) {
                     responseToInvite(_view);
                 }
             }
@@ -339,6 +340,10 @@ public class InviteActivity extends Activity {
                 }
             }
         }
+    }
+
+    public void syncInvite(View view) {
+        new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + invite.getStartTime());
     }
 
     @Override

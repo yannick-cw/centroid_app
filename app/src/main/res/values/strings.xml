@@ -8,6 +8,7 @@
     <string name="show_centroid">Show centroid</string>
     <string name="navigate_to">Navigate to Centroid</string>
     <string name="navigate_toPlace">Navigate to Location</string>
+    <string name="sync">sync</string>
     <string name="invite_Button">Invite</string>
 <string-array name="transportation_modes">
     <item>Feet</item>

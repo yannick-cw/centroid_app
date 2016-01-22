@@ -1,11 +1,16 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -96,5 +101,49 @@ public class InviteHandler {
     public void setChosenPlace(String place, Invite invite) {
         invite.setChosenPlace(place);
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
+    }
+
+    /**
+     * parsing the transmitted string
+     * either creates new invite or updates existing one
+     * @param result
+     * @param context
+     */
+    public void syncInvite(String result, Context context) {
+        Log.d("XXXX", "result update: " + result);
+        if(result != null && !"".equals(result)) {
+            List<String> _list = Arrays.asList(result.split(":"));
+            long id = Long.parseLong(_list.get(0));
+            Log.d("XXXX", "Invite exists? " + activeInvites.containsKey(id));
+            Map<String, String> _numberStatus = new HashMap();
+            String[] _pairNumberStatus = _list.get(2).split(",");
+            for (String str: _pairNumberStatus) {
+                _numberStatus.put(str.split("&")[0], str.split("&")[1]);
+            }
+            StringBuilder _allNumbers = new StringBuilder();
+            for (String str: _numberStatus.keySet()) {
+                _allNumbers.append(str + ",");
+            }
+            _allNumbers.deleteCharAt(_allNumbers.length() - 1);
+
+            //if invite does not already exist, create new one
+            if(!activeInvites.containsKey(id)) {
+                activeInvites.put(id, new Invite(_list.get(1), id, _allNumbers.toString()));
+
+                //check ownNumber status, set accordingly
+                activeInvites.get(id).setStatus(InviteReply.valueOf(_numberStatus.get(PersistenceHandler.getInstance().getOwnNumber())));
+            }
+
+            //update status and centroid
+            for (String str: _numberStatus.keySet()) {
+                activeInvites.get(id).updateMember(str, InviteReply.valueOf(_numberStatus.get(str)));
+            }
+            if(!_list.get(3).equals("null")) {
+                activeInvites.get(id).setCentroid(new Centroid(_list.get(3)));
+            }
+            PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
+            Intent _intent = new Intent(MyGcmListenerService.BROADCAST_UPDATE);
+            context.sendBroadcast(_intent);
+        }
     }
 }

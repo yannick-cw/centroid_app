@@ -63,6 +63,7 @@ public class MyGcmListenerService extends GcmListenerService {
         InviteHandler inviteHandler = InviteHandler.getInstance();
         Log.d("XXXX", "GMC RECEIVE: " + MessageType.valueOf(_messageType));
         switch (MessageType.valueOf(_messageType)) {
+            //todo sync button
             case INVITE:
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
@@ -85,18 +86,27 @@ public class MyGcmListenerService extends GcmListenerService {
                 inviteHandler.updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED);
                 break;
             case CENTROID:
-                String _centroid = data.get(CENTROID).toString();
-                inviteHandler.addCentroidToInvite(_startTime, _centroid);
-                Log.d(MyGcmListenerService.class.getName(), "Centroid: " + _centroid);
-                Log.d(MyGcmListenerService.class.getName(), "Time: " + _startTime);
-                sendNotification("you got a new centroid!", "centroid arrived");
+                if(inviteHandler.getInviteByTime(_startTime) != null) {
+                    String _centroid = data.get(CENTROID).toString();
+                    inviteHandler.addCentroidToInvite(_startTime, _centroid);
+                    Log.d(MyGcmListenerService.class.getName(), "Centroid: " + _centroid);
+                    Log.d(MyGcmListenerService.class.getName(), "Time: " + _startTime);
+                    sendNotification("you got a new centroid!", "centroid arrived");
+                } else {
+                    new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + _startTime);
+                }
                 break;
             case UPDATE:
-                String _updateNumber = data.get(UPDATE_NUMBER).toString();
-                InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
-                inviteHandler.updateMemberStatus(_startTime, _updateNumber, _updateStatus);
+                if(inviteHandler.getInviteByTime(_startTime) != null) {
+                    String _updateNumber = data.get(UPDATE_NUMBER).toString();
+                    InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
+                    inviteHandler.updateMemberStatus(_startTime, _updateNumber, _updateStatus);
+                } else {
+                    new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + _startTime);
+                }
                 break;
             case PLACE:
+                //todo get update from server, shit is fucked up
                 String _place = data.get(PLACE).toString();
                 inviteHandler.setChosenPlace(_place, inviteHandler.getInviteByTime(_startTime));
                 break;

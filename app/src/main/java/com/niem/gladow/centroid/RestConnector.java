@@ -18,7 +18,7 @@ import java.net.URL;
  * Created by yannick_uni on 11/10/15.
  */
 public class RestConnector extends AsyncTask<String, String, String> {
-    public static final String POST = "1", GET = "2", SEND = "3";
+    public static final String POST = "1", GET = "2", SEND = "3", SYNC = "4";
 //    private static final String HOST_ADDRESS = "http://192.168.26.10:8080";
     private static final String HOST_ADDRESS = "http://schnutentier.ddns.net";
     private Context context;
@@ -44,6 +44,9 @@ public class RestConnector extends AsyncTask<String, String, String> {
                 PersistenceHandler.getInstance().saveFriendMapToDB();
                 Log.d("friend Map", PersistenceHandler.getInstance().getFriendMap().values().toString());
                 break;
+            case SYNC:
+                result = restGet(params[1]);
+                InviteHandler.getInstance().syncInvite(result, context);
             default:
                 result = "wrong input";
         }

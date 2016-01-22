@@ -43,7 +43,7 @@ public class Invite implements Serializable {
         }
     }
 
-//todo multiple numbers to name
+//todo numbers to name
     public long getStartTime() {
         return startTime;
     }
