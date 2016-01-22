@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">centroid</string>
     <string name="invite_friends">centroid - friendlist</string>
+    <string name="invite_activity">centroid - invite</string>
     <string name="invite_listview">centroid - your invites</string>
     <string name="action_settings">refresh</string>
     <string name="accept">Accept</string>

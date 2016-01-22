@@ -12,8 +12,12 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,7 +45,7 @@ import java.util.TreeMap;
 /**
  * Created by clem on 05/01/16.
  */
-public class InviteActivity extends Activity {
+public class InviteActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int PLACE_PICKER_REQUEST = 1;
     public static final String ADD_PLACE = "/android/addPlace";
@@ -64,6 +68,9 @@ public class InviteActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invite_activity);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //getting the current invite, by Id that was passed in this activity via putExtra(String)
         invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
         Log.d("Input Intent:",getIntent().getStringExtra("InviteId"));
@@ -73,13 +80,20 @@ public class InviteActivity extends Activity {
         acceptInviteButton = findViewById(R.id.acceptInviteButton);
         inviteHeader = findViewById(R.id.inviteHeader);
         transportationModeImage = (ImageView) findViewById(R.id.transportationModeImage);
+        showCentroidButton = findViewById(R.id.showCentroidButton);
+        navigateToCentroidButton = findViewById(R.id.navigateToCentroid);
+        navigateToPlaceButton = findViewById(R.id.navigateToPlace);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         TextView _inviteStatus1 = (TextView)  findViewById(R.id.InviteStatusText1);
         TextView _inviteStatus2 = (TextView)  findViewById(R.id.InviteStatusText2);
         _inviteStatus1.setText(Util.getInstance().getDate(invite.getStartTime()));
         _inviteStatus2.setText(invite.getStatus().toString());
-        showCentroidButton = findViewById(R.id.showCentroidButton);
-        navigateToCentroidButton = findViewById(R.id.navigateToCentroid);
-        navigateToPlaceButton = findViewById(R.id.navigateToPlace);
 
         //extracting members names from this invite
         final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembersWithoutSelf());
@@ -87,15 +101,10 @@ public class InviteActivity extends Activity {
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
         final MemberStatusHashMapArrayAdapter _adapter = new MemberStatusHashMapArrayAdapter(this,
-               R.layout.member_list_item, new ArrayList(_memberMap.entrySet()));
+                R.layout.member_list_item, new ArrayList(_memberMap.entrySet()));
 //        _adapter.setCheckList(_memberMap.size());
 
         _listView.setAdapter(_adapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         //makes buttons visible if invite exits and chooses correct Image
         if (invite.getStatus() != InviteReply.UNANSWERED) {
             //sets the transportationMode ImageView to the corresponding Image
@@ -333,10 +342,29 @@ public class InviteActivity extends Activity {
 //        }
 //    }
 
-    public void syncInvite(View view) {
-        new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + invite.getStartTime());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            //todo
+            new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + invite.getStartTime());
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -348,7 +376,6 @@ public class InviteActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             //calls onCreate to update the view
-            onCreate(Bundle.EMPTY);
             onResume();
         }
     };
