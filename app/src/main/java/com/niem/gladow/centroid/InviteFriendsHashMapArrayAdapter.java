@@ -23,18 +23,19 @@ import java.util.Random;
 /**
  * Created by clem on 24/11/15.
  */
-public class HashMapArrayAdapter extends ArrayAdapter {
+public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
     private ArrayList<Boolean> checkList;
 
     private static class ViewHolder {
         TextView number;
         TextView name;
         ImageView image;
+        ImageView statusImage;
         boolean checked;
         TextDrawable textDrawable;
     }
 
-    public HashMapArrayAdapter(Context context, int textViewResourceId, List<Map.Entry<String, Object>> objects) {
+    public InviteFriendsHashMapArrayAdapter(Context context, int textViewResourceId, List<Map.Entry<String, Object>> objects) {
         super(context, textViewResourceId, objects);
     }
 
@@ -75,9 +76,9 @@ public class HashMapArrayAdapter extends ArrayAdapter {
 
 
         if(_viewHolder.checked){
-            convertView.setBackgroundResource(R.color.accepted);
-        }else{
             convertView.setBackgroundResource(R.color.unanswered);
+        }else{
+            convertView.setBackgroundResource(R.color.white);
         }
 
         return convertView;

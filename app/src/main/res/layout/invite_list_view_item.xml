@@ -11,7 +11,7 @@
         tools:ignore="UselessParent" >
 
         <ImageView
-            android:id="@+id/chatListItemImage"
+            android:id="@+id/inviteListItemImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
@@ -19,7 +19,7 @@
             tools:ignore="ContentDescription" />
 
         <LinearLayout
-            android:id="@+id/chatListItemInfoContainer"
+            android:id="@+id/inviteListItemInfoContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -32,8 +32,8 @@
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/chatListItemName"
-                    style="@style/chatListItemName"
+                    android:id="@+id/inviteListItemName"
+                    style="@style/inviteListItemName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -42,8 +42,8 @@
                     tools:ignore="HardcodedText" />
 
                 <TextView
-                    android:id="@+id/chatListItemDate"
-                    style="@style/chatListItemDate"
+                    android:id="@+id/inviteListItemDate"
+                    style="@style/inviteListItemDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -57,10 +57,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-
                 <TextView
-                    android:id="@+id/chatListItemHints"
-                    style="@style/chatListItemHints"
+                    android:id="@+id/inviteListItemHints"
+                    style="@style/inviteListItemHints"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -72,8 +71,8 @@
                     tools:ignore="HardcodedText" />
 
                 <TextView
-                    android:id="@+id/icNewCount"
-                    style="@style/chatListItemNewCount"
+                    android:id="@+id/inviteListItemInviteId"
+                    style="@style/inviteListItemInviteId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -84,12 +83,11 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/chatListItemMenuButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/inviteListItemStatusImage"
+            android:layout_height="25dp"
+            android:layout_width="25dp"
             android:layout_gravity="center_vertical"
             android:scaleType="center"
-            android:src="@drawable/ic_media_play"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>

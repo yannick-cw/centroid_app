@@ -4,4 +4,5 @@
     <color name="accepted">#81b625</color>
     <color name="unanswered">#ccc7c0</color>
     <color name="ready">#74ff0a</color>
+    <color name="white">#FFFFFF</color>
 </resources>

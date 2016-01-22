@@ -99,7 +99,11 @@ public class InviteActivity extends Activity {
         super.onResume();
         //makes buttons visible if invite exits and chooses correct Image
         if (invite.getStatus() != InviteReply.UNANSWERED) {
-            setTransportationModeImage(invite.getTransportationMode());
+            //sets the transportationMode ImageView to the corresponding Image
+            //TODO nice images with variable Resolutions
+            // TODO Declined Image
+            transportationModeImage.setImageResource(Util.getInstance().getResIdForTransportationImage(invite.getTransportationMode()));
+
             declineInviteButton.setVisibility(View.GONE);
             acceptInviteButton.setVisibility(View.GONE);
             inviteHeader.setVisibility(View.VISIBLE);
@@ -118,28 +122,8 @@ public class InviteActivity extends Activity {
         this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
     }
 
-    //sets the transportationMode ImageView to the corresponding Image
-    //TODO nice images with variable Resolutions
-    // TODO Declined Image
-    private void setTransportationModeImage(TransportationMode transportationMode) {
-        switch (transportationMode) {
-            case FOOT:
-                transportationModeImage.setImageResource(R.drawable.feet);
-                break;
-            case BIKE:
-                transportationModeImage.setImageResource(R.drawable.bike);
-                break;
-            case CAR:
-                transportationModeImage.setImageResource(R.drawable.car);
-                break;
-            case PUBLIC:
-                transportationModeImage.setImageResource(R.drawable.publictransport);
-                break;
-            case DEFAULT:
-                transportationModeImage.setImageResource(R.drawable.my_selector);
-                break;
-        }
-    }
+
+
 
     public void showCentroidOnMap(View view) {
         if(invite.getInviteNumber().equals(PersistenceHandler.getInstance().getOwnNumber())) {
