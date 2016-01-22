@@ -82,8 +82,10 @@ public class MiniDB implements MapDB, StringDB{
     }
 
     public boolean saveMap(Map map, String fileName) {
-        try (ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE))) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE));
             out.writeObject(map);
+            out.close();
             return true;
         } catch (IOException e) {
             Log.e("save map", e.getMessage());
@@ -93,15 +95,16 @@ public class MiniDB implements MapDB, StringDB{
 
     public <T,L> Map<T, L> loadMap(String fileName) {
         Map<T, L> map = new HashMap<>();
-
-        try (ObjectInputStream in = new ObjectInputStream(context.openFileInput(fileName))){
+        ObjectInputStream in;
+        try {
+            in = new ObjectInputStream(context.openFileInput(fileName));
             map = (Map<T, L>) in.readObject();
+            in.close();
         } catch (ClassNotFoundException e) {
             Log.e("load map", e.getMessage());
         } catch (IOException e) {
             //Log.e("load map", e.getMessage());
         }
-
         return map;
     }
 }

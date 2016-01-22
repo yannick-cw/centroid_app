@@ -57,11 +57,11 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         MiniDB.init(this);
-
         String _messageType = data.get(MESSAGE_TYPE).toString();
         long _startTime = Long.parseLong(data.get(TIME).toString());
 
         InviteHandler inviteHandler = InviteHandler.getInstance();
+        Log.d("XXXX", "GMC RECEIVE: " + MessageType.valueOf(_messageType));
         switch (MessageType.valueOf(_messageType)) {
             case INVITE:
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();

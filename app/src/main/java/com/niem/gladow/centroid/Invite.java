@@ -1,5 +1,7 @@
 package com.niem.gladow.centroid;
 
+import android.util.Log;
+
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
@@ -41,7 +43,7 @@ public class Invite implements Serializable {
         }
     }
 
-
+//todo multiple numbers to name
     public long getStartTime() {
         return startTime;
     }
@@ -111,9 +113,11 @@ public class Invite implements Serializable {
     }
 
     public void updateMember(String updateNumber, InviteReply updateStatus) {
+        Log.d("XXXX", "in update");
         List<String> tmp = new LinkedList<>();
         tmp.add(updateNumber);
         findRealNames(tmp);
+        Log.d("XXXX", "real name: " + tmp.get(0));
         allMembers.put(tmp.get(0), updateStatus);
     }
 
