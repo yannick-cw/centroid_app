@@ -97,7 +97,7 @@ public class InviteActivity extends AppCompatActivity {
 
         //extracting members names from this invite
         final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembersWithoutSelf());
-        Log.d("members",invite.getAllMembersWithoutSelf().toString());
+        Log.d("members", invite.getAllMembersWithoutSelf().toString());
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
         final MemberStatusHashMapArrayAdapter _adapter = new MemberStatusHashMapArrayAdapter(this,
@@ -124,7 +124,7 @@ public class InviteActivity extends AppCompatActivity {
         if(invite.getChosenPlace() != null) {
             TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
             _placesTextView.setVisibility(View.VISIBLE);
-            _placesTextView.setText(toReadableContent(invite.getChosenPlace()));
+            _placesTextView.setText(toDisplayContent(toReadableContent(invite.getChosenPlace())));
             navigateToPlaceButton.setEnabled(true);
         }
 
@@ -232,6 +232,8 @@ public class InviteActivity extends AppCompatActivity {
     private String transportReady(String content) {
         String _content;
         _content = content.replaceAll("%", "rvxy");
+        _content = content.replaceAll("\\(", ",");
+        _content = content.replaceAll("\\)", "");
         return _content;
     }
 
@@ -245,14 +247,17 @@ public class InviteActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         Log.d("XXXX", "place in toReadable after decode: " + content);
+        return content;
+    }
 
+    private String toDisplayContent(String content) {
         List<String> _contentList = Arrays.asList(content.split(","));
         String _content = "Your chosen location: \n";
-            _content += "Name: " + _contentList.get(0) + "\n";
+        _content += "Name: " + _contentList.get(0) + "\n";
 
-            _content += "Address: " + _contentList.get(1) + "\n";
+        _content += "Address: " + _contentList.get(1) + "\n";
 
-            _content += "Phone: " + _contentList.get(2) + "\n";
+        _content += "Phone: " + _contentList.get(2) + "\n";
         return _content;
     }
 
