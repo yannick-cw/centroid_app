@@ -232,8 +232,8 @@ public class InviteActivity extends AppCompatActivity {
     private String transportReady(String content) {
         String _content;
         _content = content.replaceAll("%", "rvxy");
-        _content = content.replaceAll("\\(", ",");
-        _content = content.replaceAll("\\)", "");
+        _content = _content.replaceAll("\\(", ",");
+        _content = _content.replaceAll("\\)", "");
         return _content;
     }
 
