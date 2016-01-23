@@ -78,6 +78,12 @@ public class InviteHandler {
 
     public void responseToInvite(long startTime, InviteReply inviteReply
                                         ,TransportationMode transportationMode, Context context) {
+        //if the users accepts the invite his latest gps signal is transmitted to the server
+        //and the status is set to accepted
+        if (inviteReply.equals(InviteReply.ACCEPTED)) {
+            new GpsDataHandler(context);
+        }
+
         //send reply
         new RestConnector(context).execute(RestConnector.POST, INVITE_RESPONSE +
                 PersistenceHandler.getInstance().getOwnNumber() + "/" + startTime + "/" +
@@ -85,12 +91,6 @@ public class InviteHandler {
 
         //sets the invite status either accepted or declined
         getInviteByTime(startTime).setStatus(inviteReply);
-
-        //if the users accepts the invite his latest gps signal is transmitted to the server
-        //and the status is set to accepted
-        if (inviteReply.equals(InviteReply.ACCEPTED)) {
-            new GpsDataHandler(context);
-        }
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }
 

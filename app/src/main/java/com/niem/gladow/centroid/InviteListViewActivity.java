@@ -51,7 +51,7 @@ public class InviteListViewActivity extends AppCompatActivity {
         _adapter = new InviteHashMapArrayAdapter(this,
                 R.layout.invite_list_view_item, new ArrayList(_sortedMap.entrySet()));
         _listView.setAdapter(_adapter);
-        _listView.setOnTouchListener(new View.OnTouchListener(){
+        _listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 InviteListViewActivity.this.onTouchEvent(event);
@@ -85,14 +85,21 @@ public class InviteListViewActivity extends AppCompatActivity {
         _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
         _adapter.notifyDataSetChanged();
         _listView.invalidateViews();
-        this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
-
+        try {
+            this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        this.unregisterReceiver(broadcastReceiver);
+        try {
+            this.unregisterReceiver(broadcastReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void startInviteActivity(String inviteId){
@@ -106,7 +113,7 @@ public class InviteListViewActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            //calls onCreate to update the view
+            //calls onResume to update the view
             onResume();
         }
     };

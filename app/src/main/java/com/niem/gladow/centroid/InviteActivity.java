@@ -127,7 +127,12 @@ public class InviteActivity extends AppCompatActivity {
             _placesTextView.setText(toReadableContent(invite.getChosenPlace()));
             navigateToPlaceButton.setEnabled(true);
         }
-        this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
+
+        try {
+            this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -169,7 +174,7 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     public void navigateToPlace(View view) {
-        String [] _placeInfo = invite.getChosenPlace().split(",");
+        String [] _placeInfo = toReadableContent(invite.getChosenPlace()).split(",");
 
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + _placeInfo[_placeInfo.length-2]
                 + "," + _placeInfo[_placeInfo.length-1] + "&mode=" + invite.getTransportationMode().getMode());
@@ -263,7 +268,6 @@ public class InviteActivity extends AppCompatActivity {
         }
         declineInviteButton.setVisibility(View.GONE);
         acceptInviteButton.setVisibility(View.GONE);
-        onCreate(Bundle.EMPTY);
         onResume();
     }
 
@@ -368,7 +372,11 @@ public class InviteActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        this.unregisterReceiver(broadcastReceiver);
+        try {
+            this.unregisterReceiver(broadcastReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //Broadcast handler
