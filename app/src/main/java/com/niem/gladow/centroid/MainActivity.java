@@ -1,6 +1,7 @@
 package com.niem.gladow.centroid;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.niem.gladow.centroid.Database.MiniDB;
 
 
@@ -32,7 +35,17 @@ public class MainActivity extends AppCompatActivity {
         initMiniDb();
 
         //TODO check if token is still valid right now it is reloaded every start (same one)
-        //TODO additional check if play services installed please
+
+        //check if right google play service is available
+        Integer resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode == ConnectionResult.SUCCESS) {
+            //Do what you want
+        } else {
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 0);
+            if (dialog != null) {
+                dialog.show();
+            }
+        }
 
         if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
             Intent _intent = new Intent(this, WelcomeViewActivity.class);
@@ -151,6 +164,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //todo
+            new RestConnector(this).execute(RestConnector.SYNC_ALL,
+                    "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                            + InviteHandler.getInstance().getActiveInvitesString());
+            sendContacts();
             return true;
         }
 

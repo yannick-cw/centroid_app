@@ -63,7 +63,7 @@ public class MyGcmListenerService extends GcmListenerService {
         InviteHandler inviteHandler = InviteHandler.getInstance();
         Log.d("XXXX", "GMC RECEIVE: " + MessageType.valueOf(_messageType));
         switch (MessageType.valueOf(_messageType)) {
-            //todo sync button
+            //todo test/resolve incoming number -> name
             case INVITE:
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
@@ -75,6 +75,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     inviteHandler.setInviteStatus(_startTime, InviteReply.ACCEPTED);
                     inviteHandler.getInviteByTime(_startTime).setTransportationMode(_trans);
                     sendNotification("you created a centroid, awesome!", "centroid created");
+                    inviteHandler.updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED, TransportationMode.DEFAULT);
                 }
                 else {
                     String _inviteName = PersistenceHandler.getInstance().getFriendMap().get(_inviteNumber);
@@ -82,8 +83,8 @@ public class MyGcmListenerService extends GcmListenerService {
                         _inviteName = _inviteNumber;
                     }
                     sendNotification("you got invited by: " + _inviteName, "centroid invite");
+                    inviteHandler.updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED, TransportationMode.DEFAULT);
                 }
-                inviteHandler.updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED);
                 break;
             case CENTROID:
                 if(inviteHandler.getInviteByTime(_startTime) != null) {
@@ -100,13 +101,12 @@ public class MyGcmListenerService extends GcmListenerService {
                 if(inviteHandler.getInviteByTime(_startTime) != null) {
                     String _updateNumber = data.get(UPDATE_NUMBER).toString();
                     InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
-                    inviteHandler.updateMemberStatus(_startTime, _updateNumber, _updateStatus);
+                    inviteHandler.updateMemberStatus(_startTime, _updateNumber, _updateStatus, TransportationMode.DEFAULT);
                 } else {
                     new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + _startTime);
                 }
                 break;
             case PLACE:
-                //todo get update from server, shit is fucked up
                 String _place = data.get(PLACE).toString();
                 inviteHandler.setChosenPlace(_place, inviteHandler.getInviteByTime(_startTime));
                 break;
