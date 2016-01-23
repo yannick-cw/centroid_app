@@ -108,6 +108,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 break;
             case PLACE:
                 String _place = data.get(PLACE).toString();
+                Log.d("XXXX", "place in GCM: " + _place);
                 inviteHandler.setChosenPlace(_place, inviteHandler.getInviteByTime(_startTime));
                 break;
             default:

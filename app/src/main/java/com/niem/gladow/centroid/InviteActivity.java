@@ -231,17 +231,21 @@ public class InviteActivity extends AppCompatActivity {
 
     private String transportReady(String content) {
         String _content;
-        _content = content.replaceAll("%", ";");
+        _content = content.replaceAll("%", "rvxy");
         return _content;
     }
 
     private String toReadableContent(String content) {
-        content = content.replaceAll(";","%");
+        Log.d("XXXX", "place in toReadable start: " + content);
+
+        content = content.replaceAll("rvxy","%");
         try {
             content = URLDecoder.decode(content, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        Log.d("XXXX", "place in toReadable after decode: " + content);
+
         List<String> _contentList = Arrays.asList(content.split(","));
         String _content = "Your chosen location: \n";
             _content += "Name: " + _contentList.get(0) + "\n";
