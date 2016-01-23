@@ -217,13 +217,8 @@ public class InviteActivity extends AppCompatActivity {
         _placesTextView.setVisibility(View.VISIBLE);
         _placesTextView.setText(content);
 
-        //content = transportReady(content);
-        try {
-            content = URLEncoder.encode(content, "UTF-8");
-            content = transportReady(content);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        content = transportReady(content);
+
         InviteHandler.getInstance().setChosenPlace(content, invite);
         new RestConnector(this).execute(RestConnector.POST, ADD_PLACE + "/" + invite.getStartTime()
                 + "/" + content);
@@ -231,9 +226,15 @@ public class InviteActivity extends AppCompatActivity {
 
     private String transportReady(String content) {
         String _content;
-        _content = content.replaceAll("%", "rvxy");
-        _content = _content.replaceAll("\\(", ",");
+        _content = content.replaceAll("\\(", ",");
         _content = _content.replaceAll("\\)", "");
+        try {
+            _content = URLEncoder.encode(_content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        _content = _content.replaceAll("%", "rvxy");
+
         return _content;
     }
 
