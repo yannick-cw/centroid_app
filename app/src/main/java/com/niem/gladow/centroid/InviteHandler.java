@@ -111,6 +111,7 @@ public class InviteHandler {
      * @param context
      */
     public void syncInvite(String result, Context context) {
+        //todo place missing
         Log.d("XXXX", "result update: " + result);
         if(result != null && !"".equals(result)) {
             List<String> _list = Arrays.asList(result.split(":"));
@@ -157,7 +158,11 @@ public class InviteHandler {
         for (long id: activeInvites.keySet()) {
             _ids.append(id + ",");
         }
-        _ids.deleteCharAt(_ids.length() - 1);
+        if(_ids.length()>0) {
+            _ids.deleteCharAt(_ids.length() - 1);
+        } else {
+            _ids.append("0");
+        }
         return _ids.toString();
     }
 

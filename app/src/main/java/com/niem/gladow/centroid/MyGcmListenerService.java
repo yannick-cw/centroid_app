@@ -64,6 +64,7 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.d("XXXX", "GMC RECEIVE: " + MessageType.valueOf(_messageType));
         switch (MessageType.valueOf(_messageType)) {
             //todo test/resolve incoming number -> name
+            //todo transport mode missing
             case INVITE:
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
