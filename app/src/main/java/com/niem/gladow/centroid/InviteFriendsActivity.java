@@ -50,7 +50,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        final Button _inviteFriendsButton = (Button) findViewById(R.id.inviteFriendsButton);
+        final Button _inviteFriendsButton = (Button) findViewById(R.id.showCentroidsButton);
 
         final Map<String, String> _map = PersistenceHandler.getInstance().getFriendMap();
 
@@ -203,7 +203,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
             if(event2.getX() < event1.getX() && event1.getX() - event2.getX() > 200 && Math.abs(event2.getY() - event1.getY()) < 200){
                 //switch another activity
-                Intent intent = new Intent(InviteFriendsActivity.this, InviteListViewActivity.class);
+                Intent intent = new Intent(InviteFriendsActivity.this, ShowCentroidsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_slide_in, R.anim.left_slide_out);
                 finish();

@@ -139,7 +139,7 @@ public class PersistenceHandler {
      * */
     public void saveOwnNumber(Context context) {
         final Context _context = context;
-        final EditText _mEdit = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
+        final EditText _inputNumberEditText = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
 
         TelephonyManager telephonyManager = (TelephonyManager) _context.getSystemService(Context.TELEPHONY_SERVICE);
         if (ownNumber.equals("/")) {
@@ -152,17 +152,17 @@ public class PersistenceHandler {
         // Check if number was stored correctly in Phone, ask for User Input
         if (ownNumber.equals("/")) {
             Log.d("sendOwnNumber", "if");
-            _mEdit.setVisibility(View.VISIBLE);
-            _mEdit.setOnKeyListener(new View.OnKeyListener() {
+            _inputNumberEditText.setVisibility(View.VISIBLE);
+            _inputNumberEditText.setOnKeyListener(new View.OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     // If the event is a key-down event on the "enter" button
                     if ((event.getAction() == KeyEvent.ACTION_DOWN)
                             && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         // Perform action on Enter-key press
-                        Toast.makeText(_context, _mEdit.getText(), Toast.LENGTH_SHORT).show();
-                        ownNumber = Util.getInstance().cleanNumberString(_mEdit.getText().toString());
+                        Toast.makeText(_context, _inputNumberEditText.getText(), Toast.LENGTH_SHORT).show();
+                        ownNumber = Util.getInstance().cleanNumberString(_inputNumberEditText.getText().toString());
                         MiniDB.getInstance().saveString(ownNumber, OWN_NUMBER_FILE);
-                        _mEdit.setVisibility(View.INVISIBLE);
+                        _inputNumberEditText.setVisibility(View.INVISIBLE);
 
                         // Hide Keypad after input
                         InputMethodManager in = (InputMethodManager) _context.getSystemService(Context.INPUT_METHOD_SERVICE);

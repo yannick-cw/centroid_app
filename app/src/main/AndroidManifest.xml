@@ -56,7 +56,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InviteListViewActivity"
+        <activity android:name=".ShowCentroidsActivity"
             android:label="@string/invite_listview"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data

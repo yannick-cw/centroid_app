@@ -40,4 +40,5 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1' //ListView-Library like gmail
 
+
 }

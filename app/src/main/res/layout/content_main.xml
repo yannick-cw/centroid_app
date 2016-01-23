@@ -13,11 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="invite friends"
-        android:id="@+id/button5"
-        android:onClick="seeList"
+        android:id="@+id/inviteFriendsButton"
+        android:onClick="startInviteFriendsActivity"
         android:layout_marginTop="57dp"
-        android:layout_alignRight="@+id/inviteListViewButton"
-        android:layout_alignEnd="@+id/inviteListViewButton"
+        android:layout_alignRight="@+id/showCentroidsButton"
+        android:layout_alignEnd="@+id/showCentroidsButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -37,11 +37,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="centroids"
-        android:id="@+id/inviteListViewButton"
-        android:onClick="seeInviteList"
+        android:id="@+id/showCentroidsButton"
+        android:onClick="startShowCentroidsActivity"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:id="@+id/centroidAnimation"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inviteFriendsButton"
+        />
 
 </RelativeLayout>

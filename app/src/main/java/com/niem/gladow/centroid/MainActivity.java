@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,15 +26,24 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
 
+    AnimationDrawable centroidAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setup main activity
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //retrieve local history/files
         initMiniDb();
+
+        //start centroid background animation
+        ImageView centroidAnimImageView = (ImageView) findViewById(R.id.centroidAnimation);
+        centroidAnimImageView.setBackgroundResource(R.drawable.centroid_animation);
+        centroidAnimation = (AnimationDrawable) centroidAnimImageView.getBackground();
+        centroidAnimation.start();
+
 
         //TODO check if token is still valid right now it is reloaded every start (same one)
 
@@ -67,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 //        if(!(this.getIntent().getExtras()==null)) {
 //            String goTo = (String) this.getIntent().getExtras().get("goTo");
-//            if (goTo.equals("InviteListViewActivity")) {
-//                Intent _intent = new Intent(this, InviteListViewActivity.class);
+//            if (goTo.equals("ShowCentroidsActivity")) {
+//                Intent _intent = new Intent(this, ShowCentroidsActivity.class);
 //                startActivity(_intent);
 //            }
 //        }
@@ -133,16 +144,16 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(intent);
 //    }
 
-    public void seeList(View view) {
+    public void startInviteFriendsActivity(View view) {
         Log.d("List", "pressed");
         Intent intent = new Intent(this, InviteFriendsActivity.class);
         startActivity(intent);
         finish();
     }
 
-    public void seeInviteList(View view) {
+    public void startShowCentroidsActivity(View view) {
         Log.d("InviteList", "pressed");
-        Intent intent = new Intent(this, InviteListViewActivity.class);
+        Intent intent = new Intent(this, ShowCentroidsActivity.class);
         startActivity(intent);
         finish();
     }

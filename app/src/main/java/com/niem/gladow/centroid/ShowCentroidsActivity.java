@@ -24,7 +24,7 @@ import java.util.TreeMap;
 /**
  * Created by clem on 11.11.15.
  */
-public class InviteListViewActivity extends AppCompatActivity {
+public class ShowCentroidsActivity extends AppCompatActivity {
     private ListView _listView;
     private TreeMap<Long, Invite> _sortedMap;
     private InviteHashMapArrayAdapter _adapter;
@@ -54,7 +54,7 @@ public class InviteListViewActivity extends AppCompatActivity {
         _listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                InviteListViewActivity.this.onTouchEvent(event);
+                ShowCentroidsActivity.this.onTouchEvent(event);
                 return false;
             }
         });
@@ -133,7 +133,7 @@ public class InviteListViewActivity extends AppCompatActivity {
 
             if(event2.getX() > event1.getX() && event2.getX() - event1.getX() > 200 && Math.abs(event2.getY() - event1.getY()) < 200){
                 //switch another activity
-                Intent intent = new Intent(InviteListViewActivity.this, InviteFriendsActivity.class);
+                Intent intent = new Intent(ShowCentroidsActivity.this, InviteFriendsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.left_slide_in, R.anim.right_slide_out);
                 finish();
@@ -171,7 +171,7 @@ public class InviteListViewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(InviteListViewActivity.this, MainActivity.class);
+        Intent intent = new Intent(ShowCentroidsActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
