@@ -69,7 +69,7 @@ public class InviteListViewActivity extends AppCompatActivity {
                     _adapter.notifyDataSetChanged();
 
                     TextView _textViewClicked = (TextView) view.findViewById(R.id.inviteListItemInviteId);
-                    TextView _textViewClicked1 = (TextView) view.findViewById(R.id.inviteListItemHints);
+                    TextView _textViewClicked1 = (TextView) view.findViewById(R.id.inviteListItemStatus);
                     Log.d("Textview.gettext:", _textViewClicked.getText().toString()); //start_time/invite_id
                     Log.d("Textview1.gettext:", _textViewClicked1.getText().toString());
 

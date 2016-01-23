@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
@@ -24,6 +25,7 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 
     private static class ViewHolder {
         TextView member;
+        ImageView status;
         InviteReply inviteReply;
     }
 
@@ -42,6 +44,7 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.member_list_item, parent, false);
             _viewHolder = new ViewHolder();
             _viewHolder.member = (TextView) convertView.findViewById(R.id.textIdMember);
+            _viewHolder.status = (ImageView) convertView.findViewById(R.id.memberListStatusImage);
             convertView.setTag(_viewHolder);
         } else {
             /* We recycle a View that already exists */
@@ -49,10 +52,13 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
         }
 
         // Once we have a reference to the View we are returning, we set its values.
-        Map.Entry<String, InviteStatus> entry = (Map.Entry<String, InviteStatus>) this.getItem(position);
+        // member is the member at given position
+        Map.Entry<String, InviteStatus> member = (Map.Entry<String, InviteStatus>) this.getItem(position);
 
-        _viewHolder.member.setText(entry.getValue().getRealName() + " "  +entry.getKey() + " "  + entry.getValue().getTransportationMode());
-        _viewHolder.inviteReply = entry.getValue().getInviteReply();
+        _viewHolder.member.setText(member.getValue().getRealName()/*+" "+member.getKey()*/);
+        _viewHolder.status.setImageResource(Util.getInstance()
+                .getResIdForTransportationImage(member.getValue().getTransportationMode()));
+        _viewHolder.inviteReply = member.getValue().getInviteReply();
 
         switch (_viewHolder.inviteReply){
             case DECLINED:

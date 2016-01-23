@@ -46,7 +46,7 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
             _viewHolder = new ViewHolder();
             _viewHolder.host = (TextView) convertView.findViewById(R.id.inviteListItemName);
             _viewHolder.time = (TextView) convertView.findViewById(R.id.inviteListItemDate);
-            _viewHolder.status = (TextView) convertView.findViewById(R.id.inviteListItemHints);
+            _viewHolder.status = (TextView) convertView.findViewById(R.id.inviteListItemStatus);
             _viewHolder.inviteId = (TextView) convertView.findViewById(R.id.inviteListItemInviteId);
             _viewHolder.image = (ImageView) convertView.findViewById(R.id.inviteListItemImage);
             _viewHolder.statusImage = (ImageView) convertView.findViewById(R.id.inviteListItemStatusImage);
@@ -71,12 +71,12 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         //setTextViews/Imageviews
         _viewHolder.time.setText(""+Util.getInstance().getShortDate(_invite.getStartTime()));
         _viewHolder.host.setText(_name);
-        _viewHolder.inviteId.setText(""+_invite.getStartTime());
+        _viewHolder.inviteId.setText("" + _invite.getStartTime());
         _viewHolder.status.setText(_invite.getStatus().toString());
         //TODO scale Image correctly
         _viewHolder.statusImage
                 .setImageResource(Util.getInstance()
-                .getResIdForTransportationImage(_invite.getTransportationMode()));
+                        .getResIdForTransportationImage(_invite.getTransportationMode()));
         return convertView;
     }
 }
