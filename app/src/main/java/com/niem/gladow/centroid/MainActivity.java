@@ -1,25 +1,15 @@
 package com.niem.gladow.centroid;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.niem.gladow.centroid.Database.MiniDB;
 
 
@@ -66,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 //updates the token every start
                 Intent _intent = new Intent(this, RegistrationIntentService.class);
                 startService(_intent);
-                Intent intent = new Intent(this, ShowCentroidsActivity.class);
+                Intent intent = new Intent(this, CentroidListViewActivity.class);
                 startActivity(intent);
                 finish();
             }

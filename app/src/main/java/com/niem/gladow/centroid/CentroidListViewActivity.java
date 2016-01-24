@@ -30,10 +30,10 @@ import java.util.TreeMap;
 /**
  * Created by clem on 11.11.15.
  */
-public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class CentroidListViewActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private ListView _listView;
     private TreeMap<Long, Invite> _sortedMap;
-    private InviteHashMapArrayAdapter _adapter;
+    private CentroidListHashMapArrayAdapter _adapter;
     private SwipeRefreshLayout swipeLayout;
 
     @Override
@@ -51,7 +51,7 @@ public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRef
 //                  TODO use snackbar for user info??
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                Intent intent = new Intent(ShowCentroidsActivity.this, InviteFriendsActivity.class);
+                Intent intent = new Intent(CentroidListViewActivity.this, InviteFriendsActivity.class);
                 startActivity(intent);
             }
         });
@@ -76,13 +76,13 @@ public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRef
         _sortedMap = new TreeMap<>(Collections.reverseOrder());
         _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
 
-        _adapter = new InviteHashMapArrayAdapter(this,
+        _adapter = new CentroidListHashMapArrayAdapter(this,
                 R.layout.centroid_list_view_item, new ArrayList(_sortedMap.entrySet()));
         _listView.setAdapter(_adapter);
         _listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                ShowCentroidsActivity.this.onTouchEvent(event);
+                CentroidListViewActivity.this.onTouchEvent(event);
                 return false;
             }
         });
@@ -172,7 +172,7 @@ public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRef
         return super.onOptionsItemSelected(item);
     }
     //todo refresh must update the status to ready as well, is not doing right now
-    //todo location is missing as well
+    //todo placeToMeet is missing as well
 
     @Override
     public void onRefresh() {

@@ -24,19 +24,15 @@ import java.util.Map;
 /**
  * Created by clem on 24/11/15.
  */
-public class InviteHashMapArrayAdapter extends ArrayAdapter {
+public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
     private static class ViewHolder {
-        TextView members;
-        TextView  time;
-        TextView  inviteId;
-        TextView  status;
-        ImageView image;
-        ImageView statusImage;
+        TextView  members, time, inviteId, status, placeToMeet;
+        ImageView image, statusImage;
         TextDrawable textDrawable;
     }
 
-    public InviteHashMapArrayAdapter(Context context, int textViewResourceId, List<Map.Entry<Long, Object>> objects) {
+    public CentroidListHashMapArrayAdapter(Context context, int textViewResourceId, List<Map.Entry<Long, Object>> objects) {
         super(context, textViewResourceId, objects);
     }
 
@@ -55,6 +51,7 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
             _viewHolder.time     = (TextView) convertView.findViewById(R.id.centroidListItemDate);
             _viewHolder.status   = (TextView) convertView.findViewById(R.id.centroidListItemStatus);
             _viewHolder.inviteId = (TextView) convertView.findViewById(R.id.centroidListItemInviteId);
+            _viewHolder.placeToMeet = (TextView) convertView.findViewById(R.id.centroidListItemPlaceInfo);
             _viewHolder.image       = (ImageView) convertView.findViewById(R.id.centroidListItemImage);
             _viewHolder.statusImage = (ImageView) convertView.findViewById(R.id.centroidListItemStatusImage);
             convertView.setTag(_viewHolder);
@@ -68,14 +65,14 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         // get the corresponding Invite for this Element
         Invite _invite = InviteHandler.getInstance().getInviteByTime(_entryViewAtPosition.getKey());
 
-        //build images
+        //build One-Letter Image with first letter of hostName
         String _hostName = _invite.getInviteNumberName().split(" ")[0];
         int _color = _colorGenerator.getColor(_hostName);
         _viewHolder.textDrawable = TextDrawable.builder()
                 .buildRound(_hostName.substring(0,1), _color);
         _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
 
-        //apply members to StyledTextString
+        //construct members StyledTextString incl. status
         String _members = _invite.getAllMemberSurNames(false, false);
         if(_members.matches("")){
             _members = _hostName+"  ";
@@ -94,6 +91,16 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.statusImage
                 .setImageResource(Util.getInstance()
                         .getResIdForTransportationImage(_invite.getTransportationMode()));
+
+        //check for placeToMeet and update TextView accordingly
+        if(_invite.getChosenPlace() != null){
+            _viewHolder.placeToMeet.setText(_invite.getPlaceToMeet().getName().toString().split(",")[0] +"\n@"
+                                          + _invite.getPlaceToMeet().getAddress().toString().split(",")[0]);
+            _viewHolder.placeToMeet.setVisibility(View.VISIBLE);
+        }else{
+            _viewHolder.placeToMeet.setVisibility(View.INVISIBLE);
+        }
+
         return convertView;
     }
 
@@ -101,12 +108,18 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
     //method that sets the different layouts to member status and shows them in listViewItem
     private void setStringStyles(Invite _invite, SpannableString _styledMembers, int _start, int _end) {
         InviteReply _memberReply;
-        String _tmpName = "";
+        String _tmpName;
+
+        //set style for hostName
         _styledMembers.setSpan(new StyleSpan(Typeface.BOLD), _start, _end, 0);
+
         //check for each member status and apply StyleSpan
         for (Map.Entry<String, InviteStatus> _memberEntry : _invite.getAllMembers(false, false).entrySet())
         {
+            //update _start
             _start = _end;
+
+            //check if number could be converted to name (for shifting _end correctly)
             _tmpName = _memberEntry.getValue().getRealName().split(" ")[0];
             if(_tmpName.matches("")){
                 _end += _memberEntry.getKey().length();
@@ -114,6 +127,8 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
             }else{
                 _end += _memberEntry.getValue().getRealName().split(" ")[0].length();
             }
+
+            //check the status of the member and apply style accordingly
             _memberReply = _memberEntry.getValue().getInviteReply();
             switch(_memberReply){
                 case ACCEPTED:
@@ -128,7 +143,9 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
                     _styledMembers.setSpan(new ForegroundColorSpan(Color.LTGRAY), _start, _end, 0);
                     break;
             }
-            _end += 2; //shift space for ", " used to separate names
+
+            //shift space for ", " used to separate names
+            _end += 2;
 
         }
     }

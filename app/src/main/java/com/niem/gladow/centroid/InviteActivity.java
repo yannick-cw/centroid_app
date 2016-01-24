@@ -64,7 +64,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private SwipeRefreshLayout swipeLayout;
 
 
-    //todo string for location shit
+    //todo string for placeToMeet shit
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,8 +227,8 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            invite.setPlaceToMeet(PlacePicker.getPlace(data, this));
             displayPlace(PlacePicker.getPlace(data, this));
-
         }
     }
 

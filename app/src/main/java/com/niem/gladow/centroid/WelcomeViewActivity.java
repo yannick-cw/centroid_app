@@ -28,7 +28,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
     //todo explain
 
     public void startCentroid (View view) {
-        Intent intent = new Intent(this, ShowCentroidsActivity.class);
+        Intent intent = new Intent(this, CentroidListViewActivity.class);
         startActivity(intent);
         finish();
     }

@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.text.style.StyleSpan;
 import android.util.Log;
 
+import com.google.android.gms.location.places.Place;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
@@ -32,6 +33,9 @@ public class Invite implements Serializable {
     private boolean existsCentroid = false;
     private Map<String, InviteStatus> allMembers;
     private String chosenPlace;
+    private Place placeToMeet;
+
+
 
     public Invite(String inviteNumber, long startTime, String allMembers) {
         this.inviteNumber = inviteNumber;
@@ -106,7 +110,7 @@ public class Invite implements Serializable {
     }
 
     public String getAllMemberSurNames(boolean self, boolean host){
-        Map<String, InviteStatus> _memberMap = getAllMembers(self,host);
+        Map<String, InviteStatus> _memberMap = getAllMembers(self, host);
         String _tmp, _result = "";
         for (Map.Entry<String, InviteStatus> _member : _memberMap.entrySet())
         {
@@ -140,6 +144,14 @@ public class Invite implements Serializable {
         allMembers.get(updateNumber).setInviteReply(updateStatus);
         allMembers.get(updateNumber).setTransportationMode(transportationMode);
         findRealNames(this.allMembers);
+    }
+
+    public Place getPlaceToMeet() {
+        return placeToMeet;
+    }
+
+    public void setPlaceToMeet(Place placeToMeet) {
+        this.placeToMeet = placeToMeet;
     }
 
     public String getChosenPlace() {

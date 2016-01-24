@@ -87,14 +87,6 @@
         android:weightSum="0.6"
         >
 
-        <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/navigate_toPlace"-->
-            <!--android:id="@+id/navigateToPlace"-->
-            <!--android:layout_weight="0.2"-->
-            <!--android:onClick="navigateToPlace"-->
-            <!--android:enabled="false" />-->
 
         <Button
             android:layout_width="match_parent"

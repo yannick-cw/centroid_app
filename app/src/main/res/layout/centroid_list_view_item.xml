@@ -36,10 +36,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:maxLines="3"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     tools:ignore="HardcodedText" />
-                <!--TODO From above style, test....-->
-                <!--style="@style/centroidListItemName"-->
+
 
                 <TextView
                     android:id="@+id/centroidListItemDate"
@@ -65,9 +65,24 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:visibility="gone"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     />
 
+                <TextView
+                    android:id="@+id/centroidListItemPlaceInfo"
+                    style="@style/centroidListItemStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:visibility="invisible"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+
+                <!-- TextView below only for ID-Information to read out-->
                 <TextView
                     android:id="@+id/centroidListItemInviteId"
                     style="@style/centroidListItemInviteId"
