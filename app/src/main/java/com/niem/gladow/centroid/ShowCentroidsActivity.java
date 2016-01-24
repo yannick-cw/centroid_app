@@ -166,7 +166,6 @@ public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRef
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //todo
             new RestConnector(this).execute(RestConnector.SYNC_ALL,
                     "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
                             + InviteHandler.getInstance().getActiveInvitesString());
@@ -175,6 +174,8 @@ public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRef
 
         return super.onOptionsItemSelected(item);
     }
+    //todo refresh must update the status to ready as well, is not doing right now
+    //todo location is missing as well
 
     @Override
     public void onRefresh() {

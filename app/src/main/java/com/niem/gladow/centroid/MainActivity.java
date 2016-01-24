@@ -26,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
 
-    AnimationDrawable centroidAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setup main activity
+        //todo maybe remove completely
 
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
             Intent _intent = new Intent(this, WelcomeViewActivity.class);
             startActivity(_intent);
+            finish();
         }
         else {
             //updates contacts
