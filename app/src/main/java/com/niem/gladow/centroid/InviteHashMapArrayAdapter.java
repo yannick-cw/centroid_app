@@ -75,11 +75,15 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
                 .buildRound(_hostName.substring(0,1), _color);
         _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
 
-        //apply members to textstring
-        SpannableString _styledMembers = new SpannableString(_hostName+": "+_invite.getAllMemberSurNames(false, false));
-        int _start = 0;
-        int _end = _hostName.length()+2;
-        setStringStyles(_invite, _styledMembers, _start, _end);
+        //apply members to StyledTextString
+        String _members = _invite.getAllMemberSurNames(false, false);
+        if(_members.matches("")){
+            _members = _hostName+"  ";
+        }else{
+            _members = _hostName+": "+_members;
+        }
+        SpannableString _styledMembers = new SpannableString(_members);
+        setStringStyles(_invite, _styledMembers, 0, _hostName.length()+2);
         _viewHolder.members.setText(_styledMembers);
 
 
