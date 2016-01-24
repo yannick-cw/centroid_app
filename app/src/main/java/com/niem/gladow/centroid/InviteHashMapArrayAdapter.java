@@ -80,7 +80,7 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         if(_members.matches("")){
             _members = _hostName+"  ";
         }else{
-            _members = _hostName+": "+_members;
+            _members = _hostName+", "+_members;
         }
         SpannableString _styledMembers = new SpannableString(_members);
         setStringStyles(_invite, _styledMembers, 0, _hostName.length()+2);
