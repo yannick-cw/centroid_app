@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,185 +34,74 @@ public class MainActivity extends AppCompatActivity {
         //todo maybe remove completely
 
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        //retrieve local history/files
-        initMiniDb();
-
-        //start centroid background animation
-//        ImageView centroidAnimImageView = (ImageView) findViewById(R.id.centroidAnimation);
-//        centroidAnimImageView.setBackgroundResource(R.drawable.centroid_animation);
-//        centroidAnimation = (AnimationDrawable) centroidAnimImageView.getBackground();
-//        centroidAnimation.start();
-
-
-        //TODO check if token is still valid right now it is reloaded every start (same one)
-
-//        //check if right google play service is available
-//        Integer resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-//        if (resultCode == ConnectionResult.SUCCESS) {
-//            //Do what you want
-//        } else {
-//            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 0);
-//            if (dialog != null) {
-//                dialog.show();
-//            }
-//        }
-
-        if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
-            Intent _intent = new Intent(this, WelcomeViewActivity.class);
-            startActivity(_intent);
-            finish();
-        }
-        else {
-            //updates contacts
-            PersistenceHandler.getInstance().loadFriendMapFromDB();
-            Log.d("loaded friend map", PersistenceHandler.getInstance().getFriendMap().toString());
-            sendContacts();
-            //updates the token every start
-            Intent _intent = new Intent(this, RegistrationIntentService.class);
-            startService(_intent);
-            Intent intent = new Intent(this, ShowCentroidsActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        MiniDB.init(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        if(!(this.getIntent().getExtras()==null)) {
-//            String goTo = (String) this.getIntent().getExtras().get("goTo");
-//            if (goTo.equals("ShowCentroidsActivity")) {
-//                Intent _intent = new Intent(this, ShowCentroidsActivity.class);
-//                startActivity(_intent);
-//            }
-//        }
-    }
-
-    private void sendContacts() {
         //check for permission, if none do if
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+        Log.d("PERMISSION", "perm fine: "  + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
+        Log.d("PERMISSION", "permcoarse: " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        } else if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
         else {
-            new NumberLogicHandler(this).executePhoneDataHandler();
-        }
-    }
+            GpsDataHandler.init(this);
 
-//    public void sendGps(View view) {
-//        Log.d("sendOwnGps", "pressed");
-//        //check for permission, if none do if
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-//        } else {
-//            new GpsDataHandler(this);
-//        }
-//    }
-
-//    public boolean getGpsPermission () {
-//        //check for permission, if none do if
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
-
-//    //is called when accept or decline button is pressed
-//    public void responseToInvite(View view) {
-//        switch (view.getId()) {
-//            case R.id.acceptInviteButton:
-//                if (!getGpsPermission()) return;
-//                InviteHandler.responseToInvite(InviteReply.ACCEPTED, this);
-//                Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.declineInviteButton:
-//                InviteHandler.responseToInvite(InviteReply.DECLINED, this);
-//                Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
-//                break;
-//        }
-//        declineInviteButton.setVisibility(View.GONE);
-//        acceptInviteButton.setVisibility(View.GONE);
-//    }
-
-//    public void showCentroidOnMap(View view) {
-//        Intent intent = new Intent(this, GoogleMapActivity.class);
-//        intent.putExtra("centroid", InviteHandler.getLatestInviteWithActiveAwesomeCentroid().getCentroid().getLatLng());
-//        startActivity(intent);
-//    }
-//
-//    public void startInviteFriendsActivity(View view) {
-//        Log.d("List", "pressed");
-//        Intent intent = new Intent(this, InviteFriendsActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
-//
-//    public void startShowCentroidsActivity(View view) {
-//        Log.d("InviteList", "pressed");
-//        Intent intent = new Intent(this, ShowCentroidsActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            //todo
-//            new RestConnector(this).execute(RestConnector.SYNC_ALL,
-//                    "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
-//                            + InviteHandler.getInstance().getActiveInvitesString());
-//            sendContacts();
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
-    public void initMiniDb() {
-        MiniDB.init(this);
-    }
-
-//TODO stürtzt ab, wenn permission nicht erteilt oder gps aus und erteilt (gps)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    sendContacts();
-                } else {
-                    Toast.makeText(this, "READ_CONTACTS Denied", Toast.LENGTH_SHORT).show();
-                }
+            if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
+                Intent _intent = new Intent(this, WelcomeViewActivity.class);
+                startActivity(_intent);
+                finish();
+            } else {
+                //updates contacts
+                PersistenceHandler.getInstance().loadFriendMapFromDB();
+                Log.d("loaded friend map", PersistenceHandler.getInstance().getFriendMap().toString());
+                sendContacts();
+                //updates the token every start
+                Intent _intent = new Intent(this, RegistrationIntentService.class);
+                startService(_intent);
+                Intent intent = new Intent(this, ShowCentroidsActivity.class);
+                startActivity(intent);
+                finish();
             }
         }
     }
 
+    private void sendContacts() {
+        new NumberLogicHandler(this).executePhoneDataHandler();
+    }
+
     @Override
-    public void onBackPressed() {
-        finish();
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onResume();
+                } else {
+                    onResume();
+                    Toast.makeText(this, "please give gps permission", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+            }
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onResume();
+                } else {
+                    onResume();
+                    Toast.makeText(this, "please give access to contacts", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }
     }
 }

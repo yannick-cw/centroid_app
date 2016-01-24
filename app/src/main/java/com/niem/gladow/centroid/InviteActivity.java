@@ -273,7 +273,10 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public void responseToInvite(View view) {
         switch (view.getId()) {
             case R.id.acceptInviteButton:
-                if (!getGpsPermission()) return;
+                if (GpsDataHandler.getInstance().getLastLocation() == null) {
+                    Toast.makeText(this, "please activate gps first", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 InviteHandler.getInstance().responseToInvite(invite.getStartTime(), InviteReply.ACCEPTED, invite.getTransportationMode(), this);
                 Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
                 break;
@@ -338,30 +341,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             return true;
         }
     }
-
-//    public void sendGps(View view) {
-//        Log.d("sendOwnGps", "pressed");
-//        //check for permission, if none do if
-//        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-//        } else {
-//            new GpsDataHandler(this);
-//        }
-//    }
-//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    sendGps(this.getCurrentFocus());
-//                } else {
-//                    Toast.makeText(this, "FINE_LOCATION Denied", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

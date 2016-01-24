@@ -17,23 +17,30 @@ import com.google.android.gms.location.LocationServices;
 public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private GoogleApiClient googleApiClient;
-    private Context context;
     private Location lastLocation;
-    private static final String SEND_GPS = "/android/currentGPS/";
-    private static String OWN_NUMBER;
+    public static final String SEND_GPS = "/android/currentGPS/";
     protected LocationRequest mLocationRequest;
     private boolean locationUpdateStarted = false;
 
+    private static GpsDataHandler instance;
 
-    //the gps data is send on creation of the class
-    public GpsDataHandler (Context context) {
-        this.context = context;
-        buildGoogleApiClient();
+    private GpsDataHandler(Context context) {
+        buildGoogleApiClient(context);
         googleApiClient.connect();
-        OWN_NUMBER = PersistenceHandler.getInstance().getOwnNumber() ;
     }
 
-    protected synchronized void buildGoogleApiClient() {
+    public static void init(Context context) {
+        if(instance == null) {
+            instance = new GpsDataHandler(context);
+        }
+    }
+
+    public static GpsDataHandler getInstance() {
+        assert (instance != null);
+        return instance;
+    }
+
+    protected synchronized void buildGoogleApiClient(Context context) {
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -44,28 +51,18 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        if (OWN_NUMBER.equals("/")){
-            Toast.makeText(context,"Please enter your Number and try again",Toast.LENGTH_LONG).show();
-            Log.d("GPS_NO_OWN_NUMBER", PersistenceHandler.getInstance().getOwnNumber());
-        }else{
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             //todo latest is not good enough, needs to be a valid one
-
-            assert(lastLocation != null);
-            new RestConnector(context).execute(RestConnector.POST, SEND_GPS + OWN_NUMBER +"/"
-                                                              + lastLocation.getLongitude()+"/"
-                                                              + lastLocation.getLatitude());
-            Log.d("lastLocation", String.valueOf(lastLocation.getLongitude()));
 
             if(!locationUpdateStarted) {
                 startLocationUpdates();
                 locationUpdateStarted = true;
             }
-        }
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d("GPSDATAHANDLER", "Location Changed");
         lastLocation = location;
     }
 
@@ -94,4 +91,7 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
         googleApiClient.connect();
     }
 
+    public Location getLastLocation() {
+        return lastLocation;
+    }
 }

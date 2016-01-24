@@ -38,6 +38,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
     private SwipeRefreshLayout swipeLayout;
 
 //todo remove toast for created centroid and just show
+    //todo update on new data missing
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,11 +104,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
 
     public void inviteFriends(View view) {
         Log.d("inviteFriends", "pressed");
-        if (getGpsPermission()) {
-            chooseTransportationMode(this);
-        }else{
-            Toast.makeText(this,"GPS Permission Needed",Toast.LENGTH_SHORT).show();
-        }
+        chooseTransportationMode(this);
     }
 
     public void chooseTransportationMode(final Context _context){
@@ -140,51 +137,14 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
                         break;
                 }
                 if (_hasChosen) {
-                    new NumberLogicHandler(_context).inviteFriends(_transportationMode);
-                    onBackPressed();
+                    if( new NumberLogicHandler(_context).inviteFriends(_transportationMode)) {
+                        onBackPressed();
+                    }
                 }
             }
 
         });
         builder.show();
-    }
-
-    //TODO put GPS Permission in a good Place and make it nice
-    public boolean getGpsPermission () {
-        //check for permission, if none do if
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public void sendGps(View view) {
-        Log.d("sendOwnGps", "pressed");
-        //check for permission, if none do if
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        } else {
-            new GpsDataHandler(this);
-        }
-    }
-
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    sendGps(this.getCurrentFocus());
-                } else {
-                    Toast.makeText(this, "FINE_LOCATION Denied", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
     }
 
     @Override

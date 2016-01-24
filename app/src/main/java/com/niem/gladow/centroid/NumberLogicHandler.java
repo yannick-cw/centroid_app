@@ -1,6 +1,7 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
@@ -44,11 +45,16 @@ public class NumberLogicHandler implements AsyncResponse {
 
     //reads friendlist from file and starts async task RestConnector to send friend numbers to server
     public boolean inviteFriends(TransportationMode transportationMode) {
-
+        if (GpsDataHandler.getInstance().getLastLocation() == null) {
+            Toast.makeText(context, "please give gps permission", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         new RestConnector(context).execute(RestConnector.GET, INVITE_FRIENDS + ownNumberWithSlash
                                             + PersistenceHandler.getInstance().getInviteList()
                                             + "/" + transportationMode);
-        new GpsDataHandler(context);
+        new RestConnector(context).execute(RestConnector.POST, GpsDataHandler.SEND_GPS + ownNumberWithSlash
+                + GpsDataHandler.getInstance().getLastLocation().getLongitude()+"/"
+                + GpsDataHandler.getInstance().getLastLocation().getLatitude());
         return true;
     }
 

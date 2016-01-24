@@ -65,6 +65,7 @@ public class MyGcmListenerService extends GcmListenerService {
         switch (MessageType.valueOf(_messageType)) {
             //todo test/resolve incoming number -> name
             //todo transport mode missing
+            //todo if only one person, no centroid, btw server side
             case INVITE:
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
