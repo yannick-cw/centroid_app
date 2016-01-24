@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,10 +55,8 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public static final String IS_EMPTY = "isEmpty";
 
     private Invite invite;
-
     private View showCentroidButton;
-    private View navigateToCentroidButton;
-    private View navigateToPlaceButton;
+    private Button navigateToDestButton;
     private View declineInviteButton;
     private View acceptInviteButton;
     private View inviteHeader;
@@ -83,13 +82,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         Log.d("Input Intent:",getIntent().getStringExtra("InviteId"));
 
         //setting up needed Views (Buttons etc.)
-        declineInviteButton = findViewById(R.id.declineInviteButton);
-        acceptInviteButton = findViewById(R.id.acceptInviteButton);
-        inviteHeader = findViewById(R.id.inviteHeader);
-        transportationModeImage = (ImageView) findViewById(R.id.transportationModeImage);
-        showCentroidButton = findViewById(R.id.showCentroidButton);
-        navigateToCentroidButton = findViewById(R.id.navigateToCentroid);
-        navigateToPlaceButton = findViewById(R.id.navigateToPlace);
+        declineInviteButton      = findViewById(R.id.declineInviteButton);
+        acceptInviteButton       = findViewById(R.id.acceptInviteButton);
+        inviteHeader             = findViewById(R.id.inviteHeader);
+        showCentroidButton       = findViewById(R.id.showCentroidButton);
+        navigateToDestButton     = (Button) findViewById(R.id.navigateToButton);
+        transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
+
 
 
     }
@@ -145,13 +144,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         //checks if centroid already exists
         if (invite.existsCentroid()){
             showCentroidButton.setEnabled(true);
-            navigateToCentroidButton.setEnabled(true);
+            navigateToDestButton.setEnabled(true);
         }
         if(invite.getChosenPlace() != null) {
+            navigateToDestButton.setText(R.string.navigate_toPlace);
             TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
             _placesTextView.setVisibility(View.VISIBLE);
             _placesTextView.setText(toDisplayContent(toReadableContent(invite.getChosenPlace())));
-            navigateToPlaceButton.setEnabled(true);
         }
 
         try {
@@ -189,9 +188,23 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         }
     }
 
+
+    public void navigateToDestination(View view){
+        if(invite.getChosenPlace() != null){
+            navigateToCentroid(view);
+        }else{
+            navigateToPlace(view);
+        }
+    }
+
     public void navigateToCentroid(View view) {
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + String.valueOf(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat())
-                + "," + String.valueOf(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude()) + "&mode=" + invite.getTransportationMode().getMode());
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="
+                + String.valueOf(InviteHandler.getInstance().getInviteByTime(invite.getStartTime())
+                    .getCentroid().getLat()) + ","
+                + String.valueOf(InviteHandler.getInstance().getInviteByTime(invite.getStartTime())
+                    .getCentroid().getLongitude())
+                + "&mode=" + invite.getTransportationMode().getMode());
+
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         if (mapIntent.resolveActivity(getPackageManager()) != null) {
@@ -215,12 +228,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             displayPlace(PlacePicker.getPlace(data, this));
+
         }
     }
 
-    private void displayPlace(Place place) {
+    private boolean displayPlace(Place place) {
         if(place == null) {
-            return;
+            return false;
         }
         String content = "";
         if (!TextUtils.isEmpty(place.getName())) {
@@ -248,6 +262,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         InviteHandler.getInstance().setChosenPlace(content, invite);
         new RestConnector(this).execute(RestConnector.POST, ADD_PLACE + "/" + invite.getStartTime()
                 + "/" + content);
+        return true;
     }
 
     private String transportReady(String content) {
