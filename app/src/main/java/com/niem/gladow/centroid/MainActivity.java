@@ -26,41 +26,43 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
 
-    AnimationDrawable centroidAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setup main activity
+        //todo maybe remove completely
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setContentView(R.layout.activity_main);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         //retrieve local history/files
         initMiniDb();
 
         //start centroid background animation
-        ImageView centroidAnimImageView = (ImageView) findViewById(R.id.centroidAnimation);
-        centroidAnimImageView.setBackgroundResource(R.drawable.centroid_animation);
-        centroidAnimation = (AnimationDrawable) centroidAnimImageView.getBackground();
-        centroidAnimation.start();
+//        ImageView centroidAnimImageView = (ImageView) findViewById(R.id.centroidAnimation);
+//        centroidAnimImageView.setBackgroundResource(R.drawable.centroid_animation);
+//        centroidAnimation = (AnimationDrawable) centroidAnimImageView.getBackground();
+//        centroidAnimation.start();
 
 
         //TODO check if token is still valid right now it is reloaded every start (same one)
 
-        //check if right google play service is available
-        Integer resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode == ConnectionResult.SUCCESS) {
-            //Do what you want
-        } else {
-            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 0);
-            if (dialog != null) {
-                dialog.show();
-            }
-        }
+//        //check if right google play service is available
+//        Integer resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+//        if (resultCode == ConnectionResult.SUCCESS) {
+//            //Do what you want
+//        } else {
+//            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 0);
+//            if (dialog != null) {
+//                dialog.show();
+//            }
+//        }
 
         if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
             Intent _intent = new Intent(this, WelcomeViewActivity.class);
             startActivity(_intent);
+            finish();
         }
         else {
             //updates contacts
@@ -70,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
             //updates the token every start
             Intent _intent = new Intent(this, RegistrationIntentService.class);
             startService(_intent);
+            Intent intent = new Intent(this, ShowCentroidsActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -97,29 +102,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void sendGps(View view) {
-        Log.d("sendOwnGps", "pressed");
-        //check for permission, if none do if
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        } else {
-            new GpsDataHandler(this);
-        }
-    }
+//    public void sendGps(View view) {
+//        Log.d("sendOwnGps", "pressed");
+//        //check for permission, if none do if
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+//        } else {
+//            new GpsDataHandler(this);
+//        }
+//    }
 
-    public boolean getGpsPermission () {
-        //check for permission, if none do if
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            return false;
-        } else {
-            return true;
-        }
-    }
+//    public boolean getGpsPermission () {
+//        //check for permission, if none do if
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
 
 //    //is called when accept or decline button is pressed
 //    public void responseToInvite(View view) {
@@ -143,48 +148,48 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra("centroid", InviteHandler.getLatestInviteWithActiveAwesomeCentroid().getCentroid().getLatLng());
 //        startActivity(intent);
 //    }
+//
+//    public void startInviteFriendsActivity(View view) {
+//        Log.d("List", "pressed");
+//        Intent intent = new Intent(this, InviteFriendsActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
+//
+//    public void startShowCentroidsActivity(View view) {
+//        Log.d("InviteList", "pressed");
+//        Intent intent = new Intent(this, ShowCentroidsActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 
-    public void startInviteFriendsActivity(View view) {
-        Log.d("List", "pressed");
-        Intent intent = new Intent(this, InviteFriendsActivity.class);
-        startActivity(intent);
-        finish();
-    }
 
-    public void startShowCentroidsActivity(View view) {
-        Log.d("InviteList", "pressed");
-        Intent intent = new Intent(this, ShowCentroidsActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            //todo
-            new RestConnector(this).execute(RestConnector.SYNC_ALL,
-                    "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
-                            + InviteHandler.getInstance().getActiveInvitesString());
-            sendContacts();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            //todo
+//            new RestConnector(this).execute(RestConnector.SYNC_ALL,
+//                    "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+//                            + InviteHandler.getInstance().getActiveInvitesString());
+//            sendContacts();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     public void initMiniDb() {
         MiniDB.init(this);
@@ -194,14 +199,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    sendGps(this.getCurrentFocus());
-                } else {
-                    Toast.makeText(this, "FINE_LOCATION Denied", Toast.LENGTH_SHORT).show();
-                }
-            }
             case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

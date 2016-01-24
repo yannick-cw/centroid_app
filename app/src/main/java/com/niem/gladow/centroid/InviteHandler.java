@@ -115,7 +115,13 @@ public class InviteHandler {
         Log.d("XXXX", "result update: " + result);
         if(result != null && !"".equals(result)) {
             List<String> _list = Arrays.asList(result.split(":"));
-            long id = Long.parseLong(_list.get(0));
+            long id = 0;
+            try {
+                id = Long.parseLong(_list.get(0));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return;
+            }
             Log.d("XXXX", "Invite exists? " + activeInvites.containsKey(id));
             Map<String, List<String>> _numberStatus = new HashMap();
             String[] _pairNumberStatus = _list.get(2).split(",");
