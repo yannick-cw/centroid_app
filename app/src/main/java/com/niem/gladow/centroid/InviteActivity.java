@@ -103,8 +103,8 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         _inviteStatus2.setText(invite.getStatus().toString());
 
         //extracting members names from this invite
-        final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembersWithoutSelf());
-        Log.d("members", invite.getAllMembersWithoutSelf().toString());
+        final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembers(false,true));
+        Log.d("members", invite.getAllMembers(false, true).toString());
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
         final MemberStatusHashMapArrayAdapter _adapter = new MemberStatusHashMapArrayAdapter(this,

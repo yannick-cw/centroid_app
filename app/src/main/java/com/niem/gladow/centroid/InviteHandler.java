@@ -56,7 +56,7 @@ public class InviteHandler {
     }
 
     public void addInvite(String inviteNumber, long startTime, String allMembers) {
-        //add invite with start time and host number
+        //add invite with start time and members number
         InviteHandler.activeInvites.put(startTime, new Invite(inviteNumber, startTime, allMembers));
         PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
     }

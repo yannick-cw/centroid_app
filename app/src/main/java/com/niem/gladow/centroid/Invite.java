@@ -1,5 +1,7 @@
 package com.niem.gladow.centroid;
 
+import android.graphics.Typeface;
+import android.text.style.StyleSpan;
 import android.util.Log;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
@@ -92,10 +94,33 @@ public class Invite implements Serializable {
         this.transportationMode = transportationMode;
     }
 
-    public Map<String, InviteStatus> getAllMembersWithoutSelf() {
-        Map<String, InviteStatus> tmp = new HashMap<>(allMembers);
-        tmp.remove(PersistenceHandler.getInstance().getOwnNumber());
-        return tmp;
+    public Map<String, InviteStatus> getAllMembers(boolean self, boolean host) {
+        Map<String, InviteStatus> _tmp = new HashMap<>(allMembers);
+        if(!host){
+            _tmp.remove(inviteNumber);
+        }
+        if(!self){
+            _tmp.remove(PersistenceHandler.getInstance().getOwnNumber());
+        }
+        return _tmp;
+    }
+
+    public String getAllMemberSurNames(boolean self, boolean host){
+        Map<String, InviteStatus> _memberMap = getAllMembers(self,host);
+        String _tmp, _result = "";
+        for (Map.Entry<String, InviteStatus> _member : _memberMap.entrySet())
+        {
+            _tmp = _member.getValue().getRealName().split(" ")[0];
+            if(_tmp.matches("")){
+                _tmp = _member.getKey();
+            }
+            _result += ","+_tmp;
+        }
+        if(_result.matches("")){
+            return _result;
+        }else{
+            return _result.substring(1);
+        }
     }
 
     //check with the persistence handler friendMap, if numbers can be replaced with names

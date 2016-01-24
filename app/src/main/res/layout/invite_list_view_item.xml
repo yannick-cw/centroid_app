@@ -33,12 +33,13 @@
 
                 <TextView
                     android:id="@+id/inviteListItemName"
-                    style="@style/inviteListItemName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     tools:ignore="HardcodedText" />
+                <!--TODO From above style, test....-->
+                <!--style="@style/inviteListItemName"-->
 
                 <TextView
                     android:id="@+id/inviteListItemDate"
