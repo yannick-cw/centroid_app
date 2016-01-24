@@ -9,8 +9,10 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,7 +47,7 @@ import java.util.TreeMap;
 /**
  * Created by clem on 05/01/16.
  */
-public class InviteActivity extends AppCompatActivity {
+public class InviteActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int PLACE_PICKER_REQUEST = 1;
     public static final String ADD_PLACE = "/android/addPlace";
@@ -60,6 +62,8 @@ public class InviteActivity extends AppCompatActivity {
     private View acceptInviteButton;
     private View inviteHeader;
     private ImageView transportationModeImage;
+    private SwipeRefreshLayout swipeLayout;
+
 
     //todo string for location shit
 
@@ -70,6 +74,9 @@ public class InviteActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeLayout.setOnRefreshListener(this);
 
         //getting the current invite, by Id that was passed in this activity via putExtra(String)
         invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
@@ -387,6 +394,17 @@ public class InviteActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        new NumberLogicHandler(this).executePhoneDataHandler();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeLayout.setRefreshing(false);
+            }
+        }, 1000);
     }
 
     //Broadcast handler

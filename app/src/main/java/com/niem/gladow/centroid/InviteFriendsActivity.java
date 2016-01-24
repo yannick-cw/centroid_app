@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,9 +33,9 @@ import java.util.Map;
 /**
  * Created by clem on 11.11.15.
  */
-public class InviteFriendsActivity extends AppCompatActivity {
+public class InviteFriendsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
-    private GestureDetectorCompat gestureDetectorCompat;
+    private SwipeRefreshLayout swipeLayout;
 
 //todo remove toast for created centroid and just show
     @Override
@@ -43,6 +45,9 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeLayout.setOnRefreshListener(this);
 
         final ListView _listView = (ListView) findViewById(R.id.listView);
         _listView.setOnTouchListener(new View.OnTouchListener(){
@@ -204,6 +209,16 @@ public class InviteFriendsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onRefresh() {
+        new NumberLogicHandler(this).executePhoneDataHandler();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeLayout.setRefreshing(false);
+            }
+        }, 1000);
     }
 
 }

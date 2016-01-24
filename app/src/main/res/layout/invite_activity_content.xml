@@ -64,12 +64,21 @@
 
         </LinearLayout>
     </LinearLayout>
-
-    <ListView
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:id="@+id/memberListView"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_below="@+id/showCentroidsButton">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/memberListView"
+            android:layout_weight="1" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <TextView
         android:layout_width="match_parent"
