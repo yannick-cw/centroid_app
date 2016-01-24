@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,7 +35,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private GestureDetectorCompat gestureDetectorCompat;
 
-
+//todo remove toast for created centroid and just show
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,15 +94,6 @@ public class InviteFriendsActivity extends AppCompatActivity {
             }
         });
 
-        gestureDetectorCompat = new GestureDetectorCompat(this, new MyGestureListener());
-    }
-
-    @Override
-    public void onBackPressed (){
-        PersistenceHandler.getInstance().clearInviteList(); //cleanup of inviteList
-        Intent intent = new Intent(InviteFriendsActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     public void inviteFriends(View view) {
@@ -119,6 +112,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
         builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
             TransportationMode _transportationMode = TransportationMode.DEFAULT;
             boolean _hasChosen = false;
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // the user clicked on transportationModes[which]
@@ -140,7 +134,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
                         _hasChosen = true;
                         break;
                 }
-                if(_hasChosen){
+                if (_hasChosen) {
                     new NumberLogicHandler(_context).inviteFriends(_transportationMode);
                     onBackPressed();
                 }
@@ -189,27 +183,27 @@ public class InviteFriendsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        this.gestureDetectorCompat.onTouchEvent(event);
-        return super.onTouchEvent(event);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-        //handle 'swipe left' action only
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        @Override
-        public boolean onFling(MotionEvent event1, MotionEvent event2,
-                               float velocityX, float velocityY) {
-
-            if(event2.getX() < event1.getX() && event1.getX() - event2.getX() > 200 && Math.abs(event2.getY() - event1.getY()) < 200){
-                //switch another activity
-                Intent intent = new Intent(InviteFriendsActivity.this, ShowCentroidsActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.right_slide_in, R.anim.left_slide_out);
-                finish();
-            }
-
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            //todo here is no check for permission, as in main
+            new NumberLogicHandler(this).executePhoneDataHandler();
             return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
+
 }

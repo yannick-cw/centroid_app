@@ -1,11 +1,16 @@
 package com.niem.gladow.centroid;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,6 +22,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeMap;
@@ -24,11 +33,11 @@ import java.util.TreeMap;
 /**
  * Created by clem on 11.11.15.
  */
-public class ShowCentroidsActivity extends AppCompatActivity {
+public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private ListView _listView;
     private TreeMap<Long, Invite> _sortedMap;
     private InviteHashMapArrayAdapter _adapter;
-    private GestureDetectorCompat gestureDetectorCompat;
+    private SwipeRefreshLayout swipeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +45,31 @@ public class ShowCentroidsActivity extends AppCompatActivity {
         setContentView(R.layout.invite_listview_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeLayout.setOnRefreshListener(this);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                  TODO use snackbar for user info??
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(ShowCentroidsActivity.this, InviteFriendsActivity.class);
+                startActivity(intent);
+            }
+        });
         _listView = (ListView) findViewById(R.id.listView);
 
-        gestureDetectorCompat = new GestureDetectorCompat(this, new MyGestureListener());
+        //check if right google play service is available
+        Integer resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode == ConnectionResult.SUCCESS) {
+            //Do what you want
+        } else {
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 0);
+            if (dialog != null) {
+                dialog.show();
+            }
+        }
     }
 
     @Override
@@ -118,30 +149,6 @@ public class ShowCentroidsActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        this.gestureDetectorCompat.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
-
-    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-        //handle 'swipe right' action only
-
-        @Override
-        public boolean onFling(MotionEvent event1, MotionEvent event2,
-                               float velocityX, float velocityY) {
-
-            if(event2.getX() > event1.getX() && event2.getX() - event1.getX() > 200 && Math.abs(event2.getY() - event1.getY()) < 200){
-                //switch another activity
-                Intent intent = new Intent(ShowCentroidsActivity.this, InviteFriendsActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.left_slide_in, R.anim.right_slide_out);
-                finish();
-            }
-
-            return true;
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -170,9 +177,15 @@ public class ShowCentroidsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ShowCentroidsActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
+    public void onRefresh() {
+        new RestConnector(this).execute(RestConnector.SYNC_ALL,
+                "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                        + InviteHandler.getInstance().getActiveInvitesString());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeLayout.setRefreshing(false);
+            }
+        }, 1000);
     }
 }
