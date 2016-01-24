@@ -41,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //check for permission, if none do if
-        Log.d("PERMISSION", "perm fine: "  + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
-        Log.d("PERMISSION", "permcoarse: " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -99,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     onResume();
                     Toast.makeText(this, "please give access to contacts", Toast.LENGTH_SHORT).show();
-
                 }
             }
         }

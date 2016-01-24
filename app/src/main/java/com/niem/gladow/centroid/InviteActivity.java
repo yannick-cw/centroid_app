@@ -377,7 +377,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
     @Override
     public void onRefresh() {
-        new NumberLogicHandler(this).executePhoneDataHandler();
+        new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + invite.getStartTime());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
