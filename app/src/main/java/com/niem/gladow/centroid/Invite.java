@@ -114,12 +114,12 @@ public class Invite implements Serializable {
             if(_tmp.matches("")){
                 _tmp = _member.getKey();
             }
-            _result += ","+_tmp;
+            _result += ", "+_tmp;
         }
         if(_result.matches("")){
             return _result;
         }else{
-            return _result.substring(1);
+            return _result.substring(2); // replace ", " at beginning of String
         }
     }
 

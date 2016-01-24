@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,11 +51,11 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
                In this case by inflating an xml layout */
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.invite_list_view_item, parent, false);
             _viewHolder = new ViewHolder();
-            _viewHolder.members = (TextView) convertView.findViewById(R.id.inviteListItemName);
-            _viewHolder.time = (TextView) convertView.findViewById(R.id.inviteListItemDate);
-            _viewHolder.status = (TextView) convertView.findViewById(R.id.inviteListItemStatus);
+            _viewHolder.members  = (TextView) convertView.findViewById(R.id.inviteListItemName);
+            _viewHolder.time     = (TextView) convertView.findViewById(R.id.inviteListItemDate);
+            _viewHolder.status   = (TextView) convertView.findViewById(R.id.inviteListItemStatus);
             _viewHolder.inviteId = (TextView) convertView.findViewById(R.id.inviteListItemInviteId);
-            _viewHolder.image = (ImageView) convertView.findViewById(R.id.inviteListItemImage);
+            _viewHolder.image       = (ImageView) convertView.findViewById(R.id.inviteListItemImage);
             _viewHolder.statusImage = (ImageView) convertView.findViewById(R.id.inviteListItemStatusImage);
             convertView.setTag(_viewHolder);
         } else {
@@ -65,9 +64,9 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         }
 
         // Once we have a reference to the View we are returning, we set its values.
-        Map.Entry<Long, Invite> inviteEntry = (Map.Entry<Long, Invite>) this.getItem(position);
+        Map.Entry<Long, Invite> _entryViewAtPosition = (Map.Entry<Long, Invite>) this.getItem(position);
         // get the corresponding Invite for this Element
-        Invite _invite = InviteHandler.getInstance().getInviteByTime(inviteEntry.getKey());
+        Invite _invite = InviteHandler.getInstance().getInviteByTime(_entryViewAtPosition.getKey());
 
         //build images
         String _hostName = _invite.getInviteNumberName().split(" ")[0];
@@ -76,13 +75,29 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
                 .buildRound(_hostName.substring(0,1), _color);
         _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
 
-        //TODO Layout for a lot of members
         //apply members to textstring
         SpannableString _styledMembers = new SpannableString(_hostName+": "+_invite.getAllMemberSurNames(false, false));
         int _start = 0;
         int _end = _hostName.length()+2;
+        setStringStyles(_invite, _styledMembers, _start, _end);
+        _viewHolder.members.setText(_styledMembers);
+
+
+        //setTextViews/Imageviews
+        _viewHolder.time.setText(String.valueOf(Util.getInstance().getShortDate(_invite.getStartTime())));
+        _viewHolder.inviteId.setText(String.valueOf(_invite.getStartTime()));
+        _viewHolder.status.setText(_invite.getStatus().toString());
+        _viewHolder.statusImage
+                .setImageResource(Util.getInstance()
+                        .getResIdForTransportationImage(_invite.getTransportationMode()));
+        return convertView;
+    }
+
+    //TODO Layout for a lot of members
+    //method that sets the different layouts to member status and shows them in listViewItem
+    private void setStringStyles(Invite _invite, SpannableString _styledMembers, int _start, int _end) {
         InviteReply _memberReply;
-        _styledMembers.setSpan(new StyleSpan(Typeface.BOLD), _start,_end , 0);
+        _styledMembers.setSpan(new StyleSpan(Typeface.BOLD), _start, _end, 0);
         //check for each member status and apply StyleSpan
         for (Map.Entry<String, InviteStatus> _memberEntry : _invite.getAllMembers(false, false).entrySet())
         {
@@ -102,20 +117,8 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
                     _styledMembers.setSpan(new ForegroundColorSpan(Color.LTGRAY), _start, _end, 0);
                     break;
             }
-            _end++; //shift space for comma used to separate names
+            _end += 2; //shift space for ", " used to separate names
 
         }
-        _viewHolder.members.setText(_styledMembers);
-
-
-        //setTextViews/Imageviews
-        _viewHolder.time.setText(""+Util.getInstance().getShortDate(_invite.getStartTime()));
-        _viewHolder.inviteId.setText("" + _invite.getStartTime());
-        _viewHolder.status.setText(_invite.getStatus().toString());
-        //TODO scale Image correctly
-        _viewHolder.statusImage
-                .setImageResource(Util.getInstance()
-                        .getResIdForTransportationImage(_invite.getTransportationMode()));
-        return convertView;
     }
 }
