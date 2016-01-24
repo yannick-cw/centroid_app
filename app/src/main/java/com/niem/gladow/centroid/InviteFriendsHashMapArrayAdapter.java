@@ -1,8 +1,6 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by clem on 24/11/15.
@@ -47,7 +44,7 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
         if (convertView == null) {
             /* There is no view at this position, we create a new one.
                In this case by inflating an xml layout */
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_view_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.invite_friends_list_view_item, parent, false);
             _viewHolder = new ViewHolder();
             _viewHolder.image = (ImageView) convertView.findViewById(R.id.listView_image);
             _viewHolder.number = (TextView) convertView.findViewById(R.id.friend_number);

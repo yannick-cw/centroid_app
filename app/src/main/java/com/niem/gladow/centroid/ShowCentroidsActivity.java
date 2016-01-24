@@ -8,13 +8,10 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -42,7 +39,7 @@ public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRef
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.invite_listview_activity);
+        setContentView(R.layout.centroid_listview_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
@@ -80,7 +77,7 @@ public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRef
         _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
 
         _adapter = new InviteHashMapArrayAdapter(this,
-                R.layout.invite_list_view_item, new ArrayList(_sortedMap.entrySet()));
+                R.layout.centroid_list_view_item, new ArrayList(_sortedMap.entrySet()));
         _listView.setAdapter(_adapter);
         _listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -99,8 +96,8 @@ public class ShowCentroidsActivity extends AppCompatActivity implements SwipeRef
                     // update state of the views
                     _adapter.notifyDataSetChanged();
 
-                    TextView _textViewClicked = (TextView) view.findViewById(R.id.inviteListItemInviteId);
-                    TextView _textViewClicked1 = (TextView) view.findViewById(R.id.inviteListItemStatus);
+                    TextView _textViewClicked = (TextView) view.findViewById(R.id.centroidListItemInviteId);
+                    TextView _textViewClicked1 = (TextView) view.findViewById(R.id.centroidListItemStatus);
                     Log.d("Textview.gettext:", _textViewClicked.getText().toString()); //start_time/invite_id
                     Log.d("Textview1.gettext:", _textViewClicked1.getText().toString());
 

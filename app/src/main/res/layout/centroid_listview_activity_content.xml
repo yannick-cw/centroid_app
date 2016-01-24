@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/invite_listview_activity" tools:context=".ShowCentroidsActivity">
+    tools:showIn="@layout/centroid_listview_activity" tools:context=".ShowCentroidsActivity">
 
     <!--<Button android:layout_width="fill_parent"-->
         <!--android:layout_height="wrap_content"-->

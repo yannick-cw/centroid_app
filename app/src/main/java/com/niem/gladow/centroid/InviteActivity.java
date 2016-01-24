@@ -1,6 +1,5 @@
 package com.niem.gladow.centroid;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -103,7 +103,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         _inviteStatus2.setText(invite.getStatus().toString());
 
         //extracting members names from this invite
-        final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembers(false,true));
+        final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembers(false, true));
         Log.d("members", invite.getAllMembers(false, true).toString());
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
@@ -112,6 +112,25 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 //        _adapter.setCheckList(_memberMap.size());
 
         _listView.setAdapter(_adapter);
+        _listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
+
+                try {
+                    // update state of the views
+                    _adapter.notifyDataSetChanged();
+
+                    TextView _memberIdTVClicked = (TextView) view.findViewById(R.id.memberID);
+                    //TODO draengeln(_memberIdTVClicked.getText().toString());
+                    // _memberIdTVClicked.getText().toString();
+
+                } catch (Exception e) {
+                    Log.v("Exception ON Click", e.getMessage(), e);
+                }
+
+            }
+        });
         //makes buttons visible if invite exits and chooses correct Image
         if (invite.getStatus() != InviteReply.UNANSWERED) {
             //sets the transportationMode ImageView to the corresponding Image

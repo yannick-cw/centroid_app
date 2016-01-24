@@ -1,7 +1,6 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,6 @@ import android.widget.TextView;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +20,8 @@ import java.util.Map;
 public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 
     private static class ViewHolder {
-        TextView member;
+        TextView memberName;
+        TextView memberId;
         ImageView status;
         InviteReply inviteReply;
     }
@@ -43,7 +40,8 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
                In this case by inflating an xml layout */
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.member_list_item, parent, false);
             _viewHolder = new ViewHolder();
-            _viewHolder.member = (TextView) convertView.findViewById(R.id.textIdMember);
+            _viewHolder.memberId = (TextView) convertView.findViewById(R.id.memberID);
+            _viewHolder.memberName = (TextView) convertView.findViewById(R.id.memberName);
             _viewHolder.status = (ImageView) convertView.findViewById(R.id.memberListStatusImage);
             convertView.setTag(_viewHolder);
         } else {
@@ -55,7 +53,8 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
         // member is the member at given position
         Map.Entry<String, InviteStatus> member = (Map.Entry<String, InviteStatus>) this.getItem(position);
 
-        _viewHolder.member.setText(member.getValue().getRealName()/*+" "+member.getKey()*/);
+        _viewHolder.memberId.setText(member.getKey());
+        _viewHolder.memberName.setText(member.getValue().getRealName() + " (" + member.getValue().getInviteReply() + ")");
         _viewHolder.status.setImageResource(Util.getInstance()
                 .getResIdForTransportationImage(member.getValue().getTransportationMode()));
         _viewHolder.inviteReply = member.getValue().getInviteReply();
@@ -74,21 +73,4 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 
         return convertView;
     }
-
-
-//    // setter, getter and updater for state of the views
-//    public void setCheckList(int size){
-//        this.checkList = new ArrayList<>(Arrays.asList(new Boolean[size]));
-//        Collections.fill(this.checkList, Boolean.FALSE); // initiate list with False
-//        notifyDataSetChanged();
-//    }
-
-//    public void toggleCheckList(int position) {
-//        this.checkList.set(position, !this.checkList.get(position));
-//    }
-
-//    public boolean getCheckStatus(int position){
-//        return this.checkList.get(position);
-//    }
-
 }

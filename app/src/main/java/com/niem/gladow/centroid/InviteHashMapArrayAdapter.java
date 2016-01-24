@@ -49,14 +49,14 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
         if (convertView == null) {
             /* There is no view at this position, we create a new one.
                In this case by inflating an xml layout */
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.invite_list_view_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.centroid_list_view_item, parent, false);
             _viewHolder = new ViewHolder();
-            _viewHolder.members  = (TextView) convertView.findViewById(R.id.inviteListItemName);
-            _viewHolder.time     = (TextView) convertView.findViewById(R.id.inviteListItemDate);
-            _viewHolder.status   = (TextView) convertView.findViewById(R.id.inviteListItemStatus);
-            _viewHolder.inviteId = (TextView) convertView.findViewById(R.id.inviteListItemInviteId);
-            _viewHolder.image       = (ImageView) convertView.findViewById(R.id.inviteListItemImage);
-            _viewHolder.statusImage = (ImageView) convertView.findViewById(R.id.inviteListItemStatusImage);
+            _viewHolder.members  = (TextView) convertView.findViewById(R.id.centroidListItemName);
+            _viewHolder.time     = (TextView) convertView.findViewById(R.id.centroidListItemDate);
+            _viewHolder.status   = (TextView) convertView.findViewById(R.id.centroidListItemStatus);
+            _viewHolder.inviteId = (TextView) convertView.findViewById(R.id.centroidListItemInviteId);
+            _viewHolder.image       = (ImageView) convertView.findViewById(R.id.centroidListItemImage);
+            _viewHolder.statusImage = (ImageView) convertView.findViewById(R.id.centroidListItemStatusImage);
             convertView.setTag(_viewHolder);
         } else {
             /* We recycle a View that already exists */
@@ -101,12 +101,19 @@ public class InviteHashMapArrayAdapter extends ArrayAdapter {
     //method that sets the different layouts to member status and shows them in listViewItem
     private void setStringStyles(Invite _invite, SpannableString _styledMembers, int _start, int _end) {
         InviteReply _memberReply;
+        String _tmpName = "";
         _styledMembers.setSpan(new StyleSpan(Typeface.BOLD), _start, _end, 0);
         //check for each member status and apply StyleSpan
         for (Map.Entry<String, InviteStatus> _memberEntry : _invite.getAllMembers(false, false).entrySet())
         {
             _start = _end;
-            _end += _memberEntry.getValue().getRealName().split(" ")[0].length();
+            _tmpName = _memberEntry.getValue().getRealName().split(" ")[0];
+            if(_tmpName.matches("")){
+                _end += _memberEntry.getKey().length();
+
+            }else{
+                _end += _memberEntry.getValue().getRealName().split(" ")[0].length();
+            }
             _memberReply = _memberEntry.getValue().getInviteReply();
             switch(_memberReply){
                 case ACCEPTED:

@@ -11,7 +11,7 @@
         tools:ignore="UselessParent" >
 
         <ImageView
-            android:id="@+id/inviteListItemImage"
+            android:id="@+id/centroidListItemImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
@@ -19,7 +19,7 @@
             tools:ignore="ContentDescription" />
 
         <LinearLayout
-            android:id="@+id/inviteListItemInfoContainer"
+            android:id="@+id/centroidListItemInfoContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -32,18 +32,18 @@
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/inviteListItemName"
+                    android:id="@+id/centroidListItemName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     tools:ignore="HardcodedText" />
                 <!--TODO From above style, test....-->
-                <!--style="@style/inviteListItemName"-->
+                <!--style="@style/centroidListItemName"-->
 
                 <TextView
-                    android:id="@+id/inviteListItemDate"
-                    style="@style/inviteListItemDate"
+                    android:id="@+id/centroidListItemDate"
+                    style="@style/centroidListItemDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -57,8 +57,8 @@
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/inviteListItemStatus"
-                    style="@style/inviteListItemStatus"
+                    android:id="@+id/centroidListItemStatus"
+                    style="@style/centroidListItemStatus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -69,8 +69,8 @@
                     />
 
                 <TextView
-                    android:id="@+id/inviteListItemInviteId"
-                    style="@style/inviteListItemInviteId"
+                    android:id="@+id/centroidListItemInviteId"
+                    style="@style/centroidListItemInviteId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -82,7 +82,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/inviteListItemStatusImage"
+            android:id="@+id/centroidListItemStatusImage"
             android:layout_height="30dp"
             android:layout_width="30dp"
             android:layout_gravity="center_vertical"

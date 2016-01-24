@@ -9,7 +9,7 @@
      OnItemClickListener works by ensuring constituent controls do not take focus -->
 
 
-    <TextView android:id="@+id/textIdMember"
+    <TextView android:id="@+id/memberName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -17,20 +17,20 @@
         android:layout_centerVertical="true"
         android:visibility="visible"
         />
-    <!--<TextView-->
-    <!--android:id="@+id/inviteListItemInviteId"-->
-    <!--style="@style/inviteListItemInviteId"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:text="1"-->
-    <!--android:visibility="invisible"-->
-    <!--tools:ignore="HardcodedText" />-->
+    <TextView
+        android:id="@+id/memberID"
+        style="@style/centroidListItemInviteId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="1"
+        android:visibility="invisible"
+        />
 
     <ImageView
         android:id="@+id/memberListStatusImage"
-        android:layout_height="30dp"
-        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_width="40dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:padding="3dp"
