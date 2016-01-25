@@ -103,8 +103,8 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         inviteStatus.setText(invite.getStatus().toString());
 
         //extracting members names from this invite
-        final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembers(false, true));
-        Log.d("members", invite.getAllMembers(false, true).toString());
+        final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembers(Invite.WITHOUT, Invite.WITH));
+        Log.d("members", invite.getAllMembers(Invite.WITHOUT, Invite.WITH).toString());
         //filling the ListView with Members of this invite via ArrayAdapter
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
         final MemberStatusHashMapArrayAdapter _adapter = new MemberStatusHashMapArrayAdapter(this,
@@ -160,7 +160,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             navigateToDestButton.setText(R.string.navigate_toPlace);
             TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
             _placesTextView.setVisibility(View.VISIBLE);
-            _placesTextView.setText(toDisplayContent(toReadableContent(invite.getChosenPlace())));
+            _placesTextView.setText(invite.getChosenPlaceContent());
         }
 
         try {
@@ -226,7 +226,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     public void navigateToPlace(View view) {
-        String [] _placeInfo = toReadableContent(invite.getChosenPlace()).split(",");
+        String [] _placeInfo = invite.getChosenPlaceForUri();
 
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + _placeInfo[_placeInfo.length-2]
                 + "," + _placeInfo[_placeInfo.length-1] + "&mode=" + invite.getTransportationMode().getMode());
@@ -240,7 +240,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-            invite.setPlaceToMeet(PlacePicker.getPlace(data, this));
             displayPlace(PlacePicker.getPlace(data, this));
         }
     }
@@ -292,29 +291,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         return _content;
     }
 
-    private String toReadableContent(String content) {
-        Log.d("XXXX", "place in toReadable start: " + content);
 
-        content = content.replaceAll("rvxy","%");
-        try {
-            content = URLDecoder.decode(content, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        Log.d("XXXX", "place in toReadable after decode: " + content);
-        return content;
-    }
-
-    private String toDisplayContent(String content) {
-        List<String> _contentList = Arrays.asList(content.split(","));
-        String _content = "Your chosen location: \n";
-        _content += "Name: " + _contentList.get(0) + "\n";
-
-        _content += "Address: " + _contentList.get(1) + "\n";
-
-        _content += "Phone: " + _contentList.get(2) + "\n";
-        return _content;
-    }
 
     //is called when accept or decline button is pressed
     public void responseToInvite(View view) {

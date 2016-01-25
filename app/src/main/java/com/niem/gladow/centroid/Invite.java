@@ -1,16 +1,14 @@
 package com.niem.gladow.centroid;
 
-import android.graphics.Typeface;
-import android.text.style.StyleSpan;
 import android.util.Log;
 
-import com.google.android.gms.location.places.Place;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,8 +31,9 @@ public class Invite implements Serializable {
     private boolean existsCentroid = false;
     private Map<String, InviteStatus> allMembers;
     private String chosenPlace;
-    private Place placeToMeet;
 
+    public static final boolean WITH = true;
+    public static final boolean WITHOUT = false;
 
 
     public Invite(String inviteNumber, long startTime, String allMembers) {
@@ -146,12 +145,10 @@ public class Invite implements Serializable {
         findRealNames(this.allMembers);
     }
 
-    public Place getPlaceToMeet() {
-        return placeToMeet;
-    }
-
-    public void setPlaceToMeet(Place placeToMeet) {
-        this.placeToMeet = placeToMeet;
+    public List<String> getPlaceToMeetInformations() {
+        List<String> _tmp = Arrays.asList(toReadableContent(getChosenPlace()).split(","));
+        _tmp.set(1,_tmp.get(1).split(" ")[0]+" "+_tmp.get(1).split(" ")[1]);
+        return _tmp;
     }
 
     public String getChosenPlace() {
@@ -160,5 +157,36 @@ public class Invite implements Serializable {
 
     public void setChosenPlace(String chosenPlace) {
         this.chosenPlace = chosenPlace;
+    }
+
+    public String getChosenPlaceContent(){
+        return toDisplayContent(getPlaceToMeetInformations());
+    }
+
+    public String[] getChosenPlaceForUri(){
+        return getChosenPlace().split(",");
+    }
+
+    private String toReadableContent(String content) {
+        Log.d("XXXX", "place in toReadable start: " + content);
+
+        content = content.replaceAll("rvxy","%");
+        try {
+            content = URLDecoder.decode(content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXX", "place in toReadable after decode: " + content);
+        return content;
+    }
+
+    private String toDisplayContent(List<String> contentList) {
+        String _content = "Your chosen location: \n";
+        _content += "Name: " + contentList.get(0) + "\n";
+
+        _content += "Address: " + contentList.get(1) + "\n";
+
+        _content += "Phone: " + contentList.get(2) + "\n";
+        return _content;
     }
 }

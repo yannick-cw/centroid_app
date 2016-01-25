@@ -74,7 +74,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
 
         //construct members StyledTextString incl. status
-        String _members = _invite.getAllMemberSurNames(false, false);
+        String _members = _invite.getAllMemberSurNames(Invite.WITHOUT, Invite.WITHOUT);
         if(_members.matches("")){       //check if host is the only member
             _members = _hostName+"  ";
         }else{
@@ -95,8 +95,8 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
         //check for placeToMeet and update TextView accordingly
         if(_invite.getChosenPlace() != null){
-            _viewHolder.placeToMeet.setText(_invite.getPlaceToMeet().getName().toString().split(",")[0] +"\n@"
-                                          + _invite.getPlaceToMeet().getAddress().toString().split(",")[0]);
+            _viewHolder.placeToMeet.setText(_invite.getPlaceToMeetInformations().get(0).split(",")[0] +"\n@"
+                                          + _invite.getPlaceToMeetInformations().get(1).split(",")[0]);
             _viewHolder.placeToMeet.setVisibility(View.VISIBLE);
         }else{
             _viewHolder.placeToMeet.setVisibility(View.INVISIBLE);
@@ -115,7 +115,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         _styledMembers.setSpan(new StyleSpan(Typeface.BOLD), _start, _end, 0);
 
         //check for each member statusImage and apply StyleSpan
-        for (Map.Entry<String, InviteStatus> _memberEntry : _invite.getAllMembers(false, false).entrySet())
+        for (Map.Entry<String, InviteStatus> _memberEntry : _invite.getAllMembers(Invite.WITHOUT, Invite.WITHOUT).entrySet())
         {
             //update _start
             _start = _end;
