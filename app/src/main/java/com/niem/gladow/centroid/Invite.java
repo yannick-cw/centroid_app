@@ -48,7 +48,6 @@ public class Invite implements Serializable {
         findRealNames(this.allMembers);
     }
 
-//todo numbers to name
     public long getStartTime() {
         return startTime;
     }
@@ -154,17 +153,19 @@ public class Invite implements Serializable {
     }
 
 
+    //TODO Cleanup
     //String Helpers to retreive Information from PlaceToMeet
     //Returns List With {Name, Address, Phone, Lat, Long etc...}
-    public List<String> getPlaceToMeetInformations() {
+    public  List<String> getPlaceToMeetInformations() {
         List<String> _tmp = Arrays.asList(toReadableContent(getChosenPlace()).split(","));
+        //TODO formatting name etc. einzelne Methode
         _tmp.set(1,_tmp.get(1).split(" ")[0]+" "+_tmp.get(1).split(" ")[1]);
         return _tmp;
     }
-    public String getChosenPlaceContent(){
+    public  String getChosenPlaceContent(){
         return toDisplayContent(getPlaceToMeetInformations());
     }
-    public String[] getChosenPlaceForUri(){
+    public  String[] getChosenPlaceForUri(){
         return getChosenPlace().split(",");
     }
     private String toReadableContent(String content) {

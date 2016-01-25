@@ -52,8 +52,6 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
     @Override
     public void onConnected(Bundle connectionHint) {
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            //todo latest is not good enough, needs to be a valid one
-
             if(!locationUpdateStarted) {
                 startLocationUpdates();
                 locationUpdateStarted = true;

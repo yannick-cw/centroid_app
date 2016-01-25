@@ -30,7 +30,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private SwipeRefreshLayout swipeLayout;
 
-//todo remove toast for created centroid and just show
+    //todo remove toast for created centroid and just show
     //todo update on new data missing
     @Override
     protected void onCreate(Bundle savedInstanceState) {

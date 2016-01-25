@@ -353,20 +353,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         builder.show();
     }
 
-    //TODO put GPS Permission in one nice place
-    //TODO check if can be refactored together with sendGps()
-    public boolean getGpsPermission () {
-        //check for permission, if none do if
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -383,7 +369,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //todo
             new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + invite.getStartTime());
             return true;
         }
