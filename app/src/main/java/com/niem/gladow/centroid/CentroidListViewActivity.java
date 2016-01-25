@@ -55,7 +55,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
                 startActivity(intent);
             }
         });
-        _listView = (ListView) findViewById(R.id.listView);
+        _listView = (ListView) findViewById(R.id.friendsListView);
 
         //check if right google play service is available
         Integer resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);

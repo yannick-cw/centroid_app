@@ -1,12 +1,11 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
+import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.List;
 import java.util.Map;
@@ -41,7 +41,6 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder _viewHolder;
-        ColorGenerator _colorGenerator = ColorGenerator.MATERIAL;
 
         if (convertView == null) {
             /* There is no view at this position, we create a new one.
@@ -68,9 +67,11 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
         //build One-Letter Image with first letter of hostName
         String _hostName = _invite.getInviteNumberName().split(" ")[0];
-        int _color = _colorGenerator.getColor(_hostName);
+        //getColor for Status of Invite
         _viewHolder.textDrawable = TextDrawable.builder()
-                .buildRound(_hostName.substring(0,1), _color);
+                .buildRound(_hostName.substring(0,1)
+                , getContext().getResources().getInteger(Util.getInstance()
+                .getColorForStatus(_invite.getStatus())));
         _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
 
         //construct members StyledTextString incl. status
@@ -95,8 +96,8 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
         //check for placeToMeet and update TextView accordingly
         if(_invite.getChosenPlace() != null){
-            _viewHolder.placeToMeet.setText(_invite.getPlaceToMeetInformations().get(0).split(",")[0] +"\n@"
-                                          + _invite.getPlaceToMeetInformations().get(1).split(",")[0]);
+            _viewHolder.placeToMeet.setText(_invite.getLocationName() +"\n@"
+                                          + _invite.getLocationAdress());
             _viewHolder.placeToMeet.setVisibility(View.VISIBLE);
         }else{
             _viewHolder.placeToMeet.setVisibility(View.INVISIBLE);
@@ -109,6 +110,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
     private void setStringStyles(Invite _invite, SpannableString _styledMembers, int _start, int _end) {
         InviteReply _memberReply;
         String _tmpName;
+        TransportationMode _memberTransportation;
 
         //set style for hostName
         _styledMembers.setSpan(new StyleSpan(Typeface.BOLD), _start, _end, 0);
@@ -130,19 +132,20 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
             //check the statusImage of the member and apply style accordingly
             _memberReply = _memberEntry.getValue().getInviteReply();
+            _memberTransportation = _memberEntry.getValue().getTransportationMode();
             switch(_memberReply){
                 case ACCEPTED:
                     _styledMembers.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), _start, _end, 0);
                     break;
                 case DECLINED:
                     _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC),_start, _end, 0);
-                    _styledMembers.setSpan(new ForegroundColorSpan(Color.RED), _start, _end, 0);
                     break;
                 case UNANSWERED:
                     _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC),_start, _end, 0);
-                    _styledMembers.setSpan(new ForegroundColorSpan(Color.LTGRAY), _start, _end, 0);
                     break;
             }
+            _styledMembers.setSpan(new ForegroundColorSpan(ContextCompat
+                    .getColor(getContext(), Util.getInstance().getColorForTranspMode(_memberTransportation))), _start, _end, 0);
 
             //shift space for ", " used to separate names
             _end += 2;

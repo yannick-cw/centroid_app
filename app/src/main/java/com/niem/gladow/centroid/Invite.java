@@ -156,21 +156,43 @@ public class Invite implements Serializable {
     //TODO Cleanup
     //String Helpers to retreive Information from PlaceToMeet
     //Returns List With {Name, Address, Phone, Lat, Long etc...}
-    public  List<String> getPlaceToMeetInformations() {
-        List<String> _tmp = Arrays.asList(toReadableContent(getChosenPlace()).split(","));
-        //TODO formatting name etc. einzelne Methode
-        _tmp.set(1,_tmp.get(1).split(" ")[0]+" "+_tmp.get(1).split(" ")[1]);
+    private  List<String> getLocationInformations() {
+        return Arrays.asList(toReadableContent(getChosenPlace()).split(","));
+    }
+
+    public String getLocationName(){
+        return getLocationInformations().get(0);
+    }
+
+    public String getLocationAdress(){
+        String _tmp = getLocationInformations().get(1);
+        Log.d("RegeXTest: Bevor",_tmp);
+        _tmp = _tmp.split("\\d{5}")[0];
+        Log.d("RegeXTest:Danach",_tmp);
         return _tmp;
     }
-    public  String getChosenPlaceContent(){
-        return toDisplayContent(getPlaceToMeetInformations());
+
+    public String getLocationPhoneNumber(){
+        return getLocationInformations().get(2);
+
     }
+
+    public String getLocationLatitude(){
+        //second last element is Latitude
+        return getLocationInformations().get(getLocationInformations().size()-2);
+    }
+
+    public String getLocationLongitude(){
+        //last element is Longitude
+        return getLocationInformations().get(getLocationInformations().size()-1);
+    }
+
+
     public  String[] getChosenPlaceForUri(){
         return getChosenPlace().split(",");
     }
     private String toReadableContent(String content) {
         Log.d("XXXX", "place in toReadable start: " + content);
-
         content = content.replaceAll("rvxy","%");
         try {
             content = URLDecoder.decode(content, "UTF-8");
@@ -180,13 +202,5 @@ public class Invite implements Serializable {
         Log.d("XXXX", "place in toReadable after decode: " + content);
         return content;
     }
-    private String toDisplayContent(List<String> contentList) {
-        String _content = "Your chosen location: \n";
-        _content += "Name: " + contentList.get(0) + "\n";
 
-        _content += "Address: " + contentList.get(1) + "\n";
-
-        _content += "Phone: " + contentList.get(2) + "\n";
-        return _content;
-    }
 }

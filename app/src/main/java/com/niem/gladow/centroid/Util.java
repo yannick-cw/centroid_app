@@ -3,6 +3,8 @@ package com.niem.gladow.centroid;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.niem.gladow.centroid.Enums.InviteReply;
+import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.io.BufferedReader;
@@ -42,12 +44,8 @@ public final class Util {
 
     public String cleanNumberString(String numbers) {
         String _tmp = numbers;
-        //Log.d("NUMBERS", numbers);
         _tmp = _tmp.replaceAll("^00|[^0-9]", "");
         _tmp = _tmp.replaceAll("^0", "49");
-
-        //Log.d("afterClean", _tmp);
-
         return _tmp;
     }
 
@@ -71,16 +69,14 @@ public final class Util {
     public String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.setTimeInMillis(time);
-        return DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
+        return DateFormat.format("E dd.MM, HH:mm", cal).toString();
     }
 
     public String getShortDate(long inviteTime) {
         long _currentTime = System.currentTimeMillis();
         Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.setTimeInMillis(inviteTime);
-        //TODO exchange lines below
-        //if(_currentTime-inviteTime < TimeUnit.DAYS.toMillis(1)){
-        if(_currentTime-inviteTime < TimeUnit.MINUTES.toMillis(30)){
+        if(_currentTime-inviteTime < TimeUnit.DAYS.toMillis(1)){
             return DateFormat.format("HH:mm:ss", cal).toString();
         }else{
             return DateFormat.format("dd. MMM", cal).toString();
@@ -103,6 +99,34 @@ public final class Util {
                 return R.drawable.unanswered;
             default:
                 return R.drawable.unanswered;
+        }
+    }
+
+    public int getColorForStatus(InviteReply inviteStatus){
+        //TODO apply nice colors + deprecated stati
+        switch (inviteStatus) {
+            case READY:
+                return R.color.centroid_1;
+            case UNANSWERED:
+                return R.color.unanswered_1;
+            case DECLINED:
+                return R.color.declined_1;
+            case ACCEPTED:
+                return R.color.centroid_4;
+            default:
+                return R.color.unanswered_dark_1;
+        }
+    }
+
+    public int getColorForTranspMode(TransportationMode transportationMode){
+        //TODO apply nice colors
+        switch (transportationMode) {
+            case DECLINED:
+                return R.color.declined_1;
+            case DEFAULT:
+                return R.color.unanswered_1;
+            default:
+                return R.color.centroid_1;
         }
     }
 

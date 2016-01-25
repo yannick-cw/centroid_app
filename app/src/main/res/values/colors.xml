@@ -21,4 +21,18 @@
     <color name="unanswered_dark_2">#CF6700</color>
     <color name="unanswered_dark_3">#A35100</color>
     <color name="unanswered_dark_4">#723900</color>
+
+    <array name="colorArray">
+        <item>@color/centroid_1</item>
+        <item>@color/centroid_2</item>
+        <item>@color/centroid_3</item>
+        <item>@color/centroid_4</item>
+        <item>@color/centroid_5</item>
+        <!--<item>@color/unanswered_dark_1</item>-->
+        <!--<item>@color/unanswered_dark_2</item>-->
+        <!--<item>@color/unanswered_dark_3</item>-->
+        <!--<item>@color/unanswered_dark_4</item>-->
+        <!--<item>@color/unanswered_1</item>-->
+        <!--<item>@color/declined_1</item>-->
+    </array>
 </resources>

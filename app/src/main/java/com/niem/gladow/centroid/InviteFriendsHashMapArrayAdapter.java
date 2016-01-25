@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,13 +42,21 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder _viewHolder;
-        ColorGenerator _colorGenerator = ColorGenerator.MATERIAL;
+
+        //TODO colorgenerator cleanup
+        int[] _colors = getContext().getResources().getIntArray(R.array.colorArray);
+        List<Integer> intList = new ArrayList<>();
+        for (int index = 0; index < _colors.length; index++)
+        {
+            intList.add(_colors[index]);
+        }
+        ColorGenerator _colorGenerator = ColorGenerator.create(intList);
         if (convertView == null) {
             /* There is no view at this position, we create a new one.
                In this case by inflating an xml layout */
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.invite_friends_list_view_item, parent, false);
             _viewHolder = new ViewHolder();
-            _viewHolder.image = (ImageView) convertView.findViewById(R.id.listView_image);
+            _viewHolder.image = (ImageView) convertView.findViewById(R.id.friendListView_image);
             _viewHolder.number = (TextView) convertView.findViewById(R.id.friend_number);
             _viewHolder.name = (TextView) convertView.findViewById(R.id.friend_name);
             convertView.setTag(_viewHolder);

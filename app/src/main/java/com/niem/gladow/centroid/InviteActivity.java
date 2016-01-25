@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +37,8 @@ import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.TreeMap;
 
 /**
@@ -63,7 +58,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private LinearLayout buttonBox;
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
-    private TextView inviteStatus, inviteTime;
+    private TextView invitePhoneNumber, inviteTime, inviteLocation;
 
     //todo string for placeToMeet shit
 
@@ -71,26 +66,25 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invite_activity);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        swipeLayout.setOnRefreshListener(this);
 
         //getting the current invite, by Id that was passed in this activity via putExtra(String)
         invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
         Log.d("Input Intent:",getIntent().getStringExtra("InviteId"));
 
         //setting up needed Views (Buttons etc.)
-        declineInviteButton      = (Button) findViewById(R.id.declineInviteButton);
-        acceptInviteButton       = (Button) findViewById(R.id.acceptInviteButton);
-
-        buttonBox                = (LinearLayout) findViewById(R.id.buttonLayout);
         inviteTime               = (TextView)  findViewById(R.id.inviteTime);
-        inviteStatus             = (TextView)  findViewById(R.id.inviteStatus);
+        invitePhoneNumber = (TextView)  findViewById(R.id.invitePhoneNumber);
+        inviteLocation           = (TextView)  findViewById(R.id.inviteLocation);
         transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
 
+        swipeLayout              = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeLayout.setOnRefreshListener(this);
+
+        buttonBox                = (LinearLayout) findViewById(R.id.buttonLayout);
+        declineInviteButton      = (Button) findViewById(R.id.declineInviteButton);
+        acceptInviteButton       = (Button) findViewById(R.id.acceptInviteButton);
         showCentroidButton       = findViewById(R.id.showCentroidButton);
         navigateToDestButton     = (Button) findViewById(R.id.navigateToButton);
 
@@ -101,7 +95,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         super.onResume();
 
         inviteTime.setText(Util.getInstance().getDate(invite.getStartTime()));
-        inviteStatus.setText(invite.getStatus().toString());
+        invitePhoneNumber.setText(invite.getStatus().toString());
 
         //extracting members names from this invite
         final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembers(Invite.WITHOUT, Invite.WITH));
@@ -124,13 +118,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                     //TODO draengeln TOAST ersetzen
                     TextView _memberIdTVClicked = (TextView) view.findViewById(R.id.memberID);
                     ImageView _memberStatus = (ImageView) view.findViewById(R.id.memberListStatusImage);
-                    if(_memberStatus.getTag() == TransportationMode.DEFAULT){
+                    if (_memberStatus.getTag() == TransportationMode.DEFAULT) {
                         new RestConnector(InviteActivity.this).execute(RestConnector.GET, "/android/draengel/"
                                 + PersistenceHandler.getInstance().getOwnNumber() + "/"
                                 + _memberIdTVClicked.getText().toString());
-                        Toast.makeText(getApplicationContext(),"DRAENGELN: "+_memberIdTVClicked.getText().toString(),Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getApplicationContext(),"NICHT DRAENGELN",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "DRAENGELN: " + _memberIdTVClicked.getText().toString(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "NICHT DRAENGELN", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     Log.v("Exception ON Draengeln", e.getMessage(), e);
@@ -143,14 +137,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             //sets the transportationMode ImageView to the corresponding Image
             //TODO nice images with variable Resolutions
             transportationModeImage.setImageResource(Util.getInstance().getResIdForTransportationImage(invite.getTransportationMode()));
-
-            //TODO entferne DEBUG Block
-            //only needed for refresh ---  DEBUG
-            if(invite.getStatus() == InviteReply.DECLINED){
-                invite.setTransportationMode(TransportationMode.DECLINED);
-            }
-            // --- DEBUG-END
-
             declineInviteButton.setVisibility(View.GONE);
             acceptInviteButton.setVisibility(View.GONE);
             navigateToDestButton.setVisibility(View.VISIBLE);
@@ -161,13 +147,16 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         if (invite.existsCentroid()){
             showCentroidButton.setEnabled(true);
             navigateToDestButton.setEnabled(true);
-
         }
         if(invite.getChosenPlace() != null) {
             navigateToDestButton.setText(R.string.navigate_toPlace);
-            TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
-            _placesTextView.setVisibility(View.VISIBLE);
-            _placesTextView.setText(invite.getChosenPlaceContent());
+            inviteLocation.setText(invite.getLocationName() + "\n@" +
+                    invite.getLocationAdress());
+            if(!invite.getLocationPhoneNumber().matches("isEmpty")){
+                invitePhoneNumber.setText(invite.getLocationPhoneNumber());
+                invitePhoneNumber.setVisibility(View.VISIBLE);
+            }
+
         }
 
         try {
@@ -179,9 +168,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
 
     }
-
-
-
 
     public void showCentroidOnMap(View view) {
         if(invite.getInviteNumber().equals(PersistenceHandler.getInstance().getOwnNumber())) {
@@ -272,7 +258,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             content += IS_EMPTY + ",";
         }
         content += place.getLatLng();
-        TextView _placesTextView = (TextView) findViewById(R.id.placesTextView);
+        TextView _placesTextView = (TextView) findViewById(R.id.inviteLocation);
         _placesTextView.setVisibility(View.VISIBLE);
         _placesTextView.setText(content);
 
@@ -297,8 +283,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         return _content;
     }
-
-
 
     //is called when accept or decline button is pressed
     public void responseToInvite(View view) {

@@ -43,7 +43,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeLayout.setOnRefreshListener(this);
 
-        final ListView _listView = (ListView) findViewById(R.id.listView);
+        final ListView _listView = (ListView) findViewById(R.id.friendsListView);
         _listView.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) {

@@ -35,7 +35,7 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        String _realName;
         ViewHolder _viewHolder;
 
         if (convertView == null) {
@@ -57,7 +57,13 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
         Map.Entry<String, InviteStatus> member = (Map.Entry<String, InviteStatus>) this.getItem(position);
 
         _viewHolder.memberId.setText(member.getKey());
-        _viewHolder.memberName.setText(member.getValue().getRealName() + " (" + member.getValue().getInviteReply() + ")");
+        _realName = member.getValue().getRealName();
+        if(_realName.matches("")){
+            _viewHolder.memberName.setText(member.getKey()+" (" + member.getValue().getInviteReply() + ")");
+
+        }else {
+            _viewHolder.memberName.setText(member.getValue().getRealName()+" (" + member.getValue().getInviteReply() + ")");
+        }
         _viewHolder.inviteReply = member.getValue().getInviteReply();
 
 
