@@ -134,8 +134,14 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         if (invite.getStatus() != InviteReply.UNANSWERED) {
             //sets the transportationMode ImageView to the corresponding Image
             //TODO nice images with variable Resolutions
-            // TODO Declined Image
             transportationModeImage.setImageResource(Util.getInstance().getResIdForTransportationImage(invite.getTransportationMode()));
+
+            //TODO entferne DEBUG Block
+            //only needed for refresh ---  DEBUG
+            if(invite.getStatus() == InviteReply.DECLINED){
+                invite.setTransportationMode(TransportationMode.DECLINED);
+            }
+            // --- DEBUG-END
 
             declineInviteButton.setVisibility(View.GONE);
             acceptInviteButton.setVisibility(View.GONE);
@@ -315,6 +321,8 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                 Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.declineInviteButton:
+                invite.setTransportationMode(TransportationMode.DECLINED);
+                Log.d("DeclineButton",invite.getTransportationMode().toString());
                 InviteHandler.getInstance().responseToInvite(invite.getStartTime(), InviteReply.DECLINED, invite.getTransportationMode(), this);
                 Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
                 onBackPressed();
@@ -325,7 +333,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         onResume();
     }
 
-    //TODO wird nicht geupdatet wenn man noch in der inviteActivity ist und die gcm bekommt.
     public void chooseTransportationMode(final View _view){
         CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

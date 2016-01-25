@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
             _members = _hostName+", "+_members;
         }
         SpannableString _styledMembers = new SpannableString(_members);
-        setStringStyles(_invite, _styledMembers, 0, _hostName.length()+2);
+        setStringStyles(_invite, _styledMembers, 0, _hostName.length() + 2);
         _viewHolder.members.setText(_styledMembers);
 
 
@@ -88,9 +89,12 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.time.setText(String.valueOf(Util.getInstance().getShortDate(_invite.getStartTime())));
         _viewHolder.inviteId.setText(String.valueOf(_invite.getStartTime()));
         _viewHolder.status.setText(_invite.getStatus().toString());
+        Log.d("Status", _invite.getStatus().toString());
+        Log.d("transpMode",_invite.getTransportationMode().toString());
         _viewHolder.statusImage
                 .setImageResource(Util.getInstance()
                         .getResIdForTransportationImage(_invite.getTransportationMode()));
+
 
         //check for placeToMeet and update TextView accordingly
         if(_invite.getChosenPlace() != null){

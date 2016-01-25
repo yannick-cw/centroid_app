@@ -97,10 +97,12 @@ public final class Util {
                 return R.drawable.car;
             case PUBLIC:
                 return R.drawable.publictransport;
+            case DECLINED:
+                return R.drawable.declined;
             case DEFAULT:
-                return R.drawable.ic_media_play;
+                return R.drawable.unanswered;
             default:
-                return R.drawable.ic_media_pause;
+                return R.drawable.unanswered;
         }
     }
 
