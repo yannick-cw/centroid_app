@@ -166,9 +166,9 @@ public class Invite implements Serializable {
 
     public String getLocationAdress(){
         String _tmp = getLocationInformations().get(1);
-        Log.d("RegeXTest: Bevor",_tmp);
+//        Log.d("RegeXTest: Bevor",_tmp);
         _tmp = _tmp.split("\\d{5}")[0];
-        Log.d("RegeXTest:Danach",_tmp);
+//        Log.d("RegeXTest:Danach",_tmp);
         return _tmp;
     }
 
