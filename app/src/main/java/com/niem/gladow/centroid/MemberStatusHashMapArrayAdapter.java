@@ -74,6 +74,7 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
                 break;
             default:
                 convertView.setBackgroundResource(R.color.unanswered);
+                _viewHolder.statusImage.setTag(TransportationMode.DEFAULT);
                 break;
         }
 

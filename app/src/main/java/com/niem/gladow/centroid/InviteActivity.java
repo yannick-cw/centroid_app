@@ -57,12 +57,12 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private Invite invite;
     private View showCentroidButton;
     private Button navigateToDestButton;
-    private View declineInviteButton;
-    private View acceptInviteButton;
+    private Button declineInviteButton;
+    private Button acceptInviteButton;
     private View inviteHeader;
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
-
+    private TextView inviteStatus, inviteTime;
 
     //todo string for placeToMeet shit
 
@@ -82,21 +82,25 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         Log.d("Input Intent:",getIntent().getStringExtra("InviteId"));
 
         //setting up needed Views (Buttons etc.)
-        declineInviteButton      = findViewById(R.id.declineInviteButton);
-        acceptInviteButton       = findViewById(R.id.acceptInviteButton);
+        declineInviteButton      = (Button) findViewById(R.id.declineInviteButton);
+        acceptInviteButton       = (Button) findViewById(R.id.acceptInviteButton);
+
         inviteHeader             = findViewById(R.id.inviteHeader);
+        inviteTime               = (TextView)  findViewById(R.id.inviteTime);
+        inviteStatus             = (TextView)  findViewById(R.id.inviteStatus);
+        transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
+
         showCentroidButton       = findViewById(R.id.showCentroidButton);
         navigateToDestButton     = (Button) findViewById(R.id.navigateToButton);
-        transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        TextView _inviteStatus1 = (TextView)  findViewById(R.id.InviteStatusText1);
-        TextView _inviteStatus2 = (TextView)  findViewById(R.id.InviteStatusText2);
-        _inviteStatus1.setText(Util.getInstance().getDate(invite.getStartTime()));
-        _inviteStatus2.setText(invite.getStatus().toString());
+
+        inviteTime.setText(Util.getInstance().getDate(invite.getStartTime()));
+        inviteStatus.setText(invite.getStatus().toString());
 
         //extracting members names from this invite
         final TreeMap<String, InviteStatus> _memberMap = new TreeMap<>(invite.getAllMembers(false, true));
@@ -116,14 +120,16 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                     // update state of the views
                     _adapter.notifyDataSetChanged();
 
+                    //TODO draengeln TOAST ersetzen
                     TextView _memberIdTVClicked = (TextView) view.findViewById(R.id.memberID);
-                    ImageView _memmberStatus = (ImageView) view.findViewById(R.id.memberListStatusImage);
-                    Log.d("memStatDraengeln",_memmberStatus.getTag().toString());
-                    //TODO draengeln(_memberIdTVClicked.getText().toString());
-                    // _memberIdTVClicked.getText().toString();
-
+                    ImageView _memberStatus = (ImageView) view.findViewById(R.id.memberListStatusImage);
+                    if(_memberStatus.getTag() == TransportationMode.DEFAULT){
+                        Toast.makeText(getApplicationContext(),"DRAENGELN: "+_memberIdTVClicked.getText().toString(),Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(),"NICHT DRAENGELN",Toast.LENGTH_SHORT).show();
+                    }
                 } catch (Exception e) {
-                    Log.v("Exception ON Click", e.getMessage(), e);
+                    Log.v("Exception ON Draengeln", e.getMessage(), e);
                 }
 
             }

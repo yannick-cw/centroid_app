@@ -75,7 +75,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
         //construct members StyledTextString incl. status
         String _members = _invite.getAllMemberSurNames(false, false);
-        if(_members.matches("")){
+        if(_members.matches("")){       //check if host is the only member
             _members = _hostName+"  ";
         }else{
             _members = _hostName+", "+_members;
@@ -89,11 +89,8 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.time.setText(String.valueOf(Util.getInstance().getShortDate(_invite.getStartTime())));
         _viewHolder.inviteId.setText(String.valueOf(_invite.getStartTime()));
         _viewHolder.status.setText(_invite.getStatus().toString());
-        Log.d("Status", _invite.getStatus().toString());
-        Log.d("transpMode", _invite.getTransportationMode().toString());
-        _viewHolder.statusImage
-                .setImageResource(Util.getInstance()
-                        .getResIdForTransportationImage(_invite.getTransportationMode()));
+        _viewHolder.statusImage.setImageResource(Util.getInstance()
+                .getResIdForTransportationImage(_invite.getTransportationMode()));
 
 
         //check for placeToMeet and update TextView accordingly
