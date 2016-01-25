@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
+import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
     private static class ViewHolder {
         TextView memberName;
         TextView memberId;
-        ImageView statusImage;
+        ImageView   statusImage;
         InviteReply inviteReply;
     }
 
@@ -58,32 +60,24 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.memberName.setText(member.getValue().getRealName() + " (" + member.getValue().getInviteReply() + ")");
         _viewHolder.inviteReply = member.getValue().getInviteReply();
 
+
         switch (_viewHolder.inviteReply){
             case DECLINED:
                 convertView.setBackgroundResource(R.color.declined);
                 _viewHolder.statusImage.setImageResource(R.drawable.declined_black);
+                _viewHolder.statusImage.setTag(TransportationMode.DECLINED);
                 break;
             case ACCEPTED:
                 convertView.setBackgroundResource(R.color.accepted);
-                _viewHolder.statusImage.setImageResource(getSafeStatus(member));
+                _viewHolder.statusImage.setImageResource(Util.getInstance().getResIdForTransportationImage(member.getValue().getTransportationMode()));
+                _viewHolder.statusImage.setTag(member.getValue().getTransportationMode());
                 break;
             default:
                 convertView.setBackgroundResource(R.color.unanswered);
                 break;
         }
 
-
-
         return convertView;
     }
 
-    //TODO auto-refresh check :), needed InviteID...
-    private int getSafeStatus(Map.Entry<String, InviteStatus> member){
-        int _tmp  = Util.getInstance().getResIdForTransportationImage(member.getValue().getTransportationMode());
-//        if(_tmp == R.drawable.unanswered){
-//            new RestConnector(getContext()).execute(RestConnector.SYNC, "/android/updateInvite/" + member.getValue().);
-//        }
-        return _tmp;
-
-    }
 }

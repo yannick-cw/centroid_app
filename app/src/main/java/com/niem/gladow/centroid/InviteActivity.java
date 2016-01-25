@@ -88,9 +88,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         showCentroidButton       = findViewById(R.id.showCentroidButton);
         navigateToDestButton     = (Button) findViewById(R.id.navigateToButton);
         transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
-
-
-
     }
 
     @Override
@@ -108,7 +105,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         final ListView _listView = (ListView) findViewById(R.id.memberListView);
         final MemberStatusHashMapArrayAdapter _adapter = new MemberStatusHashMapArrayAdapter(this,
                 R.layout.member_list_item, new ArrayList(_memberMap.entrySet()));
-//        _adapter.setCheckList(_memberMap.size());
 
         _listView.setAdapter(_adapter);
         _listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,6 +117,8 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                     _adapter.notifyDataSetChanged();
 
                     TextView _memberIdTVClicked = (TextView) view.findViewById(R.id.memberID);
+                    ImageView _memmberStatus = (ImageView) view.findViewById(R.id.memberListStatusImage);
+                    Log.d("memStatDraengeln",_memmberStatus.getTag().toString());
                     //TODO draengeln(_memberIdTVClicked.getText().toString());
                     // _memberIdTVClicked.getText().toString();
 
