@@ -329,20 +329,15 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure you want to decline?");
         builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
-            boolean _hasChosen = false;
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // the user clicked on transportationModes[which]
                 switch (which) {
                     case 3:
                         responseToInvite(_view);
-                        _hasChosen = true;
                         break;
                     default:
                         break;
-                }
-                if (_hasChosen) {
-                    responseToInvite(_view);
                 }
             }
         });
