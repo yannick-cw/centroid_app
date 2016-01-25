@@ -36,10 +36,10 @@ public class InviteHandler {
         }
         return instance;
     }
-    
+
     //if there is at least one unanswered invite return true
     public boolean existsUnansweredInvite() {
-        for (Invite _invite: activeInvites.values()) {
+        for (Invite _invite : activeInvites.values()) {
             if (_invite.getStatus().equals(InviteReply.UNANSWERED)) {
                 return true;
             }
@@ -51,7 +51,7 @@ public class InviteHandler {
         return activeInvites;
     }
 
-    public Invite getInviteByTime (long startTime) {
+    public Invite getInviteByTime(long startTime) {
         return activeInvites.get(startTime);
     }
 
@@ -77,7 +77,7 @@ public class InviteHandler {
     }
 
     public void responseToInvite(long startTime, InviteReply inviteReply
-                                        ,TransportationMode transportationMode, Context context) {
+            , TransportationMode transportationMode, Context context) {
         if (GpsDataHandler.getInstance().getLastLocation() == null) {
             Toast.makeText(context, "please give gps permission", Toast.LENGTH_SHORT).show();
             return;
@@ -87,7 +87,7 @@ public class InviteHandler {
         if (inviteReply.equals(InviteReply.ACCEPTED)) {
             new RestConnector(context).execute(RestConnector.POST, GpsDataHandler.SEND_GPS
                     + PersistenceHandler.getInstance().getOwnNumber() + "/"
-                    + GpsDataHandler.getInstance().getLastLocation().getLongitude()+"/"
+                    + GpsDataHandler.getInstance().getLastLocation().getLongitude() + "/"
                     + GpsDataHandler.getInstance().getLastLocation().getLatitude());
         }
 
@@ -114,13 +114,14 @@ public class InviteHandler {
     /**
      * parsing the transmitted string
      * either creates new invite or updates existing one
+     *
      * @param result
      * @param context
      */
     public void syncInvite(String result, Context context) {
         //todo place missing
         Log.d("XXXX", "result update: " + result);
-        if(result != null && !"".equals(result)) {
+        if (result != null && !"".equals(result)) {
             List<String> _list = Arrays.asList(result.split(":"));
             long id = 0;
             try {
@@ -132,20 +133,20 @@ public class InviteHandler {
             Log.d("XXXX", "Invite exists? " + activeInvites.containsKey(id));
             Map<String, List<String>> _numberStatus = new HashMap();
             String[] _pairNumberStatus = _list.get(2).split(",");
-            for (String str: _pairNumberStatus) {
+            for (String str : _pairNumberStatus) {
                 List<String> _tupel = new LinkedList();
                 _tupel.add(str.split("&")[1]);
                 _tupel.add(str.split("&")[2]);
                 _numberStatus.put(str.split("&")[0], _tupel);
             }
             StringBuilder _allNumbers = new StringBuilder();
-            for (String str: _numberStatus.keySet()) {
+            for (String str : _numberStatus.keySet()) {
                 _allNumbers.append(str + ",");
             }
             _allNumbers.deleteCharAt(_allNumbers.length() - 1);
 
             //if invite does not already exist, create new one
-            if(!activeInvites.containsKey(id)) {
+            if (!activeInvites.containsKey(id)) {
                 activeInvites.put(id, new Invite(_list.get(1), id, _allNumbers.toString()));
 
                 //check ownNumber status, set accordingly
@@ -154,11 +155,15 @@ public class InviteHandler {
             }
 
             //update status and centroid
-            for (String str: _numberStatus.keySet()) {
+            for (String str : _numberStatus.keySet()) {
                 activeInvites.get(id).updateMember(str, InviteReply.valueOf(_numberStatus.get(str).get(0)), TransportationMode.valueOf(_numberStatus.get(str).get(1)));
             }
-            if(!_list.get(3).equals("null")) {
-                activeInvites.get(id).setCentroid(new Centroid(_list.get(3)));
+            if (!_list.get(4).equals("null")) {
+                activeInvites.get(id).setCentroid(new Centroid(_list.get(4)));
+                activeInvites.get(id).setStatus(InviteReply.READY);
+                if (!_list.get(3).equals("null")) {
+                    activeInvites.get(id).setChosenPlace(_list.get(3));
+                }
             }
             PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
             Intent _intent = new Intent(MyGcmListenerService.BROADCAST_UPDATE);
@@ -168,10 +173,10 @@ public class InviteHandler {
 
     public String getActiveInvitesString() {
         StringBuilder _ids = new StringBuilder();
-        for (long id: activeInvites.keySet()) {
+        for (long id : activeInvites.keySet()) {
             _ids.append(id + ",");
         }
-        if(_ids.length()>0) {
+        if (_ids.length() > 0) {
             _ids.deleteCharAt(_ids.length() - 1);
         } else {
             _ids.append("0");
@@ -180,9 +185,9 @@ public class InviteHandler {
     }
 
     public void syncAllInvites(String result, Context context) {
-        if(result != null && !"".equals(result)) {
+        if (result != null && !"".equals(result)) {
             List<String> ids = Arrays.asList(result.split(","));
-            for (String id: ids) {
+            for (String id : ids) {
                 new RestConnector(context).execute(RestConnector.SYNC, "/android/updateInvite/" + id);
             }
         }
