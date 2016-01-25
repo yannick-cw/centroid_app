@@ -44,7 +44,7 @@ public class MyGcmListenerService extends GcmListenerService {
     private final String UPDATE_NUMBER = "update_number";
     private final String UPDATE_STATUS = "update_status";
     private final String PLACE = "place";
-    private final String HOST_TRANSPORT = "host_transport";
+    private final String TRANSPORT = "transport";
 
     /**
      * Called when message is received.
@@ -59,6 +59,7 @@ public class MyGcmListenerService extends GcmListenerService {
         MiniDB.init(this);
         String _messageType = data.get(MESSAGE_TYPE).toString();
         long _startTime;
+        TransportationMode _trans;
 
         InviteHandler inviteHandler = InviteHandler.getInstance();
         Log.d("XXXX", "GMC RECEIVE: " + MessageType.valueOf(_messageType));
@@ -71,9 +72,9 @@ public class MyGcmListenerService extends GcmListenerService {
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
 
                 inviteHandler.addInvite(_inviteNumber, _startTime, _allNumbers);
+                _trans = TransportationMode.valueOf(data.get(TRANSPORT).toString());
 
                 if (_inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
-                    TransportationMode _trans = TransportationMode.valueOf(data.get(HOST_TRANSPORT).toString());
                     inviteHandler.setInviteStatus(_startTime, InviteReply.ACCEPTED);
                     inviteHandler.getInviteByTime(_startTime).setTransportationMode(_trans);
                     sendNotification("you created a centroid, awesome!", "centroid created");
@@ -85,7 +86,7 @@ public class MyGcmListenerService extends GcmListenerService {
                         _inviteName = _inviteNumber;
                     }
                     sendNotification("you got invited by: " + _inviteName, "centroid invite");
-                    inviteHandler.updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED, TransportationMode.DEFAULT);
+                    inviteHandler.updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED, _trans);
                 }
                 break;
             case CENTROID:
@@ -101,11 +102,12 @@ public class MyGcmListenerService extends GcmListenerService {
                 }
                 break;
             case UPDATE:
+                _trans = TransportationMode.valueOf(data.get(TRANSPORT).toString());
                 _startTime = Long.parseLong(data.get(TIME).toString());
                 if(inviteHandler.getInviteByTime(_startTime) != null) {
                     String _updateNumber = data.get(UPDATE_NUMBER).toString();
                     InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
-                    inviteHandler.updateMemberStatus(_startTime, _updateNumber, _updateStatus, TransportationMode.DEFAULT);
+                    inviteHandler.updateMemberStatus(_startTime, _updateNumber, _updateStatus, _trans);
                 } else {
                     new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + _startTime);
                 }
