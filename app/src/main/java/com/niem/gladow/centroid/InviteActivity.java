@@ -124,6 +124,9 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                     TextView _memberIdTVClicked = (TextView) view.findViewById(R.id.memberID);
                     ImageView _memberStatus = (ImageView) view.findViewById(R.id.memberListStatusImage);
                     if(_memberStatus.getTag() == TransportationMode.DEFAULT){
+                        new RestConnector(InviteActivity.this).execute(RestConnector.GET, "/android/draengel/"
+                                + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                                + _memberIdTVClicked.getText().toString());
                         Toast.makeText(getApplicationContext(),"DRAENGELN: "+_memberIdTVClicked.getText().toString(),Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getApplicationContext(),"NICHT DRAENGELN",Toast.LENGTH_SHORT).show();

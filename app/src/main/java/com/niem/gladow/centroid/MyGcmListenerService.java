@@ -58,7 +58,7 @@ public class MyGcmListenerService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         MiniDB.init(this);
         String _messageType = data.get(MESSAGE_TYPE).toString();
-        long _startTime = Long.parseLong(data.get(TIME).toString());
+        long _startTime;
 
         InviteHandler inviteHandler = InviteHandler.getInstance();
         Log.d("XXXX", "GMC RECEIVE: " + MessageType.valueOf(_messageType));
@@ -66,6 +66,7 @@ public class MyGcmListenerService extends GcmListenerService {
             //todo transport mode missing
             //todo if only one person, no centroid, btw server side
             case INVITE:
+                _startTime = Long.parseLong(data.get(TIME).toString());
                 String _inviteNumber = data.get(INVITE_NUMBER).toString();
                 String _allNumbers = data.get(ALL_NUMBERS).toString();
 
@@ -88,6 +89,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 }
                 break;
             case CENTROID:
+                _startTime = Long.parseLong(data.get(TIME).toString());
                 if(inviteHandler.getInviteByTime(_startTime) != null) {
                     String _centroid = data.get(CENTROID).toString();
                     inviteHandler.addCentroidToInvite(_startTime, _centroid);
@@ -99,6 +101,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 }
                 break;
             case UPDATE:
+                _startTime = Long.parseLong(data.get(TIME).toString());
                 if(inviteHandler.getInviteByTime(_startTime) != null) {
                     String _updateNumber = data.get(UPDATE_NUMBER).toString();
                     InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
@@ -108,10 +111,18 @@ public class MyGcmListenerService extends GcmListenerService {
                 }
                 break;
             case PLACE:
+                _startTime = Long.parseLong(data.get(TIME).toString());
                 String _place = data.get(PLACE).toString();
                 Log.d("XXXX", "place in GCM: " + _place);
                 inviteHandler.setChosenPlace(_place, inviteHandler.getInviteByTime(_startTime));
                 break;
+            case DRAENGEL:
+                String _friend = (String) data.get(INVITE_NUMBER);
+                String _realName = PersistenceHandler.getInstance().getFriendMap().get(_friend);
+                if (_realName == null) {
+                    _realName = _friend;
+                }
+                sendNotification(_realName + "wants you to respond to his invite", "centroid");
             default:
                 break;
         }

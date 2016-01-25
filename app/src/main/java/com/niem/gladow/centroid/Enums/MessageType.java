@@ -4,5 +4,5 @@ package com.niem.gladow.centroid.Enums;
  * Created by yannick_uni on 12/8/15.
  */
 public enum MessageType {
-    INVITE, CENTROID, SPAM, UPDATE, PLACE
+    INVITE, CENTROID, SPAM, UPDATE, PLACE, DRAENGEL
 }
