@@ -118,11 +118,12 @@ public class MyGcmListenerService extends GcmListenerService {
                 break;
             case DRAENGEL:
                 String _friend = (String) data.get(INVITE_NUMBER);
-                String _realName = PersistenceHandler.getInstance().getFriendMap().get(_friend);
+                String _realName = PersistenceHandler.getInstance().getFriendMap().get(_friend).split(" ")[0];
                 if (_realName == null) {
                     _realName = _friend;
+                } else {
                 }
-                sendNotification(_realName + "wants you to respond to his invite", "centroid");
+                sendNotification(_realName + " wants you to respond.", "centroid");
             default:
                 break;
         }
