@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +60,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private Button navigateToDestButton;
     private Button declineInviteButton;
     private Button acceptInviteButton;
-    private View inviteHeader;
+    private LinearLayout buttonBox;
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
     private TextView inviteStatus, inviteTime;
@@ -85,7 +86,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         declineInviteButton      = (Button) findViewById(R.id.declineInviteButton);
         acceptInviteButton       = (Button) findViewById(R.id.acceptInviteButton);
 
-        inviteHeader             = findViewById(R.id.inviteHeader);
+        buttonBox                = (LinearLayout) findViewById(R.id.buttonLayout);
         inviteTime               = (TextView)  findViewById(R.id.inviteTime);
         inviteStatus             = (TextView)  findViewById(R.id.inviteStatus);
         transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
@@ -152,12 +153,15 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
             declineInviteButton.setVisibility(View.GONE);
             acceptInviteButton.setVisibility(View.GONE);
-            inviteHeader.setVisibility(View.VISIBLE);
+            navigateToDestButton.setVisibility(View.VISIBLE);
+            showCentroidButton.setVisibility(View.VISIBLE);
+            buttonBox.setOrientation(LinearLayout.VERTICAL);
         }
         //checks if centroid already exists
         if (invite.existsCentroid()){
             showCentroidButton.setEnabled(true);
             navigateToDestButton.setEnabled(true);
+
         }
         if(invite.getChosenPlace() != null) {
             navigateToDestButton.setText(R.string.navigate_toPlace);
@@ -319,6 +323,32 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         acceptInviteButton.setVisibility(View.GONE);
         onResume();
     }
+
+    public void areYouSureToDeclineDialogue(final View _view){
+        CharSequence transportationModes[] = getResources().getStringArray(R.array.decline_answers);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you want to decline?");
+        builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
+            boolean _hasChosen = false;
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // the user clicked on transportationModes[which]
+                switch (which) {
+                    case 3:
+                        responseToInvite(_view);
+                        _hasChosen = true;
+                        break;
+                    default:
+                        break;
+                }
+                if (_hasChosen) {
+                    responseToInvite(_view);
+                }
+            }
+        });
+        builder.show();
+    }
+
 
     public void chooseTransportationMode(final View _view){
         CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);

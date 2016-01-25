@@ -1,6 +1,7 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,9 +74,10 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
 
 
         if(_viewHolder.checked){
-            convertView.setBackgroundResource(R.color.unanswered);
+            convertView.setBackgroundResource(R.color.unanswered_1);
         }else{
-            convertView.setBackgroundResource(R.color.white);
+            //TODO COLOR
+            convertView.setBackgroundColor(Color.WHITE);
         }
 
         return convertView;

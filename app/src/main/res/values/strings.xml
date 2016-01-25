@@ -17,4 +17,10 @@
     <item>Car</item>
     <item>Public Transportation</item>
 </string-array>
+    <string-array name="decline_answers">
+        <item>Ups, wrong Button</item>
+        <item>No</item>
+        <item>Absolutely NOT!</item>
+        <item>Yes...</item>
+    </string-array>
 </resources>

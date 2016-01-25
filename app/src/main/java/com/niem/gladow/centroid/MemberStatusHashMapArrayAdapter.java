@@ -63,17 +63,17 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 
         switch (_viewHolder.inviteReply){
             case DECLINED:
-                convertView.setBackgroundResource(R.color.declined);
+                convertView.setBackgroundResource(R.color.declined_1);
                 _viewHolder.statusImage.setImageResource(R.drawable.declined_black);
                 _viewHolder.statusImage.setTag(TransportationMode.DECLINED);
                 break;
             case ACCEPTED:
-                convertView.setBackgroundResource(R.color.accepted);
+                convertView.setBackgroundResource(R.color.centroid_1);
                 _viewHolder.statusImage.setImageResource(Util.getInstance().getResIdForTransportationImage(member.getValue().getTransportationMode()));
                 _viewHolder.statusImage.setTag(member.getValue().getTransportationMode());
                 break;
             default:
-                convertView.setBackgroundResource(R.color.unanswered);
+                convertView.setBackgroundResource(R.color.unanswered_1);
                 _viewHolder.statusImage.setTag(TransportationMode.DEFAULT);
                 break;
         }

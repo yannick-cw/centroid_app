@@ -11,65 +11,65 @@
     tools:context=".InviteActivity">
 
 
-<LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/header"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0.15"
-        >
-        <Button
-            android:id="@+id/acceptInviteButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="chooseTransportationMode"
+        android:orientation="horizontal">
 
-            android:text="@string/accept"
-            android:visibility="visible"/>
-
-        <Button
-            android:id="@+id/declineInviteButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="responseToInvite"
-            android:text="@string/decline"
-            android:visibility="visible"/>
         <LinearLayout
             android:id="@+id/inviteHeader"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_weight="1"
-                android:id="@+id/inviteTime" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/inviteStatus"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="wrap_content"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/transportationModeImage"
-                />
+                android:orientation="vertical"
+                android:layout_weight="0.3"
+                android:paddingLeft="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:maxLines="1"
+                    android:text="INVITE TIME"
+                    android:id="@+id/inviteTime" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="INVITE STATUS"
+                    android:id="@+id/inviteStatus"
+                    android:maxLines="1"
+                    />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text=""
+                    android:visibility="gone"
+                    android:maxLines="2"
+                    android:id="@+id/placesTextView"
+                    />
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:id="@+id/transportationModeImage"
+                android:src="@drawable/unanswered"
+                android:paddingRight="15dp"
+                android:paddingEnd="15dp" />
         </LinearLayout>
     </LinearLayout>
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_below="@+id/showCentroidsButton">
+        android:layout_weight="0.5"
+        >
 
         <ListView
             android:layout_width="wrap_content"
@@ -80,40 +80,55 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:visibility="gone"
-        android:id="@+id/placesTextView"
-        android:layout_weight="0.15" />
+
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="0.2"
-        android:weightSum="0.6"
+        android:id="@+id/buttonLayout"
+        android:orientation="horizontal"
+        android:layout_weight="0.10"
+        android:weightSum="0.4"
         >
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/show_centroid"
             android:id="@+id/showCentroidButton"
             android:layout_weight="0.2"
             android:onClick="showCentroidOnMap"
-            android:enabled="false" />
+            android:enabled="false"
+            android:visibility="gone"/>
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/navigate_to"
             android:id="@+id/navigateToButton"
-            android:layout_weight="0.2"
             android:onClick="navigateToDestination"
-            android:enabled="false" />
+            android:layout_weight="0.2"
+            android:enabled="false"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/acceptInviteButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:onClick="chooseTransportationMode"
+            android:text="@string/accept"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/declineInviteButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:onClick="areYouSureToDeclineDialogue"
+            android:text="@string/decline"
+            android:visibility="visible"/>
 
     </LinearLayout>
 
