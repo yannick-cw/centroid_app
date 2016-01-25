@@ -90,7 +90,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.inviteId.setText(String.valueOf(_invite.getStartTime()));
         _viewHolder.status.setText(_invite.getStatus().toString());
         Log.d("Status", _invite.getStatus().toString());
-        Log.d("transpMode",_invite.getTransportationMode().toString());
+        Log.d("transpMode", _invite.getTransportationMode().toString());
         _viewHolder.statusImage
                 .setImageResource(Util.getInstance()
                         .getResIdForTransportationImage(_invite.getTransportationMode()));
@@ -109,7 +109,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
     }
 
     //TODO Layout for a lot of members
-    //method that sets the different layouts to member status and shows them in listViewItem
+    //method that sets the different layouts to member statusImage and shows them in listViewItem
     private void setStringStyles(Invite _invite, SpannableString _styledMembers, int _start, int _end) {
         InviteReply _memberReply;
         String _tmpName;
@@ -117,7 +117,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         //set style for hostName
         _styledMembers.setSpan(new StyleSpan(Typeface.BOLD), _start, _end, 0);
 
-        //check for each member status and apply StyleSpan
+        //check for each member statusImage and apply StyleSpan
         for (Map.Entry<String, InviteStatus> _memberEntry : _invite.getAllMembers(false, false).entrySet())
         {
             //update _start
@@ -132,7 +132,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
                 _end += _memberEntry.getValue().getRealName().split(" ")[0].length();
             }
 
-            //check the status of the member and apply style accordingly
+            //check the statusImage of the member and apply style accordingly
             _memberReply = _memberEntry.getValue().getInviteReply();
             switch(_memberReply){
                 case ACCEPTED:
