@@ -171,8 +171,6 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
 
         return super.onOptionsItemSelected(item);
     }
-    //todo refresh must update the status to ready as well, is not doing right now
-    //todo placeToMeet is missing as well
 
     @Override
     public void onRefresh() {
