@@ -67,6 +67,7 @@ public class MyGcmListenerService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         MiniDB.init(this);
         this.inviteHandler = InviteHandler.getInstance();
+        PersistenceHandler.getInstance().loadFriendMapFromDB();
 
         //get the type of the message
         String _messageType = data.get(MESSAGE_TYPE).toString();
