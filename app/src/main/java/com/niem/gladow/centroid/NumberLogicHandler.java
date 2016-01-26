@@ -1,8 +1,8 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
-import android.widget.Toast;
+import android.content.Intent;
+import android.util.Log;
 
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
@@ -33,14 +33,12 @@ public class NumberLogicHandler implements AsyncResponse {
 
     private boolean sendContacts(String contacts) {
         //starts RestConnector async task to send contacts to server
-        new RestConnector(context).execute(RestConnector.SEND, SEND_CONTACTS + ownNumberWithSlash + contacts);
-//        DEBUG HELPER: (if the line above is exchanged for the one below, complete contactsList is given from Server, good to test ListView-Options)
-//        new RestConnector(context).execute(SEND, SEND_CONTACTS + contacts);
+        new RestConnector(context).execute(RestConnector.SEND_CONTACTS, SEND_CONTACTS + ownNumberWithSlash + contacts);
         return true;
     }
 
     public void syncTokenAndNumber () {
-        new RestConnector(context).execute(RestConnector.POST, SEND_NUMBER + ownNumberWithSlash
+        new RestConnector(context).execute(RestConnector.POST_NO_RESULT, SEND_NUMBER + ownNumberWithSlash
                                             + PersistenceHandler.getInstance().getToken());
     }
 
@@ -49,12 +47,13 @@ public class NumberLogicHandler implements AsyncResponse {
         if (GpsDataHandler.getInstance().getLastLocation() == null) {
             return false;
         }
-        new RestConnector(context).execute(RestConnector.GET, INVITE_FRIENDS + ownNumberWithSlash
-                                            + PersistenceHandler.getInstance().getInviteList()
-                                            + "/" + transportationMode);
-        new RestConnector(context).execute(RestConnector.POST, GpsDataHandler.SEND_GPS + ownNumberWithSlash
+        new RestConnector(context).execute(RestConnector.POST_NO_RESULT, GpsDataHandler.SEND_GPS + ownNumberWithSlash
                 + GpsDataHandler.getInstance().getLastLocation().getLongitude()+"/"
                 + GpsDataHandler.getInstance().getLastLocation().getLatitude());
+
+        new RestConnector(context).execute(RestConnector.GET_NO_RESULT, INVITE_FRIENDS + ownNumberWithSlash
+                                            + PersistenceHandler.getInstance().getInviteList()
+                                            + "/" + transportationMode);
         return true;
     }
 
@@ -62,6 +61,14 @@ public class NumberLogicHandler implements AsyncResponse {
     public void processFinish(String output) {
         //sends contacts to server after cleanup
         sendContacts(output);
+    }
+
+    public void saveFriendMap(String result) {
+        PersistenceHandler.getInstance().createFriendMap(result);
+        PersistenceHandler.getInstance().saveFriendMapToDB();
+        Intent _intent = new Intent(MyGcmListenerService.BROADCAST_UPDATE);
+        context.sendBroadcast(_intent);
+        Log.d("friend Map", PersistenceHandler.getInstance().getFriendMap().values().toString());
     }
 
 }

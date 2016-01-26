@@ -128,7 +128,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                     TextView _memberName = (TextView) view.findViewById(R.id.memberName);
                     ImageView _memberStatus = (ImageView) view.findViewById(R.id.memberListStatusImage);
                     if (_memberStatus.getTag() == TransportationMode.DEFAULT) {
-                        new RestConnector(InviteActivity.this).execute(RestConnector.GET, "/android/draengel/"
+                        new RestConnector(InviteActivity.this).execute(RestConnector.GET_NO_RESULT, "/android/draengel/"
                                 + PersistenceHandler.getInstance().getOwnNumber() + "/"
                                 + _memberIdTVClicked.getText().toString());
                         Snackbar.make(view, "you draengeld " + _memberName.getText().toString().split(" ")[0], Snackbar.LENGTH_LONG)
@@ -293,7 +293,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         content = transportReady(content);
 
         InviteHandler.getInstance().setChosenPlace(content, invite);
-        new RestConnector(this).execute(RestConnector.POST, ADD_PLACE + "/" + invite.getStartTime()
+        new RestConnector(this).execute(RestConnector.POST_NO_RESULT, ADD_PLACE + "/" + invite.getStartTime()
                 + "/" + content);
         return true;
     }
@@ -411,7 +411,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + invite.getStartTime());
+            new RestConnector(this).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + invite.getStartTime());
             return true;
         }
 
@@ -430,7 +430,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
     @Override
     public void onRefresh() {
-        new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + invite.getStartTime());
+        new RestConnector(this).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + invite.getStartTime());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -52,8 +52,4 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
         phones.close();
         PersistenceHandler.getInstance().setContactsMap(numbersNames);
     }
-
-    public static Map getNumbersNames() {
-        return numbersNames;
-    }
 }

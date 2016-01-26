@@ -95,7 +95,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     Log.d(MyGcmListenerService.class.getName(), "Time: " + _startTime);
                     sendNotification("you got a new centroid!", "centroid arrived");
                 } else {
-                    new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + _startTime);
+                    new RestConnector(this).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + _startTime);
                 }
                 break;
             case UPDATE:
@@ -106,7 +106,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     InviteReply _updateStatus = InviteReply.valueOf(data.get(UPDATE_STATUS).toString());
                     inviteHandler.updateMemberStatus(_startTime, _updateNumber, _updateStatus, _trans);
                 } else {
-                    new RestConnector(this).execute(RestConnector.SYNC, "/android/updateInvite/" + _startTime);
+                    new RestConnector(this).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + _startTime);
                 }
                 break;
             case PLACE:
@@ -120,8 +120,11 @@ public class MyGcmListenerService extends GcmListenerService {
                 String _realName = PersistenceHandler.getInstance().getFriendMap().get(_friend).split(" ")[0];
                 if (_realName == null) {
                     _realName = _friend;
-                } else {
                 }
+                //todo try if works
+                new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
+                        "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                                + InviteHandler.getInstance().getActiveInvitesString());
                 sendNotification(_realName + " asks you to respond.", "centroid");
             default:
                 break;

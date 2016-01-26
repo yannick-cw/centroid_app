@@ -163,7 +163,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            new RestConnector(this).execute(RestConnector.SYNC_ALL,
+            new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
                     "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
                             + InviteHandler.getInstance().getActiveInvitesString());
             return true;
@@ -174,7 +174,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
 
     @Override
     public void onRefresh() {
-        new RestConnector(this).execute(RestConnector.SYNC_ALL,
+        new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
                 "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
                         + InviteHandler.getInstance().getActiveInvitesString());
         new Handler().postDelayed(new Runnable() {

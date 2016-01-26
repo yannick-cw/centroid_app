@@ -3,7 +3,6 @@ package com.niem.gladow.centroid;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
@@ -85,14 +84,14 @@ public class InviteHandler {
         //if the users accepts the invite his latest gps signal is transmitted to the server
         //and the status is set to accepted
         if (inviteReply.equals(InviteReply.ACCEPTED)) {
-            new RestConnector(context).execute(RestConnector.POST, GpsDataHandler.SEND_GPS
+            new RestConnector(context).execute(RestConnector.POST_NO_RESULT, GpsDataHandler.SEND_GPS
                     + PersistenceHandler.getInstance().getOwnNumber() + "/"
                     + GpsDataHandler.getInstance().getLastLocation().getLongitude() + "/"
                     + GpsDataHandler.getInstance().getLastLocation().getLatitude());
         }
 
         //send reply
-        new RestConnector(context).execute(RestConnector.POST, INVITE_RESPONSE +
+        new RestConnector(context).execute(RestConnector.POST_NO_RESULT, INVITE_RESPONSE +
                 PersistenceHandler.getInstance().getOwnNumber() + "/" + startTime + "/" +
                 inviteReply + "/" + transportationMode);
 
@@ -235,7 +234,7 @@ public class InviteHandler {
         if (result != null && !"".equals(result)) {
             List<String> ids = Arrays.asList(result.split(","));
             for (String id : ids) {
-                new RestConnector(context).execute(RestConnector.SYNC, "/android/updateInvite/" + id);
+                new RestConnector(context).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + id);
             }
         }
     }

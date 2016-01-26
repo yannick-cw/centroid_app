@@ -1,7 +1,6 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -13,10 +12,8 @@ import java.net.URL;
  * Created by yannick_uni on 11/10/15.
  */
 public class RestConnector extends AsyncTask<String, String, String> {
-    public static final String POST = "1", GET = "2", SEND = "3", SYNC = "4";
-    //    private static final String HOST_ADDRESS = "http://192.168.26.10:8080";
+    public static final String POST_NO_RESULT = "1", GET_NO_RESULT = "2", SEND_CONTACTS = "3", SYNC_INVITE = "4", SYNC_ALL_INVITES = "5";
     private static final String HOST_ADDRESS = "http://schnutentier.ddns.net";
-    public static final String SYNC_ALL = "5";
     private Context context;
 
     public RestConnector(Context context) {
@@ -28,26 +25,21 @@ public class RestConnector extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String result;
         switch (params[0]) {
-            case POST:
+            case POST_NO_RESULT:
                 result = restPost(params[1]);
                 break;
-            case GET:
+            case GET_NO_RESULT:
                 result = restGet(params[1]);
                 break;
-            case SEND:
+            case SEND_CONTACTS:
                 result = restGet(params[1]);
-                //todo somewhere else
-                PersistenceHandler.getInstance().createFriendMap(result);
-                PersistenceHandler.getInstance().saveFriendMapToDB();
-                Intent _intent = new Intent(MyGcmListenerService.BROADCAST_UPDATE);
-                context.sendBroadcast(_intent);
-                Log.d("friend Map", PersistenceHandler.getInstance().getFriendMap().values().toString());
+                new NumberLogicHandler(context).saveFriendMap(result);
                 break;
-            case SYNC:
+            case SYNC_INVITE:
                 result = restGet(params[1]);
                 InviteHandler.getInstance().syncInvite(result, context);
                 break;
-            case SYNC_ALL:
+            case SYNC_ALL_INVITES:
                 result = restGet(params[1]);
                 InviteHandler.getInstance().syncAllInvites(result, context);
                 break;
@@ -56,11 +48,6 @@ public class RestConnector extends AsyncTask<String, String, String> {
         }
         return result;
     }
-
-    protected void onPostExecute(String result) {
-        //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-    }
-
 
     private String restPost(String urlString) {
         String result;
