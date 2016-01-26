@@ -51,10 +51,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public static final String IS_EMPTY = "isEmpty";
 
     private Invite invite;
-    private View showCentroidButton;
-    private Button navigateToDestButton;
-    private Button declineInviteButton;
-    private Button acceptInviteButton;
+    private Button showCentroidButton, navigateToDestButton, declineInviteButton, acceptInviteButton;
     private LinearLayout buttonBox, header;
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
