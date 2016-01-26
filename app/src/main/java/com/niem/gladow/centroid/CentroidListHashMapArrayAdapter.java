@@ -67,6 +67,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
         //build One-Letter Image with first letter of hostName
         String _hostName = _invite.getInviteNumberName().split(" ")[0];
+
         //getColor for Status of Invite
         _viewHolder.textDrawable = TextDrawable.builder()
                 .buildRound(_hostName.substring(0,1)
@@ -136,7 +137,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
             _memberTransportation = _memberEntry.getValue().getTransportationMode();
             switch(_memberReply){
                 case ACCEPTED:
-                    _styledMembers.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), _start, _end, 0);
+                    _styledMembers.setSpan(new StyleSpan(Typeface.NORMAL), _start, _end, 0);
                     break;
                 case DECLINED:
                     _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC),_start, _end, 0);

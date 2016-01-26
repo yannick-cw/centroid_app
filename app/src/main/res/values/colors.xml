@@ -22,6 +22,16 @@
     <color name="unanswered_dark_3">#A35100</color>
     <color name="unanswered_dark_4">#723900</color>
 
+    <!-- Color Helpers-->
+    <color name="invite_ready">@color/centroid_1</color>
+    <color name="invite_accepted">@color/centroid_2</color>
+    <color name="invite_unanswered">@color/unanswered_1</color>
+    <color name="invite_declined">@color/declined_2</color>
+
+    <color name="transp_chosen">@color/centroid_1</color>
+    <color name="transp_unanswered">@color/unanswered_1</color>
+    <color name="transp_declined">@color/declined_2</color>
+
     <array name="colorArray">
         <item>@color/centroid_1</item>
         <item>@color/centroid_2</item>
