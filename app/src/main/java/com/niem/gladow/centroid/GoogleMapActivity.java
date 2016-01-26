@@ -4,7 +4,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -116,7 +115,6 @@ public class GoogleMapActivity extends FragmentActivity implements
         mCurrentLocation = location;
         Log.i("LOCATION CHANGED", String.valueOf(mCurrentLocation.getLatitude()));
         updateUI();
-        Toast.makeText(this, "Location Changed", Toast.LENGTH_SHORT).show();
     }
 
     @Override

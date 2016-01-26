@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,8 +33,6 @@ import java.util.Map;
 public class InviteFriendsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipeLayout;
 
-    //todo remove toast for created centroid and just show
-    //todo update on new data missing
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +144,9 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
                 if (_hasChosen) {
                     if( new NumberLogicHandler(_context).inviteFriends(_transportationMode)) {
                         onBackPressed();
+                    } else {
+                        Snackbar.make(getCurrentFocus(), "please activate your gps", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
                 }
             }

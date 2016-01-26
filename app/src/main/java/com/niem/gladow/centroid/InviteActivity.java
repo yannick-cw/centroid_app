@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -70,22 +69,22 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         //getting the current invite, by Id that was passed in this activity via putExtra(String)
         invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
-        Log.d("Input Intent:",getIntent().getStringExtra("InviteId"));
+        Log.d("Input Intent:", getIntent().getStringExtra("InviteId"));
 
         //setting up needed Views (Buttons etc.)
-        inviteTime               = (TextView)  findViewById(R.id.inviteTime);
-        invitePhoneNumber = (TextView)  findViewById(R.id.invitePhoneNumber);
-        inviteLocation           = (TextView)  findViewById(R.id.inviteLocation);
-        transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
+        inviteTime = (TextView) findViewById(R.id.inviteTime);
+        invitePhoneNumber = (TextView) findViewById(R.id.invitePhoneNumber);
+        inviteLocation = (TextView) findViewById(R.id.inviteLocation);
+        transportationModeImage = (ImageView) findViewById(R.id.transportationModeImage);
 
-        swipeLayout              = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeLayout.setOnRefreshListener(this);
 
-        buttonBox                = (LinearLayout) findViewById(R.id.buttonLayout);
-        declineInviteButton      = (Button) findViewById(R.id.declineInviteButton);
-        acceptInviteButton       = (Button) findViewById(R.id.acceptInviteButton);
-        showCentroidButton       = findViewById(R.id.showCentroidButton);
-        navigateToDestButton     = (Button) findViewById(R.id.navigateToButton);
+        buttonBox = (LinearLayout) findViewById(R.id.buttonLayout);
+        declineInviteButton = (Button) findViewById(R.id.declineInviteButton);
+        acceptInviteButton = (Button) findViewById(R.id.acceptInviteButton);
+        showCentroidButton = findViewById(R.id.showCentroidButton);
+        navigateToDestButton = (Button) findViewById(R.id.navigateToButton);
 
     }
 
@@ -114,16 +113,18 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                     // update state of the views
                     _adapter.notifyDataSetChanged();
 
-                    //TODO draengeln TOAST ersetzen
                     TextView _memberIdTVClicked = (TextView) view.findViewById(R.id.memberID);
+                    TextView _memberName = (TextView) view.findViewById(R.id.memberName);
                     ImageView _memberStatus = (ImageView) view.findViewById(R.id.memberListStatusImage);
                     if (_memberStatus.getTag() == TransportationMode.DEFAULT) {
                         new RestConnector(InviteActivity.this).execute(RestConnector.GET, "/android/draengel/"
                                 + PersistenceHandler.getInstance().getOwnNumber() + "/"
                                 + _memberIdTVClicked.getText().toString());
-                        Toast.makeText(getApplicationContext(), "DRAENGELN: " + _memberIdTVClicked.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view, "you draengeld " + _memberName.getText().toString().split(" ")[0], Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), "NICHT DRAENGELN", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view, _memberName.getText().toString().split(" ")[0] + " has already replied", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
                 } catch (Exception e) {
                     Log.v("Exception ON Draengeln", e.getMessage(), e);
@@ -143,15 +144,15 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             buttonBox.setOrientation(LinearLayout.VERTICAL);
         }
         //checks if centroid already exists
-        if (invite.existsCentroid()){
+        if (invite.existsCentroid()) {
             showCentroidButton.setEnabled(true);
             navigateToDestButton.setEnabled(true);
         }
-        if(invite.getChosenPlace() != null) {
+        if (invite.getChosenPlace() != null) {
             navigateToDestButton.setText(R.string.navigate_toPlace);
             inviteLocation.setText(invite.getLocationName() + "\n@" +
                     invite.getLocationAdress());
-            if(!invite.getLocationPhoneNumber().matches("isEmpty")){
+            if (!invite.getLocationPhoneNumber().matches("isEmpty")) {
                 invitePhoneNumber.setText(invite.getLocationPhoneNumber());
                 invitePhoneNumber.setVisibility(View.VISIBLE);
             }
@@ -165,12 +166,11 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         }
 
 
-
     }
 
     public void showCentroidOnMap(View view) {
-        if(invite.getInviteNumber().equals(PersistenceHandler.getInstance().getOwnNumber())) {
-            LatLng _southWest = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()-0.003
+        if (invite.getInviteNumber().equals(PersistenceHandler.getInstance().getOwnNumber())) {
+            LatLng _southWest = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat() - 0.003
                     , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() - 0.003);
             LatLng _northEast = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat() + 0.003
                     , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() + 0.003);
@@ -185,19 +185,19 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                 e.printStackTrace();
             }
         } else {
-        Intent intent = new Intent(this, GoogleMapActivity.class);
-        intent.putExtra("centroid", new LatLng(
-                InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()
-                , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude()));
-        startActivity(intent);
+            Intent intent = new Intent(this, GoogleMapActivity.class);
+            intent.putExtra("centroid", new LatLng(
+                    InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()
+                    , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude()));
+            startActivity(intent);
         }
     }
 
 
-    public void navigateToDestination(View view){
-        if(invite.getChosenPlace() != null){
+    public void navigateToDestination(View view) {
+        if (invite.getChosenPlace() != null) {
             navigateToCentroid(view);
-        }else{
+        } else {
             navigateToPlace(view);
         }
     }
@@ -205,9 +205,9 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public void navigateToCentroid(View view) {
         Uri gmmIntentUri = Uri.parse("google.navigation:q="
                 + String.valueOf(InviteHandler.getInstance().getInviteByTime(invite.getStartTime())
-                    .getCentroid().getLat()) + ","
+                .getCentroid().getLat()) + ","
                 + String.valueOf(InviteHandler.getInstance().getInviteByTime(invite.getStartTime())
-                    .getCentroid().getLongitude())
+                .getCentroid().getLongitude())
                 + "&mode=" + invite.getTransportationMode().getMode());
 
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -218,10 +218,10 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     public void navigateToPlace(View view) {
-        String [] _placeInfo = invite.getChosenPlaceForUri();
+        String[] _placeInfo = invite.getChosenPlaceForUri();
 
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + _placeInfo[_placeInfo.length-2]
-                + "," + _placeInfo[_placeInfo.length-1] + "&mode=" + invite.getTransportationMode().getMode());
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + _placeInfo[_placeInfo.length - 2]
+                + "," + _placeInfo[_placeInfo.length - 1] + "&mode=" + invite.getTransportationMode().getMode());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         if (mapIntent.resolveActivity(getPackageManager()) != null) {
@@ -237,7 +237,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     private boolean displayPlace(Place place) {
-        if(place == null) {
+        if (place == null) {
             return false;
         }
         String content = "";
@@ -288,18 +288,20 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         switch (view.getId()) {
             case R.id.acceptInviteButton:
                 if (GpsDataHandler.getInstance().getLastLocation() == null) {
-                    Toast.makeText(this, "please activate gps first", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, "please activate your gps first", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                     return;
                 }
                 InviteHandler.getInstance().responseToInvite(invite.getStartTime(), InviteReply.ACCEPTED, invite.getTransportationMode(), this);
-                Toast.makeText(this, "Invite accepted", Toast.LENGTH_SHORT).show();
+                Snackbar.make(view, "invite accepted", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 break;
             case R.id.declineInviteButton:
                 invite.setTransportationMode(TransportationMode.DECLINED);
-                Log.d("DeclineButton",invite.getTransportationMode().toString());
+                Log.d("DeclineButton", invite.getTransportationMode().toString());
                 InviteHandler.getInstance().responseToInvite(invite.getStartTime(), InviteReply.DECLINED, invite.getTransportationMode(), this);
-                Toast.makeText(this, "Invite declined", Toast.LENGTH_SHORT).show();
-                onBackPressed();
+                Snackbar.make(view, "invite declined", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 break;
         }
         declineInviteButton.setVisibility(View.GONE);
@@ -307,7 +309,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         onResume();
     }
 
-    public void areYouSureToDeclineDialogue(final View _view){
+    public void areYouSureToDeclineDialogue(final View _view) {
         CharSequence transportationModes[] = getResources().getStringArray(R.array.decline_answers);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure you want to decline?");
@@ -328,7 +330,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
 
-    public void chooseTransportationMode(final View _view){
+    public void chooseTransportationMode(final View _view) {
         CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a transportation Mode");
@@ -386,6 +388,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onPause() {
         super.onPause();

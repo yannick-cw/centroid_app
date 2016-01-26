@@ -175,7 +175,7 @@ public class PersistenceHandler {
                     if ((event.getAction() == KeyEvent.ACTION_DOWN)
                             && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         // Perform action on Enter-key press
-                        Toast.makeText(_context, _inputNumberEditText.getText(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(_context, _inputNumberEditText.getText(), Toast.LENGTH_SHORT).show();
                         ownNumber = Util.getInstance().cleanNumberString(_inputNumberEditText.getText().toString());
                         MiniDB.getInstance().saveString(ownNumber, OWN_NUMBER_FILE);
                         _inputNumberEditText.setVisibility(View.INVISIBLE);

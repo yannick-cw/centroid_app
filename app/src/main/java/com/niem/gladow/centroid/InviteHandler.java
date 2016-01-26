@@ -79,7 +79,6 @@ public class InviteHandler {
     public void responseToInvite(long startTime, InviteReply inviteReply
             , TransportationMode transportationMode, Context context) {
         if (GpsDataHandler.getInstance().getLastLocation() == null) {
-            Toast.makeText(context, "please give gps permission", Toast.LENGTH_SHORT).show();
             return;
         }
         //if the users accepts the invite his latest gps signal is transmitted to the server

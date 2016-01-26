@@ -3,6 +3,7 @@ package com.niem.gladow.centroid;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -56,10 +57,13 @@ public class WelcomeViewActivity extends AppCompatActivity {
                     Intent _intent = new Intent(this, MainActivity.class);
                     startActivity(_intent);
                     finish();
+                } else {
+                    Snackbar.make(getCurrentFocus(), "please hit next", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             } else {
-                Toast.makeText(this, "please hit next", Toast.LENGTH_LONG).show();
-            }
+                Snackbar.make(getCurrentFocus(), "please hit next", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();                                      }
         }
     }
 
@@ -97,7 +101,8 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
-                    Toast.makeText(this, "please hit sync - missing permissions", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
                 break;
             }
@@ -106,7 +111,8 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     syncWithServer(getCurrentFocus());
                 } else {
-                    Toast.makeText(this, "please hit sync - missing permissions", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
                 break;
             }
@@ -115,7 +121,8 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     syncWithServer(getCurrentFocus());
                 } else {
-                    Toast.makeText(this, "please hit sync - missing permissions", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
                 break;
             }

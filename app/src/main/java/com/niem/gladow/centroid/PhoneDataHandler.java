@@ -7,15 +7,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.Toast;
+
 
 import java.util.HashMap;
 import java.util.Map;

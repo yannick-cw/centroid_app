@@ -48,9 +48,6 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                  TODO use snackbar for user info??
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 Intent intent = new Intent(CentroidListViewActivity.this, InviteFriendsActivity.class);
                 startActivity(intent);
             }
