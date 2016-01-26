@@ -50,10 +50,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public static final String IS_EMPTY = "isEmpty";
 
     private Invite invite;
-    private View showCentroidButton;
-    private Button navigateToDestButton;
-    private Button declineInviteButton;
-    private Button acceptInviteButton;
+    private Button showCentroidButton, navigateToDestButton, declineInviteButton, acceptInviteButton;
     private LinearLayout buttonBox;
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
@@ -74,7 +71,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         //setting up needed Views (Buttons etc.)
         inviteTime               = (TextView)  findViewById(R.id.inviteTime);
-        invitePhoneNumber = (TextView)  findViewById(R.id.invitePhoneNumber);
+        invitePhoneNumber        = (TextView)  findViewById(R.id.invitePhoneNumber);
         inviteLocation           = (TextView)  findViewById(R.id.inviteLocation);
         transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
 
@@ -84,7 +81,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         buttonBox                = (LinearLayout) findViewById(R.id.buttonLayout);
         declineInviteButton      = (Button) findViewById(R.id.declineInviteButton);
         acceptInviteButton       = (Button) findViewById(R.id.acceptInviteButton);
-        showCentroidButton       = findViewById(R.id.showCentroidButton);
+        showCentroidButton       = (Button) findViewById(R.id.showCentroidButton);
         navigateToDestButton     = (Button) findViewById(R.id.navigateToButton);
 
     }
