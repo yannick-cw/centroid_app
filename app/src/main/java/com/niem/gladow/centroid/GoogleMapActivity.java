@@ -93,8 +93,8 @@ public class GoogleMapActivity extends FragmentActivity implements
                     .title("centroid"));
 
             GroundOverlayOptions _centroid = new GroundOverlayOptions()
-                    .image(BitmapDescriptorFactory.fromResource(R.drawable.centroid2))
-                    .position(centroid, 86f, 65f);
+                    .image(BitmapDescriptorFactory.fromResource(R.drawable.map_centroid))
+                    .position(centroid, 170f, 170f);
             map.addGroundOverlay(_centroid);
 
         } catch (Exception e) {Log.e("Error", e.toString());}
