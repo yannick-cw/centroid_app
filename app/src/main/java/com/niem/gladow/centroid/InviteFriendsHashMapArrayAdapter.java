@@ -83,9 +83,9 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
 
 
         if(_viewHolder.checked){
-            convertView.setBackgroundResource(R.color.unanswered_1);
+            //TODO COLOR optimisation
+            convertView.setBackgroundResource(R.color.centroid_1);
         }else{
-            //TODO COLOR
             convertView.setBackgroundColor(Color.WHITE);
         }
 

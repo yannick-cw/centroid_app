@@ -114,7 +114,6 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         return convertView;
     }
 
-    //ToDo apply correct fontstyle for status
     //method that sets the different layouts to member statusImage and shows them in listViewItem
     private void setStringStyles(Invite _invite, SpannableString _styledMembers, int _start, int _end) {
         InviteReply _memberReply;

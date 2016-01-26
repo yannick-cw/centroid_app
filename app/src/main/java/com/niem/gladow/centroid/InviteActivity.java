@@ -146,7 +146,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         //makes buttons visible if invite exits and chooses correct Image
         if (invite.getStatus() != InviteReply.UNANSWERED) {
             //sets the transportationMode ImageView to the corresponding Image
-            //TODO nice images with variable Resolutions
             header.setBackground(getBackgroundResForStatus());
             transportationModeImage.setImageResource(Util.getInstance().getResIdForTransportationImage(invite.getTransportationMode()));
             declineInviteButton.setVisibility(View.GONE);

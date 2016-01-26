@@ -109,7 +109,6 @@ public final class Util {
     }
 
     public int getColorForStatus(InviteReply inviteStatus, boolean is_deprecated){
-        //TODO apply nice colors + deprecated stati
         if(is_deprecated){
             switch (inviteStatus) {
                 case READY:
@@ -142,7 +141,6 @@ public final class Util {
     }
 
     public int getColorForTranspMode(TransportationMode transportationMode){
-        //TODO apply nice colors
         switch (transportationMode) {
             case DECLINED:
                 return R.color.transp_declined;

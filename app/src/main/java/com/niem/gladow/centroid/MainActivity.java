@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setup main activity
-        //todo maybe remove completely
-
         super.onCreate(savedInstanceState);
         MiniDB.init(this);
 
