@@ -60,8 +60,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private SwipeRefreshLayout swipeLayout;
     private TextView invitePhoneNumber, inviteTime, inviteLocation;
 
-    //todo string for placeToMeet shit
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -274,6 +272,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         } else {
             content += IS_EMPTY + ",";
         }
+
         content += place.getLatLng();
         TextView _placesTextView = (TextView) findViewById(R.id.inviteLocation);
         _placesTextView.setVisibility(View.VISIBLE);

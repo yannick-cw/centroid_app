@@ -43,7 +43,6 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    /*TODO only activate start button if really successful, and ad more return false/true and handling for everything */
     public void syncWithServer(View view) {
         if (!permissionsGranted()) {
             requestMissingPermissions();

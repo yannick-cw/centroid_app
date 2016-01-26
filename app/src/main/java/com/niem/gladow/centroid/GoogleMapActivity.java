@@ -16,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -32,7 +33,8 @@ public class GoogleMapActivity extends FragmentActivity implements
     private boolean isFirstStart = true;
 
     private boolean locationUpdateStarted = false;
-
+    //todo borders
+    //todo self position
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,12 @@ public class GoogleMapActivity extends FragmentActivity implements
                     .position(centroid)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                     .title("centroid"));
+
+            GroundOverlayOptions _centroid = new GroundOverlayOptions()
+                    .image(BitmapDescriptorFactory.fromResource(R.drawable.centroid2))
+                    .position(centroid, 86f, 65f);
+            map.addGroundOverlay(_centroid);
+
         } catch (Exception e) {Log.e("Error", e.toString());}
 
     }

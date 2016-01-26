@@ -171,7 +171,6 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //todo here is no check for permission, as in main
             new NumberLogicHandler(this).executePhoneDataHandler();
             return true;
         }

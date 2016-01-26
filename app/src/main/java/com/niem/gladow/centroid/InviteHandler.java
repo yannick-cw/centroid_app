@@ -118,7 +118,7 @@ public class InviteHandler {
      * @param context
      */
     public void syncInvite(String result, Context context) {
-        //todo place missing
+        //todo cleanup
         Log.d("XXXX", "result update: " + result);
         if (result != null && !"".equals(result)) {
             List<String> _list = Arrays.asList(result.split(":"));
