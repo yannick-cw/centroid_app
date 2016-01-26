@@ -31,6 +31,8 @@ import java.util.TreeMap;
  * Created by clem on 11.11.15.
  */
 public class CentroidListViewActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    public static final String INVITE_ID = "InviteId";
+    public static final String UPDATE_ALL_INVITES_URI = "/android/updateAllInvites/";
     private ListView _listView;
     private TreeMap<Long, Invite> _sortedMap;
     private CentroidListHashMapArrayAdapter _adapter;
@@ -144,7 +146,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
     public void startInviteActivity(String inviteId) {
         Log.d("Intent for", "INVITE pressed");
         Intent intent = new Intent(this, InviteActivity.class);
-        intent.putExtra("InviteId", inviteId);
+        intent.putExtra(INVITE_ID, inviteId);
         startActivity(intent);
     }
 
@@ -175,7 +177,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
-                    "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                    UPDATE_ALL_INVITES_URI + PersistenceHandler.getInstance().getOwnNumber() + "/"
                             + InviteHandler.getInstance().getActiveInvitesString());
             return true;
         }
@@ -186,7 +188,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
     @Override
     public void onRefresh() {
         new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
-                "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                UPDATE_ALL_INVITES_URI + PersistenceHandler.getInstance().getOwnNumber() + "/"
                         + InviteHandler.getInstance().getActiveInvitesString());
         new Handler().postDelayed(new Runnable() {
             @Override

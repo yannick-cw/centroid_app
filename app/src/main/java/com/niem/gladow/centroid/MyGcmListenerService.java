@@ -36,6 +36,11 @@ import com.niem.gladow.centroid.Enums.TransportationMode;
 public class MyGcmListenerService extends GcmListenerService {
 
     public static final String BROADCAST_UPDATE = "broadcast_update";
+    public static final String ASKS_YOU_TO_RESPOND = " asks you to respond.";
+    public static final String YOU_GOT_A_NEW_CENTROID = "you got a new centroid!";
+    public static final String CENTROID_ARRIVED = "centroid arrived";
+    public static final String YOU_GOT_INVITED_BY = "you got invited by: ";
+    public static final String CENTROID_INVITE = "centroid invite";
     private final String CENTROID = "centroid";
     private final String TIME = "time";
     private final String INVITE_NUMBER = "number";
@@ -109,9 +114,9 @@ public class MyGcmListenerService extends GcmListenerService {
         }
         //todo try if works
         new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
-                "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                CentroidListViewActivity.UPDATE_ALL_INVITES_URI + PersistenceHandler.getInstance().getOwnNumber() + "/"
                         + InviteHandler.getInstance().getActiveInvitesString());
-        sendNotification(_realName + " asks you to respond.", "centroid");
+        sendNotification(_realName + ASKS_YOU_TO_RESPOND, CENTROID);
     }
 
     private void addPlace(Bundle data, long _startTime) {
@@ -128,7 +133,7 @@ public class MyGcmListenerService extends GcmListenerService {
     }
 
     private void updateInvite(long _startTime) {
-        new RestConnector(this).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + _startTime);
+        new RestConnector(this).execute(RestConnector.SYNC_INVITE, InviteActivity.UPDATE_INVITE_URI + _startTime);
     }
 
     private void addCentroidToInvite(Bundle data, long _startTime) {
@@ -136,7 +141,7 @@ public class MyGcmListenerService extends GcmListenerService {
         inviteHandler.addCentroidToInvite(_startTime, _centroid);
         Log.d(MyGcmListenerService.class.getName(), "Centroid: " + _centroid);
         Log.d(MyGcmListenerService.class.getName(), "Time: " + _startTime);
-        sendNotification("you got a new centroid!", "centroid arrived");
+        sendNotification(YOU_GOT_A_NEW_CENTROID, CENTROID_ARRIVED);
     }
 
     private void createInvite(Bundle data) {
@@ -157,7 +162,7 @@ public class MyGcmListenerService extends GcmListenerService {
             if (_inviteName == null) {
                 _inviteName = _inviteNumber;
             }
-            sendNotification("you got invited by: " + _inviteName, "centroid invite");
+            sendNotification(YOU_GOT_INVITED_BY + _inviteName, CENTROID_INVITE);
             inviteHandler.updateMemberStatus(_startTime, _inviteNumber, InviteReply.ACCEPTED, _trans);
         }
     }

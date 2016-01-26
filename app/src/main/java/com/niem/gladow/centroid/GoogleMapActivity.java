@@ -25,6 +25,8 @@ public class GoogleMapActivity extends FragmentActivity implements
         ConnectionCallbacks, OnConnectionFailedListener, com.google.android.gms.location.LocationListener, OnMapReadyCallback {
 
     protected static final String TAG = "GoogleMapActivity";
+    public static final String CENTROID = "centroid";
+    public static final String YOU = "you";
     protected GoogleApiClient mGoogleApiClient;
     protected Location mCurrentLocation;
     protected LocationRequest mLocationRequest;
@@ -96,7 +98,7 @@ public class GoogleMapActivity extends FragmentActivity implements
                     .position(_location)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                     .alpha(0.7F)
-                    .title("you"));
+                    .title(YOU));
 
             if (location != null) {
                 map.addMarker(new MarkerOptions()
@@ -110,7 +112,7 @@ public class GoogleMapActivity extends FragmentActivity implements
                         .position(centroid)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                         .alpha(0)
-                        .title("centroid"));
+                        .title(CENTROID));
                 //todo colors
             }
 

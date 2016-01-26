@@ -21,6 +21,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
     public static final String HIT_NEXT_SYNC = "please hit next to sync";
     public static final String HIT_NEXT = "please hit next";
     public static final String NEXT_FOR_PERMISSION = "please hit next to grand permission";
+    public static final String PLEASE_HIT_NEXT_TO_REGISTER = "please hit next to register";
     private String _status;
     private TextView welcomeText;
 
@@ -69,7 +70,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                     startActivity(_intent);
                     finish();
                 } else {
-                    welcomeText.setText("please hit next to register");
+                    welcomeText.setText(PLEASE_HIT_NEXT_TO_REGISTER);
                     try {
                         Snackbar.make(getCurrentFocus(), HIT_NEXT, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();

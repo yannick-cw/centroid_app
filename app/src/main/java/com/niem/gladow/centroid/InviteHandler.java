@@ -234,7 +234,7 @@ public class InviteHandler {
         if (result != null && !"".equals(result)) {
             List<String> ids = Arrays.asList(result.split(","));
             for (String id : ids) {
-                new RestConnector(context).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + id);
+                new RestConnector(context).execute(RestConnector.SYNC_INVITE, InviteActivity.UPDATE_INVITE_URI + id);
             }
         }
     }

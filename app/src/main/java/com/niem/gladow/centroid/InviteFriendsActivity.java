@@ -121,7 +121,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
     public void chooseTransportationMode(final Context _context) {
         CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick a transportation Mode");
+        builder.setTitle(InviteActivity.PICK_TRANSPORT);
         builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
             TransportationMode _transportationMode = TransportationMode.DEFAULT;
             boolean _hasChosen = false;
@@ -151,7 +151,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
                     if (new NumberLogicHandler(_context).inviteFriends(_transportationMode)) {
                         onBackPressed();
                     } else {
-                        Snackbar.make(getCurrentFocus(), "please activate your gps", Snackbar.LENGTH_LONG)
+                        Snackbar.make(getCurrentFocus(), InviteActivity.PLEASE_GPS, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
                 }

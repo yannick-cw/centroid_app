@@ -53,6 +53,15 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public static final String CENTROID = "centroid";
     public static final String LOCATION = "location";
     public static final String NAME = "name";
+    public static final String draengeld = "you draengeld ";
+    public static final String DRAENGEL_URI = "/android/draengel/";
+    public static final String HAS_ALREADY_REPLIED = " has already replied";
+    public static final String PLEASE_GPS = "please activate your gps first";
+    public static final String INVITE_ACCEPTED = "invite accepted";
+    public static final String INVITE_DECLINED = "invite declined";
+    public static final String DECLINE_SURE = "Are you sure you want to decline?";
+    public static final String PICK_TRANSPORT = "Pick a transportation Mode";
+    public static final String UPDATE_INVITE_URI = "/android/updateInvite/";
 
     private Invite invite;
     private Button showCentroidButton;
@@ -75,8 +84,8 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         setSupportActionBar(toolbar);
 
         //getting the current invite, by Id that was passed in this activity via putExtra(String)
-        invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
-        Log.d("Input Intent:", getIntent().getStringExtra("InviteId"));
+        invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra(CentroidListViewActivity.INVITE_ID)));
+        Log.d("Input Intent:", getIntent().getStringExtra(CentroidListViewActivity.INVITE_ID));
 
         //setting up needed Views (Buttons etc.)
         header = (LinearLayout) findViewById(R.id.header);
@@ -129,13 +138,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                     TextView _memberName = (TextView) view.findViewById(R.id.memberName);
                     ImageView _memberStatus = (ImageView) view.findViewById(R.id.memberListStatusImage);
                     if (_memberStatus.getTag() == TransportationMode.DEFAULT) {
-                        new RestConnector(InviteActivity.this).execute(RestConnector.GET_NO_RESULT, "/android/draengel/"
+                        new RestConnector(InviteActivity.this).execute(RestConnector.GET_NO_RESULT, DRAENGEL_URI
                                 + PersistenceHandler.getInstance().getOwnNumber() + "/"
                                 + _memberIdTVClicked.getText().toString());
-                        Snackbar.make(view, "you draengeld " + _memberName.getText().toString().split(" ")[0], Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, draengeld + _memberName.getText().toString().split(" ")[0], Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     } else {
-                        Snackbar.make(view, _memberName.getText().toString().split(" ")[0] + " has already replied", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, _memberName.getText().toString().split(" ")[0] + HAS_ALREADY_REPLIED, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
                 } catch (Exception e) {
@@ -318,19 +327,19 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         switch (view.getId()) {
             case R.id.acceptInviteButton:
                 if (GpsDataHandler.getInstance().getLastLocation() == null) {
-                    Snackbar.make(view, "please activate your gps first", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, PLEASE_GPS, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     return;
                 }
                 InviteHandler.getInstance().responseToInvite(invite.getStartTime(), InviteReply.ACCEPTED, invite.getTransportationMode(), this);
-                Snackbar.make(view, "invite accepted", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, INVITE_ACCEPTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 break;
             case R.id.declineInviteButton:
                 invite.setTransportationMode(TransportationMode.DECLINED);
                 Log.d("DeclineButton", invite.getTransportationMode().toString());
                 InviteHandler.getInstance().responseToInvite(invite.getStartTime(), InviteReply.DECLINED, invite.getTransportationMode(), this);
-                Snackbar.make(view, "invite declined", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, INVITE_DECLINED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 break;
         }
@@ -342,7 +351,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public void areYouSureToDeclineDialogue(final View _view) {
         CharSequence transportationModes[] = getResources().getStringArray(R.array.decline_answers);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Are you sure you want to decline?");
+        builder.setTitle(DECLINE_SURE);
         builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -363,7 +372,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public void chooseTransportationMode(final View _view) {
         CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick a transportation Mode");
+        builder.setTitle(PICK_TRANSPORT);
         builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
             boolean _hasChosen = false;
 
@@ -412,7 +421,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            new RestConnector(this).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + invite.getStartTime());
+            new RestConnector(this).execute(RestConnector.SYNC_INVITE, UPDATE_INVITE_URI + invite.getStartTime());
             return true;
         }
 
@@ -431,7 +440,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
     @Override
     public void onRefresh() {
-        new RestConnector(this).execute(RestConnector.SYNC_INVITE, "/android/updateInvite/" + invite.getStartTime());
+        new RestConnector(this).execute(RestConnector.SYNC_INVITE, UPDATE_INVITE_URI + invite.getStartTime());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
