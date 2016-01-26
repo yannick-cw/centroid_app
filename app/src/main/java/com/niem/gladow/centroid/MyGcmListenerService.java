@@ -53,7 +53,6 @@ public class MyGcmListenerService extends GcmListenerService {
     private InviteHandler inviteHandler;
 
     public MyGcmListenerService() {
-        this.inviteHandler = InviteHandler.getInstance();
     }
 
     /**
@@ -67,6 +66,8 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         MiniDB.init(this);
+        this.inviteHandler = InviteHandler.getInstance();
+
         //get the type of the message
         String _messageType = data.get(MESSAGE_TYPE).toString();
         long _startTime;
