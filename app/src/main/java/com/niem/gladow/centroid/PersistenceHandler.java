@@ -133,10 +133,17 @@ public class PersistenceHandler {
         return false;
     }
 
-    public boolean isOwnNumberAndTokenInFile() {
+    public boolean isOwnNumberInFile () {
         String _number = MiniDB.getInstance().loadString(OWN_NUMBER_FILE);
+        if (_number == null || _number.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isTokenInFile () {
         String _token = MiniDB.getInstance().loadString(TOKEN_FILE);
-        if (_number == null || ownNumber.isEmpty() || _token == null || _token.isEmpty()) {
+        if (_token == null || _token.isEmpty()) {
             return false;
         }
         return true;
