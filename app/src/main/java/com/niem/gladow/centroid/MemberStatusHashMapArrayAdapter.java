@@ -2,6 +2,7 @@ package com.niem.gladow.centroid;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,17 +70,17 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 
         switch (_viewHolder.inviteReply){
             case DECLINED:
-                convertView.setBackgroundResource(R.color.declined_1);
-                _viewHolder.statusImage.setImageResource(R.drawable.declined_black);
+                _viewHolder.memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.declined_1));
+                _viewHolder.statusImage.setImageResource(R.drawable.declined);
                 _viewHolder.statusImage.setTag(TransportationMode.DECLINED);
                 break;
             case ACCEPTED:
-                convertView.setBackgroundResource(R.color.centroid_1);
+                _viewHolder.memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.centroid_1));
                 _viewHolder.statusImage.setImageResource(Util.getInstance().getResIdForTransportationImage(member.getValue().getTransportationMode()));
                 _viewHolder.statusImage.setTag(member.getValue().getTransportationMode());
                 break;
             default:
-                convertView.setBackgroundResource(R.color.unanswered_1);
+                _viewHolder.memberName.setTextColor(ContextCompat.getColor(getContext(), R.color.unanswered_1));
                 _viewHolder.statusImage.setTag(TransportationMode.DEFAULT);
                 break;
         }
