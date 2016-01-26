@@ -55,7 +55,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private Button navigateToDestButton;
     private Button declineInviteButton;
     private Button acceptInviteButton;
-    private LinearLayout buttonBox;
+    private LinearLayout buttonBox, header;
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
     private TextView invitePhoneNumber, inviteTime, inviteLocation;
@@ -74,20 +74,20 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         Log.d("Input Intent:", getIntent().getStringExtra("InviteId"));
 
         //setting up needed Views (Buttons etc.)
-        header                  = (LinearLayout) findViewById(R.id.header);
-        inviteTime               = (TextView)  findViewById(R.id.inviteTime);
-        invitePhoneNumber        = (TextView)  findViewById(R.id.invitePhoneNumber);
-        inviteLocation           = (TextView)  findViewById(R.id.inviteLocation);
-        transportationModeImage  = (ImageView) findViewById(R.id.transportationModeImage);
+        header = (LinearLayout) findViewById(R.id.header);
+        inviteTime = (TextView) findViewById(R.id.inviteTime);
+        invitePhoneNumber = (TextView) findViewById(R.id.invitePhoneNumber);
+        inviteLocation = (TextView) findViewById(R.id.inviteLocation);
+        transportationModeImage = (ImageView) findViewById(R.id.transportationModeImage);
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeLayout.setOnRefreshListener(this);
 
-        buttonBox                = (LinearLayout) findViewById(R.id.buttonLayout);
-        declineInviteButton      = (Button) findViewById(R.id.declineInviteButton);
-        acceptInviteButton       = (Button) findViewById(R.id.acceptInviteButton);
-        showCentroidButton       = (Button) findViewById(R.id.showCentroidButton);
-        navigateToDestButton     = (Button) findViewById(R.id.navigateToButton);
+        buttonBox = (LinearLayout) findViewById(R.id.buttonLayout);
+        declineInviteButton = (Button) findViewById(R.id.declineInviteButton);
+        acceptInviteButton = (Button) findViewById(R.id.acceptInviteButton);
+        showCentroidButton = (Button) findViewById(R.id.showCentroidButton);
+        navigateToDestButton = (Button) findViewById(R.id.navigateToButton);
 
     }
 
@@ -169,19 +169,19 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         }
     }
 
-    private Drawable getBackgroundResForStatus(){
-        if(invite.existsCentroid()){
-            return ContextCompat.getDrawable(this,R.drawable.border_ready);
+    private Drawable getBackgroundResForStatus() {
+        if (invite.existsCentroid()) {
+            return ContextCompat.getDrawable(this, R.drawable.border_ready);
         }
-        switch (invite.getStatus()){
+        switch (invite.getStatus()) {
             case ACCEPTED:
-                return ContextCompat.getDrawable(this,R.drawable.border_accepted);
+                return ContextCompat.getDrawable(this, R.drawable.border_accepted);
             case DECLINED:
-                return ContextCompat.getDrawable(this,R.drawable.border_declined);
+                return ContextCompat.getDrawable(this, R.drawable.border_declined);
             case UNANSWERED:
-                return ContextCompat.getDrawable(this,R.drawable.border_unanswered);
+                return ContextCompat.getDrawable(this, R.drawable.border_unanswered);
             default:
-                return ContextCompat.getDrawable(this,R.drawable.border_unanswered);
+                return ContextCompat.getDrawable(this, R.drawable.border_unanswered);
 
         }
     }
