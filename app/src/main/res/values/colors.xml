@@ -23,12 +23,17 @@
     <color name="unanswered_dark_4">#723900</color>
 
     <!-- Color Helpers-->
-    <color name="button_color">@color/unanswered_dark_1</color>
+    <color name="button_color">@color/centroid_2</color>
 
     <color name="invite_ready">@color/centroid_1</color>
     <color name="invite_accepted">@color/centroid_2</color>
     <color name="invite_unanswered">@color/unanswered_1</color>
     <color name="invite_declined">@color/declined_2</color>
+
+    <color name="depr_ready">#7700BDE9</color>
+    <color name="depr_accepted">#7700809E</color>
+    <color name="depr_unanswered">#77FFB100</color>
+    <color name="depr_declined">#77CF1800</color>
 
     <color name="transp_chosen">@color/centroid_1</color>
     <color name="transp_unanswered">@color/unanswered_1</color>

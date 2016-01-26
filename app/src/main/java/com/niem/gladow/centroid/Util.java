@@ -74,13 +74,17 @@ public final class Util {
         return DateFormat.format("E dd.MM, HH:mm", cal).toString();
     }
 
-    public String getShortDate(long inviteTime) {
+    public String getShortDate(Invite invite) {
+        long _inviteTime = invite.getStartTime();
         long _currentTime = System.currentTimeMillis();
         Calendar cal = Calendar.getInstance(Locale.GERMAN);
-        cal.setTimeInMillis(inviteTime);
-        if(_currentTime-inviteTime < TimeUnit.DAYS.toMillis(1)){
+        cal.setTimeInMillis(_inviteTime);
+        //TODO REPLACE LINES BELOW
+        if(_currentTime-_inviteTime < TimeUnit.MINUTES.toMillis(60)){
+//            if(_currentTime-_inviteTime < TimeUnit.DAYS.toMillis(1)){
             return DateFormat.format("HH:mm", cal).toString();
         }else{
+            invite.setIs_deprecated(true);
             return DateFormat.format("dd. MMM", cal).toString();
         }
     }
@@ -104,20 +108,37 @@ public final class Util {
         }
     }
 
-    public int getColorForStatus(InviteReply inviteStatus){
+    public int getColorForStatus(InviteReply inviteStatus, boolean is_deprecated){
         //TODO apply nice colors + deprecated stati
-        switch (inviteStatus) {
-            case READY:
-                return R.color.invite_ready;
-            case UNANSWERED:
-                return R.color.invite_unanswered;
-            case DECLINED:
-                return R.color.invite_declined;
-            case ACCEPTED:
-                return R.color.invite_accepted;
-            default:
-                return R.color.unanswered_dark_1;
+        if(is_deprecated){
+            switch (inviteStatus) {
+                case READY:
+                    return R.color.depr_ready;
+                case UNANSWERED:
+                    return R.color.depr_unanswered;
+                case DECLINED:
+                    return R.color.depr_declined;
+                case ACCEPTED:
+                    return R.color.depr_accepted;
+                default:
+                    return R.color.unanswered_dark_1;
+            }
+        }else{
+            switch (inviteStatus) {
+                case READY:
+                    return R.color.invite_ready;
+                case UNANSWERED:
+                    return R.color.invite_unanswered;
+                case DECLINED:
+                    return R.color.invite_declined;
+                case ACCEPTED:
+                    return R.color.invite_accepted;
+                default:
+                    return R.color.unanswered_dark_1;
+            }
         }
+
+
     }
 
     public int getColorForTranspMode(TransportationMode transportationMode){

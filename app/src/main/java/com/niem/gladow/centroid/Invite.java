@@ -31,7 +31,7 @@ public class Invite implements Serializable {
     private boolean existsCentroid = false;
     private Map<String, InviteStatus> allMembers;
     private String chosenPlace;
-
+    private boolean is_deprecated;
     public static final boolean WITH = true;
     public static final boolean WITHOUT = false;
 
@@ -46,6 +46,7 @@ public class Invite implements Serializable {
             this.allMembers.put(str, new InviteStatus());
         }
         findRealNames(this.allMembers);
+        is_deprecated = false;
     }
 
     public long getStartTime() {
@@ -123,6 +124,14 @@ public class Invite implements Serializable {
         }else{
             return _result.substring(2); // replace ", " at beginning of String
         }
+    }
+
+    public void setIs_deprecated(boolean is_deprecated){
+        this.is_deprecated = is_deprecated;
+    }
+
+    public boolean isDeprecated(){
+        return is_deprecated;
     }
 
     //check with the persistence handler friendMap, if numbers can be replaced with names

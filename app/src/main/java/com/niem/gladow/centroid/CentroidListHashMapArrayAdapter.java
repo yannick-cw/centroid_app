@@ -1,6 +1,7 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
@@ -72,7 +73,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.textDrawable = TextDrawable.builder()
                 .buildRound(_hostName.substring(0,1)
                 , getContext().getResources().getInteger(Util.getInstance()
-                .getColorForStatus(_invite.getStatus())));
+                .getColorForStatus(_invite.getStatus(), _invite.isDeprecated())));
         _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
 
         //construct members StyledTextString incl. status
@@ -88,7 +89,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
 
         //setTextViews/Imageviews
-        _viewHolder.time.setText(String.valueOf(Util.getInstance().getShortDate(_invite.getStartTime())));
+        _viewHolder.time.setText(String.valueOf(Util.getInstance().getShortDate(_invite)));
         _viewHolder.inviteId.setText(String.valueOf(_invite.getStartTime()));
         _viewHolder.status.setText(_invite.getStatus().toString());
         _viewHolder.statusImage.setImageResource(Util.getInstance()
@@ -102,6 +103,12 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
             _viewHolder.placeToMeet.setVisibility(View.VISIBLE);
         }else{
             _viewHolder.placeToMeet.setVisibility(View.INVISIBLE);
+        }
+
+        if(_invite.isDeprecated()){
+            convertView.setBackgroundColor(Color.LTGRAY);
+        }else{
+            convertView.setBackgroundColor(Color.WHITE);
         }
 
         return convertView;
