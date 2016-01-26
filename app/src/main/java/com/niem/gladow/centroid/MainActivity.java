@@ -26,11 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         MiniDB.init(this);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         //check for permission, if none do if
         if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
             goToWelcomeView(FIRST_LOAD);
