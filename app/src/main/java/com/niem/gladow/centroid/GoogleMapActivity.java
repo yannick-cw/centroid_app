@@ -2,6 +2,7 @@ package com.niem.gladow.centroid;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
@@ -75,7 +76,13 @@ public class GoogleMapActivity extends FragmentActivity implements
     }
 
     private void updateUI() {
-        LatLng _location = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        LatLng _location = null;
+        try {
+            _location = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
         //is executed only on the first UI update to set bounds and zoom
         if (isFirstStart) {
             LatLngBounds.Builder _builder = new LatLngBounds.Builder();
