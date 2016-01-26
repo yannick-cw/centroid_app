@@ -120,7 +120,7 @@ public class GoogleMapActivity extends FragmentActivity implements
 
             GroundOverlayOptions _centroid = new GroundOverlayOptions()
                     .image(BitmapDescriptorFactory.fromResource(R.drawable.map_centroid))
-                    .position(centroid, 170f, 170f);
+                    .position(centroid, 200f, 200f);
             map.addGroundOverlay(_centroid);
 
         } catch (Exception e) {

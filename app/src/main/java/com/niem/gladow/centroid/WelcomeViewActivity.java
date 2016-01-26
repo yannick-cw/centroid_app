@@ -71,12 +71,6 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 }
             } else {
                 welcomeText.setText("please hit next to sync");
-                try {
-                    Snackbar.make(getCurrentFocus(), "please hit next", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
