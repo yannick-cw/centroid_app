@@ -76,7 +76,7 @@ public class GoogleMapActivity extends FragmentActivity implements
             _builder.include(centroid);
             _builder.include(_location);
             LatLngBounds _latLngBounds = _builder.build();
-            map.moveCamera(CameraUpdateFactory.newLatLngBounds(_latLngBounds, 10));
+            map.moveCamera(CameraUpdateFactory.newLatLngBounds(_latLngBounds, 250));
             isFirstStart = false;
         }
         try {
@@ -87,10 +87,6 @@ public class GoogleMapActivity extends FragmentActivity implements
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                     .alpha(0.5F)
                     .title("you"));
-            map.addMarker(new MarkerOptions()
-                    .position(centroid)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    .title("centroid"));
 
             GroundOverlayOptions _centroid = new GroundOverlayOptions()
                     .image(BitmapDescriptorFactory.fromResource(R.drawable.map_centroid))
