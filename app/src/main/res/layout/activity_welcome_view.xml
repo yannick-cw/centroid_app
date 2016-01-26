@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="next"
         android:onClick="syncWithServer"
-        android:id="@+id/button"
+        android:id="@+id/nextButton"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/phone_number"
         android:layout_alignEnd="@+id/phone_number" />

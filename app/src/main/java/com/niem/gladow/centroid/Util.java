@@ -1,5 +1,7 @@
 package com.niem.gladow.centroid;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -128,6 +130,10 @@ public final class Util {
             default:
                 return R.color.transp_chosen;
         }
+    }
+
+    public int getButtonColor(Context context){
+        return ContextCompat.getColor(context,R.color.button_color);
     }
 
     public static <K, V extends Comparable<? super V>> Map<K, V>

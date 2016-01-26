@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -86,9 +87,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         buttonBox = (LinearLayout) findViewById(R.id.buttonLayout);
         declineInviteButton = (Button) findViewById(R.id.declineInviteButton);
+        declineInviteButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
         acceptInviteButton = (Button) findViewById(R.id.acceptInviteButton);
+        acceptInviteButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
         showCentroidButton = (Button) findViewById(R.id.showCentroidButton);
+        showCentroidButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
         navigateToDestButton = (Button) findViewById(R.id.navigateToButton);
+        navigateToDestButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
 
     }
 

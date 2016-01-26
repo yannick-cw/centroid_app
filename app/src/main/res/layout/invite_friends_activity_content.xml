@@ -13,7 +13,6 @@
         android:text="@string/invite_Button"
         android:onClick="inviteFriends"
         android:enabled="false"
-        android:background="@drawable/button_shape"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
