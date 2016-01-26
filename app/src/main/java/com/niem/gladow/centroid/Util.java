@@ -77,7 +77,7 @@ public final class Util {
         Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.setTimeInMillis(inviteTime);
         if(_currentTime-inviteTime < TimeUnit.DAYS.toMillis(1)){
-            return DateFormat.format("HH:mm:ss", cal).toString();
+            return DateFormat.format("HH:mm", cal).toString();
         }else{
             return DateFormat.format("dd. MMM", cal).toString();
         }
@@ -106,13 +106,13 @@ public final class Util {
         //TODO apply nice colors + deprecated stati
         switch (inviteStatus) {
             case READY:
-                return R.color.centroid_1;
+                return R.color.invite_ready;
             case UNANSWERED:
-                return R.color.unanswered_1;
+                return R.color.invite_unanswered;
             case DECLINED:
-                return R.color.declined_1;
+                return R.color.invite_declined;
             case ACCEPTED:
-                return R.color.centroid_4;
+                return R.color.invite_accepted;
             default:
                 return R.color.unanswered_dark_1;
         }
@@ -122,11 +122,11 @@ public final class Util {
         //TODO apply nice colors
         switch (transportationMode) {
             case DECLINED:
-                return R.color.declined_1;
+                return R.color.transp_declined;
             case DEFAULT:
-                return R.color.unanswered_1;
+                return R.color.transp_unanswered;
             default:
-                return R.color.centroid_1;
+                return R.color.transp_chosen;
         }
     }
 

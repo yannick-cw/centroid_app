@@ -42,9 +42,11 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         setContentView(R.layout.centroid_listview_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeLayout.setOnRefreshListener(this);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.createNewCentroidButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,6 +54,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
                 startActivity(intent);
             }
         });
+
         _listView = (ListView) findViewById(R.id.friendsListView);
 
         //check if right google play service is available
