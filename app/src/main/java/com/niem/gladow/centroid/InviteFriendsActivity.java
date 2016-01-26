@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.LightingColorFilter;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
@@ -58,7 +57,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
         super.onResume();
 
         final ListView _listView = (ListView) findViewById(R.id.friendsListView);
-        _listView.setOnTouchListener(new View.OnTouchListener(){
+        _listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 InviteFriendsActivity.this.onTouchEvent(event);
@@ -119,7 +118,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
         chooseTransportationMode(this);
     }
 
-    public void chooseTransportationMode(final Context _context){
+    public void chooseTransportationMode(final Context _context) {
         CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a transportation Mode");
@@ -149,7 +148,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
                         break;
                 }
                 if (_hasChosen) {
-                    if( new NumberLogicHandler(_context).inviteFriends(_transportationMode)) {
+                    if (new NumberLogicHandler(_context).inviteFriends(_transportationMode)) {
                         onBackPressed();
                     } else {
                         Snackbar.make(getCurrentFocus(), "please activate your gps", Snackbar.LENGTH_LONG)
@@ -184,6 +183,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onRefresh() {
         new NumberLogicHandler(this).executePhoneDataHandler();

@@ -114,7 +114,7 @@ public class InviteHandler {
      * parsing the transmitted string
      * either creates new invite or updates existing one
      *
-     * @param result from the server, separated invite
+     * @param result  from the server, separated invite
      * @param context
      */
     public void syncInvite(String result, Context context) {
@@ -145,7 +145,7 @@ public class InviteHandler {
             }
 
             //update status and centroid
-            for (String _number: _numberStatus.keySet()) {
+            for (String _number : _numberStatus.keySet()) {
                 //update reply
                 InviteReply _reply = InviteReply.valueOf(_numberStatus.get(_number).get(INVITE_STATUS));
                 //update transportation mode
@@ -185,7 +185,7 @@ public class InviteHandler {
         //add own invite reply and own transportation mode
         InviteReply _reply = InviteReply.valueOf(_numberStatus.get(_ownNumber).get(INVITE_STATUS));
         _invite.setStatus(_reply);
-        TransportationMode _trans= TransportationMode.valueOf(_numberStatus.get(_ownNumber).get(TRANS_MODE));
+        TransportationMode _trans = TransportationMode.valueOf(_numberStatus.get(_ownNumber).get(TRANS_MODE));
         _invite.setTransportationMode(_trans);
         return _invite;
     }

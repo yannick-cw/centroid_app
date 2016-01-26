@@ -10,7 +10,9 @@ import android.util.Log;
 
 import com.niem.gladow.centroid.Database.MiniDB;
 
-
+/**
+ * This activity just handles the starting app and redirects the user to the right place
+ * */
 public class MainActivity extends AppCompatActivity {
     public static final String STATUS = "status";
     public static final String FIRST_LOAD = "firstLoad";
@@ -26,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         //check for permission, if none do if
         if (!PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
             goToWelcomeView(FIRST_LOAD);
-        }
-        else if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) && hasPermission(Manifest.permission.READ_CONTACTS)) {
+
+        } else if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) && hasPermission(Manifest.permission.READ_CONTACTS)) {
             GpsDataHandler.init(this);
 
             //updates contacts
@@ -41,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
 
-        }
-        else {
+        } else {
             goToWelcomeView(NO_PERMISSION);
         }
     }
