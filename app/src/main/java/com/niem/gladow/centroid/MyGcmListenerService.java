@@ -54,7 +54,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
     public MyGcmListenerService() {
     }
-
+    //todo friendmap not working if app closed
     /**
      * Called when message is received.
      *
@@ -109,7 +109,12 @@ public class MyGcmListenerService extends GcmListenerService {
 
     private void draengelFriend(Bundle data) {
         String _friend = (String) data.get(INVITE_NUMBER);
-        String _realName = PersistenceHandler.getInstance().getFriendMap().get(_friend).split(" ")[0];
+        String _realName = null;
+        try {
+            _realName = PersistenceHandler.getInstance().getFriendMap().get(_friend).split(" ")[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (_realName == null) {
             _realName = _friend;
         }
