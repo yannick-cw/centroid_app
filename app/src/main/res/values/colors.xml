@@ -23,6 +23,8 @@
     <color name="unanswered_dark_4">#723900</color>
 
     <!-- Color Helpers-->
+    <color name="button_color">@color/unanswered_dark_1</color>
+
     <color name="invite_ready">@color/centroid_1</color>
     <color name="invite_accepted">@color/centroid_2</color>
     <color name="invite_unanswered">@color/unanswered_1</color>
