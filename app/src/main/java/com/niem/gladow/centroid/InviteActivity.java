@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -51,7 +53,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
     private Invite invite;
     private Button showCentroidButton, navigateToDestButton, declineInviteButton, acceptInviteButton;
-    private LinearLayout buttonBox;
+    private LinearLayout buttonBox, header;
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
     private TextView invitePhoneNumber, inviteTime, inviteLocation;
@@ -67,9 +69,10 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         //getting the current invite, by Id that was passed in this activity via putExtra(String)
         invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra("InviteId")));
-        Log.d("Input Intent:",getIntent().getStringExtra("InviteId"));
+        Log.d("Input Intent:", getIntent().getStringExtra("InviteId"));
 
         //setting up needed Views (Buttons etc.)
+        header                  = (LinearLayout) findViewById(R.id.header);
         inviteTime               = (TextView)  findViewById(R.id.inviteTime);
         invitePhoneNumber        = (TextView)  findViewById(R.id.invitePhoneNumber);
         inviteLocation           = (TextView)  findViewById(R.id.inviteLocation);
@@ -132,6 +135,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         if (invite.getStatus() != InviteReply.UNANSWERED) {
             //sets the transportationMode ImageView to the corresponding Image
             //TODO nice images with variable Resolutions
+            header.setBackground(getBackgroundResForStatus());
             transportationModeImage.setImageResource(Util.getInstance().getResIdForTransportationImage(invite.getTransportationMode()));
             declineInviteButton.setVisibility(View.GONE);
             acceptInviteButton.setVisibility(View.GONE);
@@ -154,15 +158,28 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             }
 
         }
-
         try {
             this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    private Drawable getBackgroundResForStatus(){
+        if(invite.existsCentroid()){
+            return ContextCompat.getDrawable(this,R.drawable.border_ready);
+        }
+        switch (invite.getStatus()){
+            case ACCEPTED:
+                return ContextCompat.getDrawable(this,R.drawable.border_accepted);
+            case DECLINED:
+                return ContextCompat.getDrawable(this,R.drawable.border_declined);
+            case UNANSWERED:
+                return ContextCompat.getDrawable(this,R.drawable.border_unanswered);
+            default:
+                return ContextCompat.getDrawable(this,R.drawable.border_unanswered);
 
-
+        }
     }
 
     public void showCentroidOnMap(View view) {
