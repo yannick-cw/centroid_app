@@ -37,6 +37,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PersistenceHandler.getInstance().clearInviteList();
         setContentView(R.layout.invite_friends_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
