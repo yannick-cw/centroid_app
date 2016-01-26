@@ -40,8 +40,8 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
         setContentView(R.layout.invite_friends_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        //refresh invite List
+        PersistenceHandler.getInstance().clearInviteList();
 
         //setting up views
         inviteFriendsButton = (Button) findViewById(R.id.inviteFriendsListButton);
@@ -53,8 +53,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
     @Override
     protected void onResume() {
         super.onResume();
-        //refresh invite List
-        PersistenceHandler.getInstance().clearInviteList();
+
         final ListView _listView = (ListView) findViewById(R.id.friendsListView);
         _listView.setOnTouchListener(new View.OnTouchListener(){
             @Override
