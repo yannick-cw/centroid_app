@@ -55,10 +55,11 @@ public class WelcomeViewActivity extends AppCompatActivity {
         } else {
             saveOwnNumber();
             final Button _startCentroidButton = (Button) findViewById(R.id.startCentroid);
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+            sendContacts();
+
             if (!PersistenceHandler.getInstance().getOwnNumber().equals("/") && PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
-                Intent intent = new Intent(this, RegistrationIntentService.class);
-                startService(intent);
-                sendContacts();
                 _startCentroidButton.setEnabled(true);
             } else {
                 Toast.makeText(this, "Please enter your own number and hit sync", Toast.LENGTH_LONG).show();
