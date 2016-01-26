@@ -36,6 +36,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
     private SwipeRefreshLayout swipeLayout;
     private Button inviteFriendsButton;
 
+    //todo invite button groesser und schrift auch
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

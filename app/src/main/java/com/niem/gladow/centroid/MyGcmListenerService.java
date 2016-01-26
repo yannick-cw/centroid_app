@@ -122,7 +122,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     _realName = _friend;
                 } else {
                 }
-                sendNotification(_realName + " wants you to respond.", "centroid");
+                sendNotification(_realName + " asks you to respond.", "centroid");
             default:
                 break;
         }
@@ -139,9 +139,10 @@ public class MyGcmListenerService extends GcmListenerService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+        //todo logo in push
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                .setSmallIcon(R.drawable.map_centroid)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
