@@ -50,7 +50,7 @@ public class GoogleMapActivity extends FragmentActivity implements
         //gets the centroid latlng Object, which was attached to the intent
         centroid = getIntent().getParcelableExtra(InviteActivity.CENTROID);
         location = getIntent().getParcelableExtra(InviteActivity.LOCATION);
-        locationName = getIntent().getParcelableExtra(InviteActivity.LOCATION + InviteActivity.NAME);
+        locationName = getIntent().getStringExtra(InviteActivity.LOCATION + InviteActivity.NAME);
 
         buildGoogleApiClient();
     }
