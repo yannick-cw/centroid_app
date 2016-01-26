@@ -133,6 +133,14 @@ public class PersistenceHandler {
         return false;
     }
 
+    public boolean isOwnNumberInFile () {
+        String _number = MiniDB.getInstance().loadString(OWN_NUMBER_FILE);
+        if (_number == null || ownNumber.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * tries to access the own number from the telephone and saves it
      * if this is not possible waits for the user input of the number and saves it

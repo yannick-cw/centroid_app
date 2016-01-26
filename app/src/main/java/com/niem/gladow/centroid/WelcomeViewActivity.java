@@ -59,10 +59,10 @@ public class WelcomeViewActivity extends AppCompatActivity {
             startService(intent);
             sendContacts();
 
-            if (!PersistenceHandler.getInstance().getOwnNumber().equals("/") && PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
+            if (!PersistenceHandler.getInstance().getOwnNumber().equals("/") && PersistenceHandler.getInstance().isOwnNumberInFile()) {
                 _startCentroidButton.setEnabled(true);
             } else {
-                Toast.makeText(this, "Please enter your own number and hit sync", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "please hit next", Toast.LENGTH_LONG).show();
             }
         }
     }
