@@ -9,7 +9,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/inviteFriendsButton"
+        android:id="@+id/inviteFriendsListButton"
         android:text="@string/invite_Button"
         android:onClick="inviteFriends"
         android:enabled="false"

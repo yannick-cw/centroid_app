@@ -32,15 +32,19 @@ import java.util.Map;
  */
 public class InviteFriendsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipeLayout;
+    private Button inviteFriendsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PersistenceHandler.getInstance().clearInviteList();
         setContentView(R.layout.invite_friends_activity);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
+        //setting up views
+        inviteFriendsButton = (Button) findViewById(R.id.inviteFriendsListButton);
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeLayout.setOnRefreshListener(this);
@@ -49,6 +53,8 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
     @Override
     protected void onResume() {
         super.onResume();
+        //refresh invite List
+        PersistenceHandler.getInstance().clearInviteList();
         final ListView _listView = (ListView) findViewById(R.id.friendsListView);
         _listView.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -57,7 +63,6 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
                 return false;
             }
         });
-        final Button _inviteFriendsButton = (Button) findViewById(R.id.showCentroidsButton);
 
         final Map<String, String> _map = PersistenceHandler.getInstance().getFriendMap();
 
@@ -87,9 +92,9 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
                     }
 
                     if (!PersistenceHandler.getInstance().getInviteList().isEmpty()) {
-                        _inviteFriendsButton.setEnabled(true);
+                        inviteFriendsButton.setEnabled(true);
                     } else {
-                        _inviteFriendsButton.setEnabled(false);
+                        inviteFriendsButton.setEnabled(false);
                     }
 
                 } catch (Exception e) {
