@@ -9,18 +9,21 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class WelcomeViewActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 12;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private String _status;
+    private TextView welcomeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_view);
         _status = getIntent().getStringExtra(MainActivity.STATUS);
+        welcomeText = (TextView) findViewById(R.id.welcomeText);
 
         if (!permissionsGranted()) {
             requestMissingPermissions();
@@ -46,6 +49,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
     private void syncWithServer() {
         if (!permissionsGranted()) {
             requestMissingPermissions();
+            welcomeText.setText("please hit next to grand permission");
         } else {
             saveOwnNumber();
             if (!PersistenceHandler.getInstance().getOwnNumber().equals("/") && PersistenceHandler.getInstance().isOwnNumberInFile()) {
@@ -57,6 +61,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                     startActivity(_intent);
                     finish();
                 } else {
+                    welcomeText.setText("please hit next to register");
                     try {
                         Snackbar.make(getCurrentFocus(), "please hit next", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -65,6 +70,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                     }
                 }
             } else {
+                welcomeText.setText("please hit next to sync");
                 try {
                     Snackbar.make(getCurrentFocus(), "please hit next", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
