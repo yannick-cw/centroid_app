@@ -44,7 +44,7 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
             String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             phoneNumber = Util.getInstance().cleanNumberString(phoneNumber);
-            numbersNames.put(phoneNumber,name);
+            numbersNames.put(phoneNumber, name);
         }
         phones.close();
         PersistenceHandler.getInstance().setContactsMap(numbersNames);

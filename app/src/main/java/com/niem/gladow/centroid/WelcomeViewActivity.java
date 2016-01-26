@@ -26,14 +26,14 @@ public class WelcomeViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_view);
         _status = getIntent().getStringExtra(MainActivity.STATUS);
         welcomeText = (TextView) findViewById(R.id.welcomeText);
-        Button nex =  (Button) findViewById(R.id.button);
+        Button nex = (Button) findViewById(R.id.button);
         nex.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
 
         if (!permissionsGranted()) {
             requestMissingPermissions();
+        } else if (_status.equals(MainActivity.FIRST_LOAD)) {
+            syncWithServer();
         }
-        else if (_status.equals(MainActivity.FIRST_LOAD)) {
-            syncWithServer();        }
     }
 
     private void requestPermission(String[] permissions, int requestTo) {
@@ -97,7 +97,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 && (hasPermission(Manifest.permission.READ_PHONE_STATE) || !_status.equals(MainActivity.FIRST_LOAD));
     }
 
-    private void saveOwnNumber (){
+    private void saveOwnNumber() {
         PersistenceHandler.getInstance().saveOwnNumber(this);
     }
 

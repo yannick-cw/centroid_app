@@ -3,19 +3,15 @@ package com.niem.gladow.centroid;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
-import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -23,9 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -80,16 +73,16 @@ public final class Util {
         Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.setTimeInMillis(_inviteTime);
         //TODO REPLACE LINES BELOW
-        if(_currentTime-_inviteTime < TimeUnit.MINUTES.toMillis(60)){
+        if (_currentTime - _inviteTime < TimeUnit.MINUTES.toMillis(60)) {
 //            if(_currentTime-_inviteTime < TimeUnit.DAYS.toMillis(1)){
             return DateFormat.format("HH:mm", cal).toString();
-        }else{
+        } else {
             invite.setIs_deprecated(true);
             return DateFormat.format("dd. MMM", cal).toString();
         }
     }
 
-    public int getResIdForTransportationImage(TransportationMode transportationMode){
+    public int getResIdForTransportationImage(TransportationMode transportationMode) {
         switch (transportationMode) {
             case FOOT:
                 return R.drawable.feet;
@@ -108,8 +101,8 @@ public final class Util {
         }
     }
 
-    public int getColorForStatus(InviteReply inviteStatus, boolean is_deprecated){
-        if(is_deprecated){
+    public int getColorForStatus(InviteReply inviteStatus, boolean is_deprecated) {
+        if (is_deprecated) {
             switch (inviteStatus) {
                 case READY:
                     return R.color.depr_ready;
@@ -122,7 +115,7 @@ public final class Util {
                 default:
                     return R.color.unanswered_dark_1;
             }
-        }else{
+        } else {
             switch (inviteStatus) {
                 case READY:
                     return R.color.invite_ready;
@@ -140,7 +133,7 @@ public final class Util {
 
     }
 
-    public int getColorForTranspMode(TransportationMode transportationMode){
+    public int getColorForTranspMode(TransportationMode transportationMode) {
         switch (transportationMode) {
             case DECLINED:
                 return R.color.transp_declined;
@@ -151,8 +144,8 @@ public final class Util {
         }
     }
 
-    public int getButtonColor(Context context){
-        return ContextCompat.getColor(context,R.color.button_color);
+    public int getButtonColor(Context context) {
+        return ContextCompat.getColor(context, R.color.button_color);
     }
 
     public static <K, V extends Comparable<? super V>> Map<K, V>

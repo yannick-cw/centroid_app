@@ -8,20 +8,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.niem.gladow.centroid.Database.MapDB;
 import com.niem.gladow.centroid.Database.MiniDB;
-import com.niem.gladow.centroid.Database.StringDB;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 
 /**
@@ -30,7 +24,7 @@ import java.util.TreeMap;
 public class PersistenceHandler {
     private Map<String, String> contactsMap;
     //consists of number,name
-    private Map<String,String> friendMap = new HashMap<>();
+    private Map<String, String> friendMap = new HashMap<>();
     private List<String> inviteList = new LinkedList<>();
     private String ownNumber = "";
     private String token = "";
@@ -53,10 +47,10 @@ public class PersistenceHandler {
         return instance;
     }
 
-    public void createFriendMap (String contacts) {
+    public void createFriendMap(String contacts) {
         List<String> numbers = Arrays.asList(contacts.split(","));
-        for (String str: numbers) {
-            if(contactsMap.containsKey(str)){
+        for (String str : numbers) {
+            if (contactsMap.containsKey(str)) {
                 friendMap.put(str, contactsMap.get(str));
             }
         }
@@ -67,12 +61,12 @@ public class PersistenceHandler {
         return Util.sortByValue(friendMap);
     }
 
-    public boolean loadFriendMapFromDB () {
+    public boolean loadFriendMapFromDB() {
         friendMap = MiniDB.getInstance().loadMap(FRIEND_MAP_FILE);
         return !friendMap.isEmpty();
     }
 
-    public boolean saveFriendMapToDB () {
+    public boolean saveFriendMapToDB() {
         return MiniDB.getInstance().saveMap(friendMap, FRIEND_MAP_FILE);
     }
 
@@ -85,14 +79,14 @@ public class PersistenceHandler {
     }
 
     public String getInviteList() {
-      return Util.getInstance().cleanKeySet(inviteList.toString());
+        return Util.getInstance().cleanKeySet(inviteList.toString());
     }
 
     /**
      * adds the number to the invite list, if he is not already on it
-     * */
+     */
     public void addToInviteList(String number) {
-        for (String str: inviteList) {
+        for (String str : inviteList) {
             if (str == number) {
                 return;
             }
@@ -102,14 +96,14 @@ public class PersistenceHandler {
 
     public void removeFromInviteList(String number) {
         for (int i = 0; i < this.inviteList.size(); i++) {
-            if(this.inviteList.get(i).equals(number)){
+            if (this.inviteList.get(i).equals(number)) {
                 this.inviteList.remove(i);
                 break;
             }
         }
     }
 
-    public void clearInviteList(){
+    public void clearInviteList() {
         this.inviteList.clear();
     }
 
@@ -120,8 +114,8 @@ public class PersistenceHandler {
     /**
      * try to load onwNumber and Token from the database and store them in local value
      * returns true if both values aren't empty
-    */
-    public boolean firstLoadOwnNumberAndToken () {
+     */
+    public boolean firstLoadOwnNumberAndToken() {
         ownNumber = MiniDB.getInstance().loadString(OWN_NUMBER_FILE);
         token = MiniDB.getInstance().loadString(TOKEN_FILE);
         Log.i("DB loaded ownNumber", ownNumber);
@@ -133,7 +127,7 @@ public class PersistenceHandler {
         return false;
     }
 
-    public boolean isOwnNumberInFile () {
+    public boolean isOwnNumberInFile() {
         String _number = MiniDB.getInstance().loadString(OWN_NUMBER_FILE);
         if (_number == null || _number.isEmpty()) {
             return false;
@@ -141,7 +135,7 @@ public class PersistenceHandler {
         return true;
     }
 
-    public boolean isTokenInFile () {
+    public boolean isTokenInFile() {
         String _token = MiniDB.getInstance().loadString(TOKEN_FILE);
         if (_token == null || _token.isEmpty()) {
             return false;
@@ -152,7 +146,7 @@ public class PersistenceHandler {
     /**
      * tries to access the own number from the telephone and saves it
      * if this is not possible waits for the user input of the number and saves it
-     * */
+     */
     public void saveOwnNumber(Context context) {
         final Context _context = context;
         final EditText _inputNumberEditText = (EditText) ((Activity) _context).getWindow().getDecorView().findViewById(R.id.phone_number);
@@ -175,7 +169,7 @@ public class PersistenceHandler {
                     if ((event.getAction() == KeyEvent.ACTION_DOWN)
                             && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         // Perform action on Enter-key press
-                       // Toast.makeText(_context, _inputNumberEditText.getText(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(_context, _inputNumberEditText.getText(), Toast.LENGTH_SHORT).show();
                         ownNumber = Util.getInstance().cleanNumberString(_inputNumberEditText.getText().toString());
                         MiniDB.getInstance().saveString(ownNumber, OWN_NUMBER_FILE);
                         _inputNumberEditText.setVisibility(View.INVISIBLE);

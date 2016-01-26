@@ -53,7 +53,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
         String result;
         try {
             Log.d("urlparams", urlString);
-            URL url = new URL(HOST_ADDRESS+urlString);
+            URL url = new URL(HOST_ADDRESS + urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
@@ -78,7 +78,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
         String result = "";
         try {
             Log.d("urlparams", urlString);
-            URL url = new URL(HOST_ADDRESS+urlString);
+            URL url = new URL(HOST_ADDRESS + urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("GET");

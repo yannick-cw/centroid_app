@@ -37,9 +37,9 @@ public class NumberLogicHandler implements AsyncResponse {
         return true;
     }
 
-    public void syncTokenAndNumber () {
+    public void syncTokenAndNumber() {
         new RestConnector(context).execute(RestConnector.POST_NO_RESULT, SEND_NUMBER + ownNumberWithSlash
-                                            + PersistenceHandler.getInstance().getToken());
+                + PersistenceHandler.getInstance().getToken());
     }
 
     //reads friendlist from file and starts async task RestConnector to send friend numbers to server
@@ -48,12 +48,12 @@ public class NumberLogicHandler implements AsyncResponse {
             return false;
         }
         new RestConnector(context).execute(RestConnector.POST_NO_RESULT, GpsDataHandler.SEND_GPS + ownNumberWithSlash
-                + GpsDataHandler.getInstance().getLastLocation().getLongitude()+"/"
+                + GpsDataHandler.getInstance().getLastLocation().getLongitude() + "/"
                 + GpsDataHandler.getInstance().getLastLocation().getLatitude());
 
         new RestConnector(context).execute(RestConnector.GET_NO_RESULT, INVITE_FRIENDS + ownNumberWithSlash
-                                            + PersistenceHandler.getInstance().getInviteList()
-                                            + "/" + transportationMode);
+                + PersistenceHandler.getInstance().getInviteList()
+                + "/" + transportationMode);
         return true;
     }
 
