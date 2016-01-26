@@ -162,7 +162,6 @@ public class Invite implements Serializable {
     }
 
 
-    //TODO Cleanup
     //String Helpers to retreive Information from PlaceToMeet
     //Returns List With {Name, Address, Phone, Lat, Long etc...}
     private  List<String> getLocationInformations() {

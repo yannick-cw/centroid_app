@@ -2,8 +2,8 @@ package com.niem.gladow.centroid;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.TransportationMode;
@@ -19,6 +19,17 @@ import java.util.Map;
  */
 public class InviteHandler {
     private static final String INVITE_RESPONSE = "/android/responseToInvite/";
+    private static final int ID = 0;
+    private static final int NUMBER_STATUS = 2;
+    private static final int INVITE_REPLY = 1;
+    private static final int TRANSPORTATION_MODE = 2;
+    private static final int NUMBER = 0;
+    private static final int HOST_NUMBER = 1;
+    private static final int INVITE_STATUS = 0;
+    private static final int TRANS_MODE = 1;
+    private static final int CENTROID = 4;
+    private static final int PLACE = 3;
+
     //Invite objects are saved in this map, with start time as key
     private static Map<Long, Invite> activeInvites = new HashMap<>();
     private static InviteHandler instance;
@@ -35,16 +46,6 @@ public class InviteHandler {
             instance = new InviteHandler();
         }
         return instance;
-    }
-
-    //if there is at least one unanswered invite return true
-    public boolean existsUnansweredInvite() {
-        for (Invite _invite : activeInvites.values()) {
-            if (_invite.getStatus().equals(InviteReply.UNANSWERED)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Map<Long, Invite> getActiveInvites() {
@@ -114,62 +115,108 @@ public class InviteHandler {
      * parsing the transmitted string
      * either creates new invite or updates existing one
      *
-     * @param result
+     * @param result from the server, separated invite
      * @param context
      */
     public void syncInvite(String result, Context context) {
-        //todo cleanup
-        Log.d("XXXX", "result update: " + result);
         if (result != null && !"".equals(result)) {
-            List<String> _list = Arrays.asList(result.split(":"));
-            long id = 0;
+            List<String> _inviteElements = Arrays.asList(result.split(":"));
+            long id;
             try {
-                id = Long.parseLong(_list.get(0));
+                id = Long.parseLong(_inviteElements.get(ID));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 return;
             }
-            Log.d("XXXX", "Invite exists? " + activeInvites.containsKey(id));
-            Map<String, List<String>> _numberStatus = new HashMap();
-            String[] _pairNumberStatus = _list.get(2).split(",");
-            for (String str : _pairNumberStatus) {
-                List<String> _tupel = new LinkedList();
-                _tupel.add(str.split("&")[1]);
-                _tupel.add(str.split("&")[2]);
-                _numberStatus.put(str.split("&")[0], _tupel);
-            }
-            StringBuilder _allNumbers = new StringBuilder();
-            for (String str : _numberStatus.keySet()) {
-                _allNumbers.append(str + ",");
-            }
-            _allNumbers.deleteCharAt(_allNumbers.length() - 1);
+
+            //get Map with number -> Status(reply + transport)
+            Map<String, List<String>> _numberStatus = createNumberStatusMap(_inviteElements);
+
+            //get String with all members numbers
+            StringBuilder _allNumbers = getAllNumbers(_numberStatus);
+            String _allNumbersString = _allNumbers.toString();
 
             //if invite does not already exist, create new one
+            Invite _invite;
             if (!activeInvites.containsKey(id)) {
-                activeInvites.put(id, new Invite(_list.get(1), id, _allNumbers.toString()));
-
-                //check ownNumber status, set accordingly
-                activeInvites.get(id).setStatus(InviteReply.valueOf(_numberStatus.get(PersistenceHandler.getInstance().getOwnNumber()).get(0)));
-                activeInvites.get(id).setTransportationMode(TransportationMode.valueOf(_numberStatus.get(PersistenceHandler.getInstance().getOwnNumber()).get(1)));
+                _invite = createInvite(_inviteElements, id, _numberStatus, _allNumbersString);
+            } else {
+                //otherwise get existing invite
+                _invite = activeInvites.get(id);
             }
 
             //update status and centroid
-            for (String str : _numberStatus.keySet()) {
-                activeInvites.get(id).updateMember(str, InviteReply.valueOf(_numberStatus.get(str).get(0)), TransportationMode.valueOf(_numberStatus.get(str).get(1)));
+            for (String _number: _numberStatus.keySet()) {
+                //update reply
+                InviteReply _reply = InviteReply.valueOf(_numberStatus.get(_number).get(INVITE_STATUS));
+                //update transportation mode
+                TransportationMode _trans = TransportationMode.valueOf(_numberStatus.get(_number).get(TRANS_MODE));
+                //send the update
+                _invite.updateMember(_number, _reply, _trans);
             }
-            if (!_list.get(4).equals("null")) {
-                activeInvites.get(id).setCentroid(new Centroid(_list.get(4)));
-                activeInvites.get(id).setStatus(InviteReply.READY);
-                if (!_list.get(3).equals("null")) {
-                    activeInvites.get(id).setChosenPlace(_list.get(3));
+            //if there is a centroid, add it to the invite
+            if (!_inviteElements.get(CENTROID).equals("null")) {
+                _invite.setCentroid(new Centroid(_inviteElements.get(CENTROID)));
+                _invite.setStatus(InviteReply.READY);
+
+                //if there is a place as well, add it to the invite
+                if (!_inviteElements.get(PLACE).equals("null")) {
+                    _invite.setChosenPlace(_inviteElements.get(PLACE));
                 }
             }
+
+            //save the invites
             PersistenceHandler.getInstance().saveActiveInvites(activeInvites);
+            //send out the broadcast to update the views
             Intent _intent = new Intent(MyGcmListenerService.BROADCAST_UPDATE);
             context.sendBroadcast(_intent);
         }
     }
 
+    @NonNull
+    private Invite createInvite(List<String> _inviteElements, long id, Map<String, List<String>> _numberStatus, String _allNumbersString) {
+        Invite _invite;
+        //create new invite
+        activeInvites.put(id, new Invite(_inviteElements.get(HOST_NUMBER), id, _allNumbersString));
+        _invite = activeInvites.get(id);
+
+        //check ownNumber status, set accordingly
+        String _ownNumber = PersistenceHandler.getInstance().getOwnNumber();
+
+        //add own invite reply and own transportation mode
+        InviteReply _reply = InviteReply.valueOf(_numberStatus.get(_ownNumber).get(INVITE_STATUS));
+        _invite.setStatus(_reply);
+        TransportationMode _trans= TransportationMode.valueOf(_numberStatus.get(_ownNumber).get(TRANS_MODE));
+        _invite.setTransportationMode(_trans);
+        return _invite;
+    }
+
+    private StringBuilder getAllNumbers(Map<String, List<String>> _numberStatus) {
+        //get all members numbers from the maps key set
+        StringBuilder _allNumbers = new StringBuilder();
+        for (String _number : _numberStatus.keySet()) {
+            _allNumbers.append(_number + ",");
+        }
+        //delete the trailing comma
+        _allNumbers.deleteCharAt(_allNumbers.length() - 1);
+        return _allNumbers;
+    }
+
+    private Map<String, List<String>> createNumberStatusMap(List<String> _inviteElements) {
+        //create a map from the incoming List
+        Map<String, List<String>> _numberStatus = new HashMap();
+        String[] _tripleNumberStatus = _inviteElements.get(NUMBER_STATUS).split(",");
+
+        for (String numberReplyTrans : _tripleNumberStatus) {
+            List<String> _tupelReplyTrans = new LinkedList();
+            _tupelReplyTrans.add(numberReplyTrans.split("&")[INVITE_REPLY]);
+            _tupelReplyTrans.add(numberReplyTrans.split("&")[TRANSPORTATION_MODE]);
+            _numberStatus.put(numberReplyTrans.split("&")[NUMBER], _tupelReplyTrans);
+        }
+        return _numberStatus;
+    }
+
+    //get all the ids of active invites
     public String getActiveInvitesString() {
         StringBuilder _ids = new StringBuilder();
         for (long id : activeInvites.keySet()) {
@@ -183,6 +230,7 @@ public class InviteHandler {
         return _ids.toString();
     }
 
+    //sync every invite with the server
     public void syncAllInvites(String result, Context context) {
         if (result != null && !"".equals(result)) {
             List<String> ids = Arrays.asList(result.split(","));
