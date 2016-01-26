@@ -49,6 +49,9 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private static final int PLACE_PICKER_REQUEST = 1;
     public static final String ADD_PLACE = "/android/addPlace";
     public static final String IS_EMPTY = "isEmpty";
+    public static final String CENTROID = "centroid";
+    public static final String LOCATION = "location";
+    public static final String NAME = "name";
 
     private Invite invite;
     private Button showCentroidButton;
@@ -202,16 +205,21 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             }
         } else {
             Intent intent = new Intent(this, GoogleMapActivity.class);
-            intent.putExtra("centroid", new LatLng(
+            intent.putExtra(CENTROID, new LatLng(
                     InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()
                     , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude()));
+
+            if (invite.getChosenPlace() != null) {
+                intent.putExtra(LOCATION, new LatLng(Double.valueOf(invite.getLocationLatitude()), Double.valueOf(invite.getLocationLongitude())));
+                intent.putExtra(LOCATION + NAME, invite.getLocationName());
+            }
             startActivity(intent);
         }
     }
 
 
     public void navigateToDestination(View view) {
-        if (invite.getChosenPlace() != null) {
+        if (invite.getChosenPlace() == null) {
             navigateToCentroid(view);
         } else {
             navigateToPlace(view);
@@ -234,10 +242,8 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     public void navigateToPlace(View view) {
-        String[] _placeInfo = invite.getChosenPlaceForUri();
-
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + _placeInfo[_placeInfo.length - 2]
-                + "," + _placeInfo[_placeInfo.length - 1] + "&mode=" + invite.getTransportationMode().getMode());
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + invite.getLocationLatitude()
+                + ","  + invite.getLocationLongitude() + "&mode=" + invite.getTransportationMode().getMode());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         if (mapIntent.resolveActivity(getPackageManager()) != null) {

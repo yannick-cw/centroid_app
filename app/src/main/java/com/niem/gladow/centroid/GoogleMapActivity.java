@@ -29,6 +29,8 @@ public class GoogleMapActivity extends FragmentActivity implements
     protected Location mCurrentLocation;
     protected LocationRequest mLocationRequest;
     private LatLng centroid;
+    private LatLng location;
+    private String locationName;
     protected GoogleMap map;
     private boolean isFirstStart = true;
 
@@ -46,7 +48,10 @@ public class GoogleMapActivity extends FragmentActivity implements
         mapFragment.getMapAsync(this);
 
         //gets the centroid latlng Object, which was attached to the intent
-        centroid = getIntent().getParcelableExtra("centroid");
+        centroid = getIntent().getParcelableExtra(InviteActivity.CENTROID);
+        location = getIntent().getParcelableExtra(InviteActivity.LOCATION);
+        locationName = getIntent().getParcelableExtra(InviteActivity.LOCATION + InviteActivity.NAME);
+
         buildGoogleApiClient();
     }
 
@@ -85,8 +90,23 @@ public class GoogleMapActivity extends FragmentActivity implements
             map.addMarker(new MarkerOptions()
                     .position(_location)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                    .alpha(0.5F)
+                    .alpha(0.7F)
                     .title("you"));
+
+            map.addMarker(new MarkerOptions()
+                    .position(centroid)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .alpha(0)
+                    .title("centroid"));
+            //todo colors
+
+            if (location != null) {
+                map.addMarker(new MarkerOptions()
+                        .position(location)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                        .alpha(0.7F)
+                        .title(locationName));
+            }
 
             GroundOverlayOptions _centroid = new GroundOverlayOptions()
                     .image(BitmapDescriptorFactory.fromResource(R.drawable.map_centroid))
