@@ -1,9 +1,6 @@
 package com.niem.gladow.centroid;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;

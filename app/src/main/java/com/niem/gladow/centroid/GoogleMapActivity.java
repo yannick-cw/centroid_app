@@ -2,7 +2,6 @@ package com.niem.gladow.centroid;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
@@ -36,8 +35,6 @@ public class GoogleMapActivity extends FragmentActivity implements
     private boolean isFirstStart = true;
 
     private boolean locationUpdateStarted = false;
-    //todo borders
-    //todo self position
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

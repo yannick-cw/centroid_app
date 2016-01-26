@@ -42,7 +42,7 @@ public class Invite implements Serializable {
         List<String> _allMembers = new LinkedList<>(Arrays.asList(allMembers.split(",")));
         //put list in map, InviteReply status is added
         this.allMembers = new HashMap<>();
-        for (String str: _allMembers) {
+        for (String str : _allMembers) {
             this.allMembers.put(str, new InviteStatus());
         }
         findRealNames(this.allMembers);
@@ -55,7 +55,7 @@ public class Invite implements Serializable {
 
 
     public Centroid getCentroid() {
-        assert(centroid != null);
+        assert (centroid != null);
         return centroid;
     }
 
@@ -74,7 +74,7 @@ public class Invite implements Serializable {
 
     public String getInviteNumberName() {
         String _name = PersistenceHandler.getInstance().getFriendMap().get(inviteNumber);
-        if(inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
+        if (inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
             _name = "You";
         }
         return _name != null ? _name : inviteNumber;
@@ -99,49 +99,48 @@ public class Invite implements Serializable {
 
     public Map<String, InviteStatus> getAllMembers(boolean self, boolean host) {
         Map<String, InviteStatus> _tmp = new HashMap<>(allMembers);
-        if(!host){
+        if (!host) {
             _tmp.remove(inviteNumber);
         }
-        if(!self){
+        if (!self) {
             _tmp.remove(PersistenceHandler.getInstance().getOwnNumber());
         }
         return _tmp;
     }
 
-    public String getAllMemberSurNames(boolean self, boolean host){
+    public String getAllMemberSurNames(boolean self, boolean host) {
         Map<String, InviteStatus> _memberMap = getAllMembers(self, host);
         String _tmp, _result = "";
-        for (Map.Entry<String, InviteStatus> _member : _memberMap.entrySet())
-        {
+        for (Map.Entry<String, InviteStatus> _member : _memberMap.entrySet()) {
             _tmp = _member.getValue().getRealName().split(" ")[0];
-            if(_tmp.matches("")){
+            if (_tmp.matches("")) {
                 _tmp = _member.getKey();
             }
-            _result += ", "+_tmp;
+            _result += ", " + _tmp;
         }
-        if(_result.matches("")){
+        if (_result.matches("")) {
             return _result;
-        }else{
+        } else {
             return _result.substring(2); // replace ", " at beginning of String
         }
     }
 
-    public void setIs_deprecated(boolean is_deprecated){
+    public void setIs_deprecated(boolean is_deprecated) {
         this.is_deprecated = is_deprecated;
     }
 
-    public boolean isDeprecated(){
+    public boolean isDeprecated() {
         return is_deprecated;
     }
 
     //check with the persistence handler friendMap, if numbers can be replaced with names
     private void findRealNames(Map<String, InviteStatus> allMembers) {
-        Map<String,String> _friendMap = PersistenceHandler.getInstance().getFriendMap();
+        Map<String, String> _friendMap = PersistenceHandler.getInstance().getFriendMap();
         //replace all possible numbers with real names
-        for (Map.Entry<String, InviteStatus> _entry: allMembers.entrySet()) {
+        for (Map.Entry<String, InviteStatus> _entry : allMembers.entrySet()) {
             String _name;
             _name = _friendMap.get(_entry.getKey());
-            if(_name != null) {
+            if (_name != null) {
                 _entry.getValue().setRealName(_name);
             }
         }
@@ -164,15 +163,15 @@ public class Invite implements Serializable {
 
     //String Helpers to retreive Information from PlaceToMeet
     //Returns List With {Name, Address, Phone, Lat, Long etc...}
-    private  List<String> getLocationInformations() {
+    private List<String> getLocationInformations() {
         return Arrays.asList(toReadableContent(getChosenPlace()).split(","));
     }
 
-    public String getLocationName(){
+    public String getLocationName() {
         return getLocationInformations().get(0);
     }
 
-    public String getLocationAdress(){
+    public String getLocationAdress() {
         String _tmp = getLocationInformations().get(1);
 //        Log.d("RegeXTest: Bevor",_tmp);
         _tmp = _tmp.split("\\d{5}")[0];
@@ -180,28 +179,24 @@ public class Invite implements Serializable {
         return _tmp;
     }
 
-    public String getLocationPhoneNumber(){
+    public String getLocationPhoneNumber() {
         return getLocationInformations().get(2);
 
     }
 
-    public String getLocationLatitude(){
+    public String getLocationLatitude() {
         //second last element is Latitude
-        return getLocationInformations().get(getLocationInformations().size()-2);
+        return getLocationInformations().get(getLocationInformations().size() - 2);
     }
 
-    public String getLocationLongitude(){
+    public String getLocationLongitude() {
         //last element is Longitude
-        return getLocationInformations().get(getLocationInformations().size()-1);
+        return getLocationInformations().get(getLocationInformations().size() - 1);
     }
 
-
-    public  String[] getChosenPlaceForUri(){
-        return getChosenPlace().split(",");
-    }
     private String toReadableContent(String content) {
         Log.d("XXXX", "place in toReadable start: " + content);
-        content = content.replaceAll("rvxy","%");
+        content = content.replaceAll("rvxy", "%");
         try {
             content = URLDecoder.decode(content, "UTF-8");
         } catch (UnsupportedEncodingException e) {

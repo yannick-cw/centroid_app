@@ -46,17 +46,16 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeLayout.setOnRefreshListener(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.createNewCentroidButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CentroidListViewActivity.this, InviteFriendsActivity.class);
-                startActivity(intent);
-            }
-        });
+        initializePlusButton();
 
         _listView = (ListView) findViewById(R.id.friendsListView);
 
+        checkForGooglePlayServices();
+
+
+    }
+
+    private void checkForGooglePlayServices() {
         //check if right google play service is available
         Integer resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode == ConnectionResult.SUCCESS) {
@@ -69,8 +68,19 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         }
     }
 
+    private void initializePlusButton() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.createNewCentroidButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CentroidListViewActivity.this, InviteFriendsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         //sorts the map in descending order
         _sortedMap = new TreeMap<>(Collections.reverseOrder());
@@ -113,6 +123,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
         _adapter.notifyDataSetChanged();
         _listView.invalidateViews();
+
         try {
             this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
         } catch (Exception e) {
@@ -130,7 +141,7 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         }
     }
 
-    public void startInviteActivity(String inviteId){
+    public void startInviteActivity(String inviteId) {
         Log.d("Intent for", "INVITE pressed");
         Intent intent = new Intent(this, InviteActivity.class);
         intent.putExtra("InviteId", inviteId);

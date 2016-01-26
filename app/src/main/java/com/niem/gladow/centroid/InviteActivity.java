@@ -63,6 +63,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
     private TextView invitePhoneNumber, inviteTime, inviteLocation;
+
     //todo schrift etwas groesser in buttons, besonder accept decline, auch die namen
     //todo Datum etwas stylischer
     //todo place placeholder text
@@ -194,14 +195,23 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     public void showCentroidOnMap(View view) {
+        //if the host calls showCentroid, placePicker is loaded
         if (invite.getInviteNumber().equals(PersistenceHandler.getInstance().getOwnNumber())) {
-            LatLng _southWest = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat() - 0.003
-                    , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() - 0.003);
-            LatLng _northEast = new LatLng(InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat() + 0.003
-                    , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude() + 0.003);
+            double _distanceFromCenter = 0.003;
+            double lat = invite.getCentroid().getLat();
+            double longitude = invite.getCentroid().getLongitude();
+
+            //creates the edges of the map
+            LatLng _southWest = new LatLng(lat - _distanceFromCenter
+                    , longitude - _distanceFromCenter);
+            LatLng _northEast = new LatLng(lat + _distanceFromCenter
+                    , longitude + _distanceFromCenter);
+
             LatLngBounds _latLngBounds = new LatLngBounds(_southWest, _northEast);
+
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             builder.setLatLngBounds(_latLngBounds);
+
             try {
                 startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
             } catch (GooglePlayServicesRepairableException e) {
@@ -209,12 +219,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             } catch (GooglePlayServicesNotAvailableException e) {
                 e.printStackTrace();
             }
+            //if a member calls showCentroid the custom map is loaded
         } else {
             Intent intent = new Intent(this, GoogleMapActivity.class);
-            intent.putExtra(CENTROID, new LatLng(
-                    InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLat()
-                    , InviteHandler.getInstance().getInviteByTime(invite.getStartTime()).getCentroid().getLongitude()));
+            intent.putExtra(CENTROID, new LatLng(invite.getCentroid().getLat()
+                    , invite.getCentroid().getLongitude()));
 
+            //if there is already a place picked, add it to the map
             if (invite.getChosenPlace() != null) {
                 intent.putExtra(LOCATION, new LatLng(Double.valueOf(invite.getLocationLatitude()), Double.valueOf(invite.getLocationLongitude())));
                 intent.putExtra(LOCATION + NAME, invite.getLocationName());
@@ -224,36 +235,26 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
 
+    //navigates either to the place or to the centroid itself
     public void navigateToDestination(View view) {
         if (invite.getChosenPlace() == null) {
-            navigateToCentroid(view);
+            String lat = String.valueOf(invite.getCentroid().getLat());
+            String _longitude = String.valueOf(invite.getCentroid().getLongitude());
+            navigateTo(lat, _longitude);
         } else {
-            navigateToPlace(view);
+            navigateTo(invite.getLocationLatitude(), invite.getLocationLongitude());
         }
     }
 
-    public void navigateToCentroid(View view) {
-        Uri gmmIntentUri = Uri.parse("google.navigation:q="
-                + String.valueOf(InviteHandler.getInstance().getInviteByTime(invite.getStartTime())
-                .getCentroid().getLat()) + ","
-                + String.valueOf(InviteHandler.getInstance().getInviteByTime(invite.getStartTime())
-                .getCentroid().getLongitude())
+    //starts google maps for the given target and the current transportation mode
+    public void navigateTo(String lat, String _longitude) {
+        Uri _gmmIntentUri = Uri.parse("google.navigation:q=" + lat + "," + _longitude
                 + "&mode=" + invite.getTransportationMode().getMode());
 
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
-        }
-    }
-
-    public void navigateToPlace(View view) {
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + invite.getLocationLatitude()
-                + ","  + invite.getLocationLongitude() + "&mode=" + invite.getTransportationMode().getMode());
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
+        Intent _mapIntent = new Intent(Intent.ACTION_VIEW, _gmmIntentUri);
+        _mapIntent.setPackage("com.google.android.apps.maps");
+        if (_mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(_mapIntent);
         }
     }
 

@@ -29,7 +29,7 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
     }
 
     public static void init(Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new GpsDataHandler(context);
         }
     }
@@ -50,11 +50,11 @@ public class GpsDataHandler implements GoogleApiClient.ConnectionCallbacks, Goog
 
     @Override
     public void onConnected(Bundle connectionHint) {
-            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if(!locationUpdateStarted) {
-                startLocationUpdates();
-                locationUpdateStarted = true;
-            }
+        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if (!locationUpdateStarted) {
+            startLocationUpdates();
+            locationUpdateStarted = true;
+        }
     }
 
     @Override

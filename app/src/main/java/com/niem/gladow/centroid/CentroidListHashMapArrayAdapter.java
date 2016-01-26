@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
@@ -29,7 +28,7 @@ import java.util.Map;
 public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
     private static class ViewHolder {
-        TextView  members, time, inviteId, status, placeToMeet;
+        TextView members, time, inviteId, status, placeToMeet;
         ImageView image, statusImage;
         TextDrawable textDrawable;
     }
@@ -48,12 +47,12 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
                In this case by inflating an xml layout */
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.centroid_list_view_item, parent, false);
             _viewHolder = new ViewHolder();
-            _viewHolder.members  = (TextView) convertView.findViewById(R.id.centroidListItemName);
-            _viewHolder.time     = (TextView) convertView.findViewById(R.id.centroidListItemDate);
-            _viewHolder.status   = (TextView) convertView.findViewById(R.id.centroidListItemStatus);
+            _viewHolder.members = (TextView) convertView.findViewById(R.id.centroidListItemName);
+            _viewHolder.time = (TextView) convertView.findViewById(R.id.centroidListItemDate);
+            _viewHolder.status = (TextView) convertView.findViewById(R.id.centroidListItemStatus);
             _viewHolder.inviteId = (TextView) convertView.findViewById(R.id.centroidListItemInviteId);
             _viewHolder.placeToMeet = (TextView) convertView.findViewById(R.id.centroidListItemPlaceInfo);
-            _viewHolder.image       = (ImageView) convertView.findViewById(R.id.centroidListItemImage);
+            _viewHolder.image = (ImageView) convertView.findViewById(R.id.centroidListItemImage);
             _viewHolder.statusImage = (ImageView) convertView.findViewById(R.id.centroidListItemStatusImage);
             convertView.setTag(_viewHolder);
         } else {
@@ -71,17 +70,17 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
         //getColor for Status of Invite
         _viewHolder.textDrawable = TextDrawable.builder()
-                .buildRound(_hostName.substring(0,1)
-                , getContext().getResources().getInteger(Util.getInstance()
-                .getColorForStatus(_invite.getStatus(), _invite.isDeprecated())));
+                .buildRound(_hostName.substring(0, 1)
+                        , getContext().getResources().getInteger(Util.getInstance()
+                        .getColorForStatus(_invite.getStatus(), _invite.isDeprecated())));
         _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
 
         //construct members StyledTextString incl. status
         String _members = _invite.getAllMemberSurNames(Invite.WITHOUT, Invite.WITHOUT);
-        if(_members.matches("")){       //check if host is the only member
-            _members = _hostName+"  ";
-        }else{
-            _members = _hostName+", "+_members;
+        if (_members.matches("")) {       //check if host is the only member
+            _members = _hostName + "  ";
+        } else {
+            _members = _hostName + ", " + _members;
         }
         SpannableString _styledMembers = new SpannableString(_members);
         setStringStyles(_invite, _styledMembers, 0, _hostName.length() + 2);
@@ -97,17 +96,17 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
 
         //check for placeToMeet and update TextView accordingly
-        if(_invite.getChosenPlace() != null){
-            _viewHolder.placeToMeet.setText(_invite.getLocationName() +"\n@"
-                                          + _invite.getLocationAdress());
+        if (_invite.getChosenPlace() != null) {
+            _viewHolder.placeToMeet.setText(_invite.getLocationName() + "\n@"
+                    + _invite.getLocationAdress());
             _viewHolder.placeToMeet.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             _viewHolder.placeToMeet.setVisibility(View.INVISIBLE);
         }
 
-        if(_invite.isDeprecated()){
+        if (_invite.isDeprecated()) {
             convertView.setBackgroundColor(Color.LTGRAY);
-        }else{
+        } else {
             convertView.setBackgroundColor(Color.WHITE);
         }
 
@@ -124,32 +123,31 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         _styledMembers.setSpan(new StyleSpan(Typeface.BOLD), _start, _end, 0);
 
         //check for each member statusImage and apply StyleSpan
-        for (Map.Entry<String, InviteStatus> _memberEntry : _invite.getAllMembers(Invite.WITHOUT, Invite.WITHOUT).entrySet())
-        {
+        for (Map.Entry<String, InviteStatus> _memberEntry : _invite.getAllMembers(Invite.WITHOUT, Invite.WITHOUT).entrySet()) {
             //update _start
             _start = _end;
 
             //check if number could be converted to name (for shifting _end correctly)
             _tmpName = _memberEntry.getValue().getRealName().split(" ")[0];
-            if(_tmpName.matches("")){
+            if (_tmpName.matches("")) {
                 _end += _memberEntry.getKey().length();
 
-            }else{
+            } else {
                 _end += _memberEntry.getValue().getRealName().split(" ")[0].length();
             }
 
             //check the statusImage of the member and apply style accordingly
             _memberReply = _memberEntry.getValue().getInviteReply();
             _memberTransportation = _memberEntry.getValue().getTransportationMode();
-            switch(_memberReply){
+            switch (_memberReply) {
                 case ACCEPTED:
                     _styledMembers.setSpan(new StyleSpan(Typeface.NORMAL), _start, _end, 0);
                     break;
                 case DECLINED:
-                    _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC),_start, _end, 0);
+                    _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC), _start, _end, 0);
                     break;
                 case UNANSWERED:
-                    _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC),_start, _end, 0);
+                    _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC), _start, _end, 0);
                     break;
             }
             _styledMembers.setSpan(new ForegroundColorSpan(ContextCompat
