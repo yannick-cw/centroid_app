@@ -109,8 +109,12 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
-                    Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    try {
+                        Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             }
@@ -119,8 +123,12 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     syncButton(getCurrentFocus());
                 } else {
-                    Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    try {
+                        Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             }
@@ -129,8 +137,12 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     syncButton(getCurrentFocus());
                 } else {
-                    Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    try {
+                        Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             }
