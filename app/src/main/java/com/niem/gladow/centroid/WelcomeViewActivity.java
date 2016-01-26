@@ -17,6 +17,10 @@ public class WelcomeViewActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 12;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
+    public static final String HIT_SYNC = "please hit sync - missing permissions";
+    public static final String HIT_NEXT_SYNC = "please hit next to sync";
+    public static final String HIT_NEXT = "please hit next";
+    public static final String NEXT_FOR_PERMISSION = "please hit next to grand permission";
     private String _status;
     private TextView welcomeText;
 
@@ -53,7 +57,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
     private void syncWithServer() {
         if (!permissionsGranted()) {
             requestMissingPermissions();
-            welcomeText.setText("please hit next to grand permission");
+            welcomeText.setText(NEXT_FOR_PERMISSION);
         } else {
             saveOwnNumber();
             if (!PersistenceHandler.getInstance().getOwnNumber().equals("/") && PersistenceHandler.getInstance().isOwnNumberInFile()) {
@@ -67,14 +71,14 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 } else {
                     welcomeText.setText("please hit next to register");
                     try {
-                        Snackbar.make(getCurrentFocus(), "please hit next", Snackbar.LENGTH_LONG)
+                        Snackbar.make(getCurrentFocus(), HIT_NEXT, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             } else {
-                welcomeText.setText("please hit next to sync");
+                welcomeText.setText(HIT_NEXT_SYNC);
             }
         }
     }
@@ -114,7 +118,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
                     try {
-                        Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                        Snackbar.make(getCurrentFocus(), HIT_SYNC, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -128,7 +132,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                     syncButton(getCurrentFocus());
                 } else {
                     try {
-                        Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                        Snackbar.make(getCurrentFocus(), HIT_SYNC, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -142,7 +146,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                     syncButton(getCurrentFocus());
                 } else {
                     try {
-                        Snackbar.make(getCurrentFocus(), "please hit sync - missing permissions", Snackbar.LENGTH_LONG)
+                        Snackbar.make(getCurrentFocus(), HIT_SYNC, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     } catch (Exception e) {
                         e.printStackTrace();
