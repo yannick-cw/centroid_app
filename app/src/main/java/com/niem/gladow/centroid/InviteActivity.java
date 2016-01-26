@@ -45,7 +45,6 @@ import java.util.TreeMap;
  * Created by clem on 05/01/16.
  */
 public class InviteActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private static final int PLACE_PICKER_REQUEST = 1;
     public static final String ADD_PLACE = "/android/addPlace";
     public static final String IS_EMPTY = "isEmpty";
