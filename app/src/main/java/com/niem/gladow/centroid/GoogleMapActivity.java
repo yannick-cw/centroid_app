@@ -68,13 +68,14 @@ public class GoogleMapActivity extends FragmentActivity implements
             mGoogleApiClient.disconnect();
         }
     }
+
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
     }
 
     private void updateUI() {
-        LatLng _location = new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
+        LatLng _location = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         //is executed only on the first UI update to set bounds and zoom
         if (isFirstStart) {
             LatLngBounds.Builder _builder = new LatLngBounds.Builder();
@@ -93,27 +94,31 @@ public class GoogleMapActivity extends FragmentActivity implements
                     .alpha(0.7F)
                     .title("you"));
 
-            map.addMarker(new MarkerOptions()
-                    .position(centroid)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    .alpha(0)
-                    .title("centroid"));
-            //todo colors
-
             if (location != null) {
                 map.addMarker(new MarkerOptions()
                         .position(location)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                         .alpha(0.7F)
                         .title(locationName));
+            } else {
+
+                map.addMarker(new MarkerOptions()
+                        .position(centroid)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .alpha(0)
+                        .title("centroid"));
+                //todo colors
             }
+
 
             GroundOverlayOptions _centroid = new GroundOverlayOptions()
                     .image(BitmapDescriptorFactory.fromResource(R.drawable.map_centroid))
                     .position(centroid, 170f, 170f);
             map.addGroundOverlay(_centroid);
 
-        } catch (Exception e) {Log.e("Error", e.toString());}
+        } catch (Exception e) {
+            Log.e("Error", e.toString());
+        }
 
     }
 
@@ -129,7 +134,7 @@ public class GoogleMapActivity extends FragmentActivity implements
         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         updateUI();
 
-        if(!locationUpdateStarted) {
+        if (!locationUpdateStarted) {
             startLocationUpdates();
             locationUpdateStarted = true;
         }
