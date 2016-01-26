@@ -1,7 +1,10 @@
 package com.niem.gladow.centroid;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,7 +30,6 @@ import java.util.Map;
  * Created by clem on 11.11.15.
  */
 public class InviteFriendsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private final static int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
     private SwipeRefreshLayout swipeLayout;
 
     //todo remove toast for created centroid and just show
@@ -42,7 +44,11 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeLayout.setOnRefreshListener(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         final ListView _listView = (ListView) findViewById(R.id.friendsListView);
         _listView.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -92,6 +98,12 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
 
             }
         });
+
+        try {
+            this.registerReceiver(broadcastReceiver, new IntentFilter(MyGcmListenerService.BROADCAST_UPDATE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -172,6 +184,25 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
                 swipeLayout.setRefreshing(false);
             }
         }, 1000);
+    }
+
+    //Broadcast handler
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //calls onCreate to update the view
+            onResume();
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            this.unregisterReceiver(broadcastReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -41,8 +42,11 @@ public class RestConnector extends AsyncTask<String, String, String> {
                 break;
             case SEND:
                 result = restGet(params[1]);
+                //todo somewhere else
                 PersistenceHandler.getInstance().createFriendMap(result);
                 PersistenceHandler.getInstance().saveFriendMapToDB();
+                Intent _intent = new Intent(MyGcmListenerService.BROADCAST_UPDATE);
+                context.sendBroadcast(_intent);
                 Log.d("friend Map", PersistenceHandler.getInstance().getFriendMap().values().toString());
                 break;
             case SYNC:

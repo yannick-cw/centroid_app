@@ -31,18 +31,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="64dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="START"
-        android:onClick="startCentroid"
-        android:id="@+id/startCentroid"
-        android:enabled="false"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -42,12 +42,6 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    public void startCentroid (View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     /*TODO only activate start button if really successful, and ad more return false/true and handling for everything */
     public void syncWithServer(View view) {
         if (!permissionsGranted()) {
@@ -55,12 +49,14 @@ public class WelcomeViewActivity extends AppCompatActivity {
         } else {
             saveOwnNumber();
             if (!PersistenceHandler.getInstance().getOwnNumber().equals("/") && PersistenceHandler.getInstance().isOwnNumberInFile()) {
-                final Button _startCentroidButton = (Button) findViewById(R.id.startCentroid);
                 Intent intent = new Intent(this, RegistrationIntentService.class);
                 startService(intent);
                 sendContacts();
-                if (PersistenceHandler.getInstance().isTokenInFile())
-                _startCentroidButton.setEnabled(true);
+                if (PersistenceHandler.getInstance().isTokenInFile()) {
+                    Intent _intent = new Intent(this, MainActivity.class);
+                    startActivity(_intent);
+                    finish();
+                }
             } else {
                 Toast.makeText(this, "please hit next", Toast.LENGTH_LONG).show();
             }
