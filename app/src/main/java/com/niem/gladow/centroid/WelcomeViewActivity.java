@@ -55,7 +55,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
         } else {
             saveOwnNumber();
             final Button _startCentroidButton = (Button) findViewById(R.id.startCentroid);
-            if (!PersistenceHandler.getInstance().getOwnNumber().equals("/")) {
+            if (!PersistenceHandler.getInstance().getOwnNumber().equals("/") && PersistenceHandler.getInstance().firstLoadOwnNumberAndToken()) {
                 Intent intent = new Intent(this, RegistrationIntentService.class);
                 startService(intent);
                 sendContacts();
