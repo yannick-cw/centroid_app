@@ -70,53 +70,48 @@ public class MyGcmListenerService extends GcmListenerService {
 
         switch (MessageType.valueOf(_messageType)) {
             case INVITE:
-                _startTime = Long.parseLong(data.get(TIME).toString());
-                String _inviteNumber = data.get(INVITE_NUMBER).toString();
-                String _allNumbers = data.get(ALL_NUMBERS).toString();
-
-                //add invite to active invites
-                createInvite(data, _startTime, _inviteNumber, _allNumbers);
+                 //add invite to active invites
+                createInvite(data);
                 break;
-
             case CENTROID:
                 _startTime = Long.parseLong(data.get(TIME).toString());
-
                 if (inviteHandler.getInviteByTime(_startTime) != null) {
                     addCentroidToInvite(data, _startTime);
                 } else {
                     updateInvite(_startTime);
                 }
                 break;
-
             case UPDATE:
                 _startTime = Long.parseLong(data.get(TIME).toString());
-
                 if (inviteHandler.getInviteByTime(_startTime) != null) {
                     updateMember(data, _startTime);
                 } else {
                     updateInvite(_startTime);
                 }
                 break;
-
             case PLACE:
                 _startTime = Long.parseLong(data.get(TIME).toString());
                 addPlace(data, _startTime);
                 break;
             case DRAENGEL:
-                String _friend = (String) data.get(INVITE_NUMBER);
-                String _realName = PersistenceHandler.getInstance().getFriendMap().get(_friend).split(" ")[0];
-                if (_realName == null) {
-                    _realName = _friend;
-                }
-                //todo try if works
-                new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
-                        "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
-                                + InviteHandler.getInstance().getActiveInvitesString());
-                sendNotification(_realName + " asks you to respond.", "centroid");
+                draengelFriend(data);
             default:
                 break;
         }
         broadcastToActivities();
+    }
+
+    private void draengelFriend(Bundle data) {
+        String _friend = (String) data.get(INVITE_NUMBER);
+        String _realName = PersistenceHandler.getInstance().getFriendMap().get(_friend).split(" ")[0];
+        if (_realName == null) {
+            _realName = _friend;
+        }
+        //todo try if works
+        new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
+                "/android/updateAllInvites/" + PersistenceHandler.getInstance().getOwnNumber() + "/"
+                        + InviteHandler.getInstance().getActiveInvitesString());
+        sendNotification(_realName + " asks you to respond.", "centroid");
     }
 
     private void addPlace(Bundle data, long _startTime) {
@@ -144,7 +139,11 @@ public class MyGcmListenerService extends GcmListenerService {
         sendNotification("you got a new centroid!", "centroid arrived");
     }
 
-    private void createInvite(Bundle data, long _startTime,String _inviteNumber, String _allNumbers) {
+    private void createInvite(Bundle data) {
+        long _startTime = Long.parseLong(data.get(TIME).toString());
+        String _inviteNumber = data.get(INVITE_NUMBER).toString();
+        String _allNumbers = data.get(ALL_NUMBERS).toString();
+
         TransportationMode _trans;
         inviteHandler.addInvite(_inviteNumber, _startTime, _allNumbers);
         _trans = TransportationMode.valueOf(data.get(TRANSPORT).toString());
