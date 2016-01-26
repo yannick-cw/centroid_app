@@ -63,7 +63,9 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private ImageView transportationModeImage;
     private SwipeRefreshLayout swipeLayout;
     private TextView invitePhoneNumber, inviteTime, inviteLocation;
-
+    //todo schrift etwas groesser in buttons, besonder accept decline, auch die namen
+    //todo Datum etwas stylischer
+    //todo place placeholder text
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

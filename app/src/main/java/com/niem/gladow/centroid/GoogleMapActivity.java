@@ -89,7 +89,7 @@ public class GoogleMapActivity extends FragmentActivity implements
             _builder.include(centroid);
             _builder.include(_location);
             LatLngBounds _latLngBounds = _builder.build();
-            map.moveCamera(CameraUpdateFactory.newLatLngBounds(_latLngBounds, 250));
+            map.moveCamera(CameraUpdateFactory.newLatLngBounds(_latLngBounds, 200));
             isFirstStart = false;
         }
         try {
