@@ -54,7 +54,6 @@ public class MyGcmListenerService extends GcmListenerService {
 
     public MyGcmListenerService() {
     }
-    //todo friendmap not working if app closed
     /**
      * Called when message is received.
      *
@@ -68,6 +67,7 @@ public class MyGcmListenerService extends GcmListenerService {
         MiniDB.init(this);
         this.inviteHandler = InviteHandler.getInstance();
         PersistenceHandler.getInstance().loadFriendMapFromDB();
+        PersistenceHandler.getInstance().firstLoadOwnNumberAndToken();
 
         //get the type of the message
         String _messageType = data.get(MESSAGE_TYPE).toString();
