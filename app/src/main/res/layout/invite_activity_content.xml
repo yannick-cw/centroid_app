@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:id="@+id/header"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/border_unanswered">
 
         <LinearLayout
             android:id="@+id/inviteHeader"
