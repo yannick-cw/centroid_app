@@ -39,6 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:paddingTop="10dp"
                     android:maxLines="1"
                     android:text="INVITE TIME" />
 
@@ -46,7 +47,8 @@
                     android:id="@+id/inviteLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:text="@string/default_new_invite"
+                    android:paddingTop="10dp"
                     android:maxLines="2"
                     />
                 <TextView
@@ -105,6 +107,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            style="@style/CentroidButton"
             android:text="@string/show_centroid"
             android:id="@+id/showCentroidButton"
             android:layout_weight="0.2"
@@ -115,6 +118,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            style="@style/CentroidButton"
             android:text="@string/navigate_to"
             android:id="@+id/navigateToButton"
             android:onClick="navigateToDestination"
@@ -126,6 +130,7 @@
             android:id="@+id/acceptInviteButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            style="@style/CentroidButton"
             android:layout_weight="0.2"
             android:onClick="chooseTransportationMode"
             android:text="@string/accept"
@@ -135,6 +140,7 @@
             android:id="@+id/declineInviteButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            style="@style/CentroidButton"
             android:layout_weight="0.2"
             android:onClick="areYouSureToDeclineDialogue"
             android:text="@string/decline"

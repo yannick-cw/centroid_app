@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -88,10 +89,15 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         Log.d("Input Intent:", getIntent().getStringExtra(CentroidListViewActivity.INVITE_ID));
 
         //setting up needed Views (Buttons etc.)
+        Typeface _typeFace = Typeface.createFromAsset(getAssets(), "fonts/VeraSeBd.ttf");
         header = (LinearLayout) findViewById(R.id.header);
         inviteTime = (TextView) findViewById(R.id.inviteTime);
+        inviteTime.setTypeface(_typeFace);
+        _typeFace = Typeface.createFromAsset(getAssets(), "fonts/VeraSeBd.ttf");
         invitePhoneNumber = (TextView) findViewById(R.id.invitePhoneNumber);
+        invitePhoneNumber.setTypeface(_typeFace);
         inviteLocation = (TextView) findViewById(R.id.inviteLocation);
+        inviteLocation.setTypeface(_typeFace);
         transportationModeImage = (ImageView) findViewById(R.id.transportationModeImage);
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
@@ -166,6 +172,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         }
         //checks if centroid already exists
         if (invite.existsCentroid()) {
+            if(invite.getInviteNumber().matches(PersistenceHandler.getInstance().getOwnNumber())){
+                showCentroidButton.setText(R.string.choose_location);
+                inviteLocation.setText(R.string.default_centroid_available_host);
+            }else{
+                inviteLocation.setText(R.string.default_centroid_available_guest);
+            }
+
             showCentroidButton.setEnabled(true);
             navigateToDestButton.setEnabled(true);
         }
@@ -357,7 +370,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             public void onClick(DialogInterface dialog, int which) {
                 // the user clicked on transportationModes[which]
                 switch (which) {
-                    case 3:
+                    case 1:
                         responseToInvite(_view);
                         break;
                     default:

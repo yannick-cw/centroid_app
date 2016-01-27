@@ -2,6 +2,7 @@ package com.niem.gladow.centroid;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
         TextView number;
         TextView name;
         ImageView image;
-        ImageView statusImage;
         boolean checked;
         TextDrawable textDrawable;
     }
@@ -40,17 +40,9 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         ViewHolder _viewHolder;
+        ColorGenerator _colorGenerator = ColorGenerator.create(getCentroidColorArray());
 
-        //TODO colorgenerator cleanup
-        int[] _colors = getContext().getResources().getIntArray(R.array.colorArray);
-        List<Integer> intList = new ArrayList<>();
-        for (int index = 0; index < _colors.length; index++)
-        {
-            intList.add(_colors[index]);
-        }
-        ColorGenerator _colorGenerator = ColorGenerator.create(intList);
         if (convertView == null) {
             /* There is no view at this position, we create a new one.
                In this case by inflating an xml layout */
@@ -63,7 +55,6 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
         } else {
             /* We recycle a View that already exists */
             _viewHolder = (ViewHolder) convertView.getTag();
-
         }
 
         // Once we have a reference to the View we are returning, we set its values.
@@ -76,12 +67,16 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
                 .buildRound(_name.substring(0,1), _color);
         _viewHolder.image.setImageDrawable(_viewHolder.textDrawable);
 
+        //set texts etc.
+        Typeface _typeFace = Typeface.createFromAsset(getContext().getAssets(),
+                "fonts/VeraMoBd.ttf");
         _viewHolder.number.setText(entry.getKey());
+        _viewHolder.number.setTypeface(_typeFace);
         _viewHolder.name.setText(_name);
+        _viewHolder.name.setTypeface(_typeFace);
         _viewHolder.checked = checkList.get(position);
 
-
-
+        //change backgroundcolor according to checked status
         if(_viewHolder.checked){
             //TODO COLOR optimisation
             convertView.setBackgroundResource(R.color.centroid_1);
@@ -92,6 +87,16 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
         return convertView;
     }
 
+
+    private List<Integer> getCentroidColorArray(){
+        int[] _colors = getContext().getResources().getIntArray(R.array.colorArray);
+        List<Integer> _intList = new ArrayList<>();
+        for (int index = 0; index < _colors.length; index++)
+        {
+            _intList.add(_colors[index]);
+        }
+        return _intList;
+    }
 
     // setter, getter and updater for state of the views
     public void setCheckList(int size){

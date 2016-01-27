@@ -40,7 +40,7 @@
     <color name="transp_declined">@color/declined_2</color>
 
     <array name="colorArray">
-        <item>@color/centroid_1</item>
+        <!--<item>@color/centroid_1</item>-->
         <item>@color/centroid_2</item>
         <item>@color/centroid_3</item>
         <item>@color/centroid_4</item>
