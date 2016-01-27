@@ -27,8 +27,6 @@
     </style>
 
     <style name="CentroidButton">
-        <!--<item name="android:textColor">@android:color/black</item>-->
-        <!--<item name="android:textColorPrimary">@android:color/black</item>-->
         <item name="android:textColorPrimaryInverse">@android:color/darker_gray</item>
         <item name="android:textColorHighlight">@color/centroid_1</item>
         <item name="android:textSize">20sp</item>

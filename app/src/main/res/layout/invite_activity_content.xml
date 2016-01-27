@@ -16,7 +16,8 @@
         android:id="@+id/header"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/border_unanswered">
+        android:background="@drawable/border_unanswered"
+        >
 
         <LinearLayout
             android:id="@+id/inviteHeader"
@@ -38,7 +39,7 @@
                     android:id="@+id/inviteTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
                     android:paddingTop="10dp"
                     android:maxLines="1"
                     android:text="INVITE TIME" />
@@ -48,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/default_new_invite"
-                    android:paddingTop="10dp"
+                    android:paddingTop="5dp"
                     android:maxLines="2"
                     />
                 <TextView
@@ -60,6 +61,7 @@
                     android:textColorLink="@color/centroid_1"
                     android:visibility="gone"
                     android:maxLines="1"
+                    android:paddingBottom="5dp"
                     />
 
 
@@ -105,22 +107,22 @@
         >
 
         <Button
+            android:id="@+id/showCentroidButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/CentroidButton"
             android:text="@string/show_centroid"
-            android:id="@+id/showCentroidButton"
             android:layout_weight="0.2"
             android:onClick="showCentroidOnMap"
             android:enabled="false"
             android:visibility="gone"/>
 
         <Button
+            android:id="@+id/navigateToButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/CentroidButton"
             android:text="@string/navigate_to"
-            android:id="@+id/navigateToButton"
             android:onClick="navigateToDestination"
             android:layout_weight="0.2"
             android:enabled="false"

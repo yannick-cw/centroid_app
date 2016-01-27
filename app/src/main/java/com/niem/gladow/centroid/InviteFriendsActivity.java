@@ -50,7 +50,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
         inviteFriendsButton = (Button) findViewById(R.id.inviteFriendsListButton);
         inviteFriendsButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
         Typeface _typeFace = Typeface.createFromAsset(getAssets(),
-                "fonts/VeraSeBd.ttf");
+                getResources().getString(R.string.button_font));
         inviteFriendsButton.setTypeface(_typeFace);
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);

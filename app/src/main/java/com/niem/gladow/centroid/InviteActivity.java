@@ -93,7 +93,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         header = (LinearLayout) findViewById(R.id.header);
         inviteTime = (TextView) findViewById(R.id.inviteTime);
         inviteTime.setTypeface(_typeFace);
-        _typeFace = Typeface.createFromAsset(getAssets(), "fonts/VeraSeBd.ttf");
+        _typeFace = Typeface.createFromAsset(getAssets(), getResources().getString(R.string.button_font));
         invitePhoneNumber = (TextView) findViewById(R.id.invitePhoneNumber);
         invitePhoneNumber.setTypeface(_typeFace);
         inviteLocation = (TextView) findViewById(R.id.inviteLocation);
@@ -105,12 +105,19 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
         buttonBox = (LinearLayout) findViewById(R.id.buttonLayout);
         declineInviteButton = (Button) findViewById(R.id.declineInviteButton);
+        declineInviteButton.setTypeface(_typeFace);
         declineInviteButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
+
         acceptInviteButton = (Button) findViewById(R.id.acceptInviteButton);
+        acceptInviteButton.setTypeface(_typeFace);
         acceptInviteButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
+
         showCentroidButton = (Button) findViewById(R.id.showCentroidButton);
+        showCentroidButton.setTypeface(_typeFace);
         showCentroidButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
+
         navigateToDestButton = (Button) findViewById(R.id.navigateToButton);
+        navigateToDestButton.setTypeface(_typeFace);
         navigateToDestButton.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
 
     }
