@@ -2,6 +2,7 @@ package com.niem.gladow.centroid;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,13 +58,19 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
         // member is the member at given position
         Map.Entry<String, InviteStatus> member = (Map.Entry<String, InviteStatus>) this.getItem(position);
 
+        Typeface _typeFace = Typeface.createFromAsset(getContext().getAssets(),
+                "fonts/VeraSe.ttf");
         _viewHolder.memberId.setText(member.getKey());
+        _viewHolder.memberName.setTypeface(_typeFace);
+
         _realName = member.getValue().getRealName();
         if(_realName.matches("")){
-            _viewHolder.memberName.setText(member.getKey()+" (" + member.getValue().getInviteReply() + ")");
+            _viewHolder.memberName.setText(member.getKey()+"\n"+
+                    "(" + member.getValue().getInviteReply().toString().toLowerCase() + ")");
 
         }else {
-            _viewHolder.memberName.setText(member.getValue().getRealName()+" (" + member.getValue().getInviteReply() + ")");
+            _viewHolder.memberName.setText(member.getValue().getRealName()+"\n" +
+                    "(" + member.getValue().getInviteReply().toString().toLowerCase() + ")");
         }
         _viewHolder.inviteReply = member.getValue().getInviteReply();
 
