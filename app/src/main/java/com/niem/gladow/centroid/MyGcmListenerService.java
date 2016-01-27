@@ -1,19 +1,3 @@
-/**
- * Copyright 2015 Google Inc. All Rights Reserved.
- * <p/>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.niem.gladow.centroid;
 
 import android.app.NotificationManager;
@@ -69,6 +53,16 @@ public class MyGcmListenerService extends GcmListenerService {
         PersistenceHandler.getInstance().loadFriendMapFromDB();
         PersistenceHandler.getInstance().firstLoadOwnNumberAndToken();
 
+        try {
+            handleIncomingUpdate(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        broadcastToActivities();
+    }
+
+    private void handleIncomingUpdate(Bundle data) throws Exception{
         //get the type of the message
         String _messageType = data.get(MESSAGE_TYPE).toString();
         long _startTime;
@@ -105,7 +99,6 @@ public class MyGcmListenerService extends GcmListenerService {
             default:
                 break;
         }
-        broadcastToActivities();
     }
 
     private void draengelFriend(Bundle data) {
