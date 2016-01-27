@@ -115,17 +115,25 @@ public class GoogleMapActivity extends FragmentActivity implements
                         .title(CENTROID));
                 //todo colors
             }
-
+            float _size;
+            _size = calculateCentroidSize(centroid, _location);
 
             GroundOverlayOptions _centroid = new GroundOverlayOptions()
                     .image(BitmapDescriptorFactory.fromResource(R.drawable.map_centroid))
-                    .position(centroid, 200f, 200f);
+                    .position(centroid, _size, _size);
             map.addGroundOverlay(_centroid);
 
         } catch (Exception e) {
             Log.e("Error", e.toString());
         }
 
+    }
+
+    private float calculateCentroidSize(LatLng centroid, LatLng location) {
+        float[] _result = new float[1];
+        Location.distanceBetween(centroid.latitude, centroid.longitude, location.latitude, location.longitude, _result);
+        float _size = _result[0] / 5;
+        return _size;
     }
 
     protected void startLocationUpdates() {
