@@ -72,9 +72,7 @@ public final class Util {
         long _currentTime = System.currentTimeMillis();
         Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.setTimeInMillis(_inviteTime);
-        //TODO REPLACE LINES BELOW
-        if (_currentTime - _inviteTime < TimeUnit.MINUTES.toMillis(60)) {
-//            if(_currentTime-_inviteTime < TimeUnit.DAYS.toMillis(1)){
+            if(_currentTime-_inviteTime < TimeUnit.DAYS.toMillis(1)){
             return DateFormat.format("HH:mm", cal).toString();
         } else {
             invite.setIs_deprecated(true);
