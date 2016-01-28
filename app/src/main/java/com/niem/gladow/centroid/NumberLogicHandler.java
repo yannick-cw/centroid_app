@@ -14,8 +14,8 @@ import com.niem.gladow.centroid.Enums.TransportationMode;
 public class NumberLogicHandler implements AsyncResponse {
     private static final String SEND_NUMBER = "/android/registerNumber/",
             SEND_CONTACTS = "/android/checkNumbers/", INVITE_FRIENDS = "/android/inviteFriends/";
-    private static String ownNumberWithSlash = PersistenceHandler.getInstance().getOwnNumber() + "/";
-    PhoneDataHandler phoneDataHandler;
+    private static final String ownNumberWithSlash = PersistenceHandler.getInstance().getOwnNumber() + "/";
+    private PhoneDataHandler phoneDataHandler;
 
 
     private Context context;
@@ -33,10 +33,9 @@ public class NumberLogicHandler implements AsyncResponse {
         phoneDataHandler.execute("");
     }
 
-    private boolean sendContacts(String contacts) {
+    private void sendContacts(String contacts) {
         //starts RestConnector async task to send contacts to server
         new RestConnector(context).execute(RestConnector.SEND_CONTACTS, SEND_CONTACTS + ownNumberWithSlash + contacts);
-        return true;
     }
 
     public void syncTokenAndNumber() {

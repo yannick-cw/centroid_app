@@ -124,7 +124,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
         chooseTransportationMode(this);
     }
 
-    public void chooseTransportationMode(final Context _context) {
+    private void chooseTransportationMode(final Context _context) {
         CharSequence transportationModes[] = getResources().getStringArray(R.array.transportation_modes);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(InviteActivity.PICK_TRANSPORT);
@@ -157,8 +157,12 @@ public class InviteFriendsActivity extends AppCompatActivity implements SwipeRef
                     if (new NumberLogicHandler(_context).inviteFriends(_transportationMode)) {
                         onBackPressed();
                     } else {
-                        Snackbar.make(getCurrentFocus(), InviteActivity.PLEASE_GPS, Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                        try {
+                            Snackbar.make(getCurrentFocus(), InviteActivity.PLEASE_GPS, Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

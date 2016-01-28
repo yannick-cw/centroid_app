@@ -6,8 +6,8 @@ import java.io.Serializable;
  * This is the data type to save the centroid
  */
 public class Centroid implements Serializable {
-    double latitude;
-    double longitude;
+    private final double latitude;
+    private final double longitude;
 
     public Centroid(String latLong) {
         //input string from server is split

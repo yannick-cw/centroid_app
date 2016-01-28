@@ -55,7 +55,11 @@ public class SecurityThroughObscurity {
             e.printStackTrace();
         }
         Log.d("enc", _result);
-        _result = _result.replaceAll("%", "rvxyrvxy");
+        try {
+            _result = _result.replaceAll("%", "rvxyrvxy");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return _result;
     }
 

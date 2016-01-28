@@ -20,7 +20,14 @@
 
     <string name="everyone_declined">no centroid available\neveryone declined</string>
     <string name="declined_centroid_exists">centroid is available\nsurprise your friends and meet up!</string>
-<string-array name="transportation_modes">
+    <string name="enterNumber">Enter your number</string>
+    <string name="welcome">welcome to centroid</string>
+    <string name="nextBtn">please hit next to register</string>
+    <string name="invTime">INVITE TIME</string>
+    <string name="desc">desc</string>
+    <string name="placeHolder">1</string>
+    <string name="statusImage">statusImage</string>
+    <string-array name="transportation_modes">
     <item>Feet</item>
     <item>Bike</item>
     <item>Car</item>
@@ -28,6 +35,6 @@
 </string-array>
     <string-array name="decline_answers">
         <item>Ups, wrong Button</item>
-        <item>Yes...</item>
+        <item>Yes…</item>
     </string-array>
 </resources>

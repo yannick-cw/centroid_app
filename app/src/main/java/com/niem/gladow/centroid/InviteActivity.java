@@ -51,18 +51,18 @@ import java.util.TreeMap;
  */
 public class InviteActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final int PLACE_PICKER_REQUEST = 1;
-    public static final String ADD_PLACE = "/android/addPlace";
-    public static final String IS_EMPTY = "isEmpty";
+    private static final String ADD_PLACE = "/android/addPlace";
+    private static final String IS_EMPTY = "isEmpty";
     public static final String CENTROID = "centroid";
     public static final String LOCATION = "location";
     public static final String NAME = "name";
-    public static final String draengeld = "you draengeld ";
-    public static final String DRAENGEL_URI = "/android/draengel/";
-    public static final String HAS_ALREADY_REPLIED = " has already replied";
+    private static final String draengeld = "you draengeld ";
+    private static final String DRAENGEL_URI = "/android/draengel/";
+    private static final String HAS_ALREADY_REPLIED = " has already replied";
     public static final String PLEASE_GPS = "please activate your gps first";
-    public static final String INVITE_ACCEPTED = "invite accepted";
-    public static final String INVITE_DECLINED = "invite declined";
-    public static final String DECLINE_SURE = "Are you sure you want to decline?";
+    private static final String INVITE_ACCEPTED = "invite accepted";
+    private static final String INVITE_DECLINED = "invite declined";
+    private static final String DECLINE_SURE = "Are you sure you want to decline?";
     public static final String PICK_TRANSPORT = "Pick a transportation Mode";
     public static final String UPDATE_INVITE_URI = "/android/updateInvite/";
 
@@ -290,7 +290,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     //starts google maps for the given target and the current transportation mode
-    public void navigateTo(String lat, String _longitude) {
+    private void navigateTo(String lat, String _longitude) {
         Uri _gmmIntentUri = Uri.parse("google.navigation:q=" + lat + "," + _longitude
                 + "&mode=" + invite.getTransportationMode().getMode());
 
@@ -308,9 +308,9 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         }
     }
 
-    private boolean displayPlace(Place place) {
+    private void displayPlace(Place place) {
         if (place == null) {
-            return false;
+            return;
         }
         String content = "";
         if (!TextUtils.isEmpty(place.getName())) {
@@ -339,7 +339,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         InviteHandler.getInstance().setChosenPlace(content, invite);
         new RestConnector(this).execute(RestConnector.POST_NO_RESULT, ADD_PLACE + "/" + invite.getStartTime()
                 + "/" + content);
-        return true;
     }
 
     private String transportReady(String content) {
@@ -357,7 +356,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     //is called when accept or decline button is pressed
-    public void responseToInvite(View view) {
+    private void responseToInvite(View view) {
         switch (view.getId()) {
             case R.id.acceptInviteButton:
                 if (GpsDataHandler.getInstance().getLastLocation() == null) {

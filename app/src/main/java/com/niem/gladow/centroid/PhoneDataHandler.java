@@ -17,7 +17,6 @@ import java.util.Map;
  */
 public class PhoneDataHandler extends AsyncTask<String, String, String> {
     private Context context;
-    private static Map numbersNames;
     //creates public object from interface and is initialized with null, later NumberLogicHandler is assigned to it
     public AsyncResponse delegate = null;
 
@@ -40,7 +39,7 @@ public class PhoneDataHandler extends AsyncTask<String, String, String> {
 
     //gets all numbers from phone
     private void setContactsMap() {
-        numbersNames = new HashMap();
+        Map numbersNames = new HashMap();
         Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         while (phones.moveToNext()) {
             String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));

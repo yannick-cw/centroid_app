@@ -8,7 +8,7 @@ package com.niem.gladow.centroid.Enums;
 public enum TransportationMode {
     FOOT("w"), CAR("d"), BIKE("b"), PUBLIC("r"), DEFAULT("d"), DECLINED("d");
 
-    private String mode;
+    private final String mode;
     TransportationMode(String mode) {
         this.mode = mode;
     }

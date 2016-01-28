@@ -6,6 +6,6 @@ package com.niem.gladow.centroid.Database;
  * centroid
  */
 public interface StringDB {
-    public String loadString (String fileName);
-    public void saveString (String string, String fileName);
+    String loadString(String fileName);
+    void saveString(String string, String fileName);
 }

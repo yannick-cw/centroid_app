@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="1"
+        android:text="@string/placeHolder"
         android:visibility="invisible"
         />
 
@@ -37,7 +37,7 @@
         android:padding="3dp"
         android:scaleType="centerCrop"
         android:src="@drawable/unanswered"
-        android:contentDescription="statusImage"
+        android:contentDescription="@string/statusImage"
         android:cropToPadding="true" />
 
 

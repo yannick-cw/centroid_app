@@ -131,8 +131,7 @@ public class GoogleMapActivity extends FragmentActivity implements
     private float calculateCentroidSize(LatLng centroid, LatLng location) {
         float[] _result = new float[1];
         Location.distanceBetween(centroid.latitude, centroid.longitude, location.latitude, location.longitude, _result);
-        float _size = _result[0] / 5;
-        return _size;
+        return _result[0] / 5;
     }
 
     protected void startLocationUpdates() {

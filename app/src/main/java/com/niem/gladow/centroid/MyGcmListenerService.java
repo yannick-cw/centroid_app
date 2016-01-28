@@ -20,11 +20,11 @@ import com.niem.gladow.centroid.Enums.TransportationMode;
 public class MyGcmListenerService extends GcmListenerService {
 
     public static final String BROADCAST_UPDATE = "broadcast_update";
-    public static final String ASKS_YOU_TO_RESPOND = " asks you to respond.";
-    public static final String YOU_GOT_A_NEW_CENTROID = "you got a new centroid!";
-    public static final String CENTROID_ARRIVED = "centroid arrived";
-    public static final String YOU_GOT_INVITED_BY = "you got invited by: ";
-    public static final String CENTROID_INVITE = "centroid invite";
+    private static final String ASKS_YOU_TO_RESPOND = " asks you to respond.";
+    private static final String YOU_GOT_A_NEW_CENTROID = "you got a new centroid!";
+    private static final String CENTROID_ARRIVED = "centroid arrived";
+    private static final String YOU_GOT_INVITED_BY = "you got invited by: ";
+    private static final String CENTROID_INVITE = "centroid invite";
     private final String CENTROID = "centroid";
     private final String TIME = "time";
     private final String INVITE_NUMBER = "number";
@@ -62,7 +62,7 @@ public class MyGcmListenerService extends GcmListenerService {
         broadcastToActivities();
     }
 
-    private void handleIncomingUpdate(Bundle data) throws Exception{
+    private void handleIncomingUpdate(Bundle data) {
         //get the type of the message
         String _messageType = data.get(MESSAGE_TYPE).toString();
         long _startTime;

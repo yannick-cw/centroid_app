@@ -22,9 +22,9 @@ import java.util.Map;
 
 public class Invite implements Serializable {
     //is the unique id of the invite
-    private long startTime;
+    private final long startTime;
     //number of person who invited
-    private String inviteNumber;
+    private final String inviteNumber;
     private Centroid centroid;
     private InviteReply status = InviteReply.UNANSWERED;
     private TransportationMode transportationMode = TransportationMode.DEFAULT;

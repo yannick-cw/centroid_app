@@ -8,6 +8,6 @@ import java.util.Map;
  * centroid
  */
 public interface MapDB {
-    public boolean saveMap(Map map, String fileName);
-    public <T,S> Map<T, S> loadMap(String fileName);
+    boolean saveMap(Map map, String fileName);
+    <T,S> Map<T, S> loadMap(String fileName);
 }

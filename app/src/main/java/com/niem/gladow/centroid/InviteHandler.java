@@ -194,7 +194,8 @@ public class InviteHandler {
         //get all members numbers from the maps key set
         StringBuilder _allNumbers = new StringBuilder();
         for (String _number : _numberStatus.keySet()) {
-            _allNumbers.append(_number + ",");
+            _allNumbers.append(_number);
+            _allNumbers.append(",");
         }
         //delete the trailing comma
         _allNumbers.deleteCharAt(_allNumbers.length() - 1);

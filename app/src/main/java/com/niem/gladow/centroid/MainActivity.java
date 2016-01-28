@@ -16,7 +16,7 @@ import com.niem.gladow.centroid.Database.MiniDB;
 public class MainActivity extends AppCompatActivity {
     public static final String STATUS = "status";
     public static final String FIRST_LOAD = "firstLoad";
-    public static final String NO_PERMISSION = "noPermission";
+    private static final String NO_PERMISSION = "noPermission";
 
 
     @Override

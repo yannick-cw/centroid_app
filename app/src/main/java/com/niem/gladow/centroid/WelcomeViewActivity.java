@@ -18,11 +18,11 @@ public class WelcomeViewActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 12;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 11;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 13;
-    public static final String HIT_SYNC = "please hit sync - missing permissions";
-    public static final String HIT_NEXT_SYNC = "please hit next to sync";
-    public static final String HIT_NEXT = "please hit next";
-    public static final String NEXT_FOR_PERMISSION = "please hit next to grand permission";
-    public static final String PLEASE_HIT_NEXT_TO_REGISTER = "please hit next to register";
+    private static final String HIT_SYNC = "please hit sync - missing permissions";
+    private static final String HIT_NEXT_SYNC = "please hit next to sync";
+    private static final String HIT_NEXT = "please hit next";
+    private static final String NEXT_FOR_PERMISSION = "please hit next to grand permission";
+    private static final String PLEASE_HIT_NEXT_TO_REGISTER = "please hit next to register";
     private String _status;
     private TextView welcomeText;
 
@@ -60,7 +60,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    public void syncButton(View view) {
+    private void syncButton(View view) {
         syncWithServer();
     }
 

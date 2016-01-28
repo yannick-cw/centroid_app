@@ -41,7 +41,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:paddingTop="10dp"
                     android:maxLines="1"
-                    android:text="INVITE TIME" />
+                    android:text="@string/invTime" />
 
                 <TextView
                     android:id="@+id/inviteLocation"

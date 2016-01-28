@@ -131,18 +131,12 @@ public class PersistenceHandler {
 
     public boolean isOwnNumberInFile() {
         String _number = MiniDB.getInstance().loadString(OWN_NUMBER_FILE);
-        if (_number == null || _number.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !(_number == null || _number.isEmpty());
     }
 
     public boolean isTokenInFile() {
         String _token = MiniDB.getInstance().loadString(TOKEN_FILE);
-        if (_token == null || _token.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !(_token == null || _token.isEmpty());
     }
 
     /**
