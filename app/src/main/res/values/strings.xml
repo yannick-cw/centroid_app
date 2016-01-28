@@ -13,7 +13,7 @@
     <string name="default_centroid_available_host">click on show centroid\nto choose location</string>
     <string name="default_centroid_available_guest">centroid available\nno location available yet</string>
     <string name="choose_location">show centroid and\nchoose location</string>
-    <string name="sync">sync</string>
+    <string name="sync">next</string>
     <string name="invite_Button">Invite</string>
     <string name="button_font">fonts/VeraSeBd.ttf</string>
 <string-array name="transportation_modes">
