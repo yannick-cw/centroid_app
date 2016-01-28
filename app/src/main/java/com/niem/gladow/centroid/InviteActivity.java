@@ -89,11 +89,11 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         Log.d("Input Intent:", getIntent().getStringExtra(CentroidListViewActivity.INVITE_ID));
 
         //setting up needed Views (Buttons etc.)
-        Typeface _typeFace = Typeface.createFromAsset(getAssets(), "fonts/VeraSeBd.ttf");
+        Typeface _typeFace = Typeface.createFromAsset(getAssets(), "fonts/VeraBd.ttf");
         header = (LinearLayout) findViewById(R.id.header);
         inviteTime = (TextView) findViewById(R.id.inviteTime);
         inviteTime.setTypeface(_typeFace);
-        _typeFace = Typeface.createFromAsset(getAssets(), getResources().getString(R.string.button_font));
+        _typeFace = Typeface.createFromAsset(getAssets(), "fonts/Vera.ttf");
         invitePhoneNumber = (TextView) findViewById(R.id.invitePhoneNumber);
         invitePhoneNumber.setTypeface(_typeFace);
         inviteLocation = (TextView) findViewById(R.id.inviteLocation);
@@ -103,6 +103,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeLayout.setOnRefreshListener(this);
 
+        _typeFace = Typeface.createFromAsset(getAssets(), getResources().getString(R.string.button_font));
         buttonBox = (LinearLayout) findViewById(R.id.buttonLayout);
         declineInviteButton = (Button) findViewById(R.id.declineInviteButton);
         declineInviteButton.setTypeface(_typeFace);
@@ -177,18 +178,34 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
             showCentroidButton.setVisibility(View.VISIBLE);
             buttonBox.setOrientation(LinearLayout.VERTICAL);
         }
+
+
         //checks if centroid already exists
         if (invite.existsCentroid()) {
-            if(invite.getInviteNumber().matches(PersistenceHandler.getInstance().getOwnNumber())){
-                showCentroidButton.setText(R.string.choose_location);
-                inviteLocation.setText(R.string.default_centroid_available_host);
+            if(invite.getStatus() == InviteReply.DECLINED){
+                inviteLocation.setText(R.string.declined_centroid_exists);
             }else{
-                inviteLocation.setText(R.string.default_centroid_available_guest);
+                if(invite.getInviteNumber().matches(PersistenceHandler.getInstance().getOwnNumber())){
+                    showCentroidButton.setText(R.string.choose_location);
+                    inviteLocation.setText(R.string.default_centroid_available_host);
+                }else{
+                    inviteLocation.setText(R.string.default_centroid_available_guest);
+                }
             }
-
             showCentroidButton.setEnabled(true);
             navigateToDestButton.setEnabled(true);
+        }else {
+            if (invite.getStatus() == InviteReply.DECLINED) {
+                if(invite.getInviteNumber().matches(PersistenceHandler.getInstance().getOwnNumber())){
+                    inviteLocation.setText(R.string.everyone_declined);
+                }else{
+                    inviteLocation.setText(R.string.pending_you_declined);
+
+                }
+            }
         }
+
+        //checks if location already exists
         if (invite.getChosenPlace() != null) {
             navigateToDestButton.setText(R.string.navigate_toPlace);
             inviteLocation.setText(invite.getLocationName() + "\n@" +

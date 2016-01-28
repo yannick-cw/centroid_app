@@ -96,7 +96,7 @@ public class GoogleMapActivity extends FragmentActivity implements
             //adds two markers, one with own position and one with centroid
             map.addMarker(new MarkerOptions()
                     .position(_location)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    .icon(BitmapDescriptorFactory.defaultMarker(215f))
                     .alpha(0.7F)
                     .title(YOU));
 
@@ -110,10 +110,10 @@ public class GoogleMapActivity extends FragmentActivity implements
 
                 map.addMarker(new MarkerOptions()
                         .position(centroid)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .icon(BitmapDescriptorFactory.defaultMarker(215f))
                         .alpha(0)
                         .title(CENTROID));
-                //todo colors
+                //todo colors, check if color is working
             }
             float _size;
             _size = calculateCentroidSize(centroid, _location);

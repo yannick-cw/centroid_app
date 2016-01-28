@@ -88,11 +88,16 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
 
         //setTextViews/Imageviews
+        Typeface _typeFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/Vera.ttf");
         _viewHolder.time.setText(String.valueOf(Util.getInstance().getShortDate(_invite)));
+        _viewHolder.time.setTypeface(_typeFace);
         _viewHolder.inviteId.setText(String.valueOf(_invite.getStartTime()));
+        _viewHolder.inviteId.setTypeface(_typeFace);
         _viewHolder.status.setText(_invite.getStatus().toString());
+        _viewHolder.status.setTypeface(_typeFace);
         _viewHolder.statusImage.setImageResource(Util.getInstance()
                 .getResIdForTransportationImage(_invite.getTransportationMode()));
+        _viewHolder.placeToMeet.setTypeface(_typeFace);
 
 
         //check for placeToMeet and update TextView accordingly

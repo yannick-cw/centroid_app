@@ -59,7 +59,7 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
         Map.Entry<String, InviteStatus> member = (Map.Entry<String, InviteStatus>) this.getItem(position);
 
         Typeface _typeFace = Typeface.createFromAsset(getContext().getAssets(),
-                "fonts/VeraSe.ttf");
+                "fonts/Vera.ttf");
         _viewHolder.memberId.setText(member.getKey());
         _viewHolder.memberName.setTypeface(_typeFace);
 
