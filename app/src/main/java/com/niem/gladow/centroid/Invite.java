@@ -150,6 +150,19 @@ public class Invite implements Serializable {
         allMembers.get(updateNumber).setInviteReply(updateStatus);
         allMembers.get(updateNumber).setTransportationMode(transportationMode);
         findRealNames(this.allMembers);
+
+        boolean everyoneDeclined = true;
+        if (inviteNumber.equals(PersistenceHandler.getInstance().getOwnNumber())) {
+            for (Map.Entry<String, InviteStatus> _entry: getAllMembers(true, false).entrySet()) {
+                if (!_entry.getValue().getInviteReply().equals(InviteReply.DECLINED)) {
+                    everyoneDeclined = false;
+                }
+            }
+            if (everyoneDeclined) {
+                setStatus(InviteReply.DECLINED);
+            }
+        }
+
     }
 
     public void setChosenPlace(String chosenPlace) {
