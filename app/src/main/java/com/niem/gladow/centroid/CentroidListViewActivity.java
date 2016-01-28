@@ -89,7 +89,13 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         super.onResume();
         //sorts the map in descending order
         _sortedMap = new TreeMap<>(Collections.reverseOrder());
-        _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
+        try {
+            _sortedMap.putAll(InviteHandler.getInstance().getActiveInvites());
+        } catch (Exception e) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         _adapter = new CentroidListHashMapArrayAdapter(this,
                 R.layout.centroid_list_view_item, new ArrayList(_sortedMap.entrySet()));

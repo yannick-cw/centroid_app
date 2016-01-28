@@ -84,7 +84,13 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         setSupportActionBar(toolbar);
 
         //getting the current invite, by Id that was passed in this activity via putExtra(String)
-        invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra(CentroidListViewActivity.INVITE_ID)));
+        try {
+            invite = InviteHandler.getInstance().getInviteByTime(Long.parseLong(getIntent().getStringExtra(CentroidListViewActivity.INVITE_ID)));
+        } catch (NumberFormatException e) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         Log.d("Input Intent:", getIntent().getStringExtra(CentroidListViewActivity.INVITE_ID));
 
         //setting up needed Views (Buttons etc.)
