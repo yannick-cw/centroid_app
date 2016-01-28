@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:left="@dimen/border_minus_width"  android:right="@dimen/border_minus_width" android:top="@dimen/border_minus_width">
         <shape android:shape="rectangle">
-            <stroke android:width="@dimen/border_width" android:color="@color/declined_1" />
+            <stroke android:width="@dimen/border_width" android:color="@color/declined_2" />
         </shape>
     </item>
 </layer-list>
