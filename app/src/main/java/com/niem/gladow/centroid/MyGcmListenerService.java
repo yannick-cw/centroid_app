@@ -112,7 +112,7 @@ public class MyGcmListenerService extends GcmListenerService {
         if (_realName == null) {
             _realName = _friend;
         }
-        //todo try if works
+
         new RestConnector(this).execute(RestConnector.SYNC_ALL_INVITES,
                 CentroidListViewActivity.UPDATE_ALL_INVITES_URI + PersistenceHandler.getInstance().getOwnNumber() + "/"
                         + InviteHandler.getInstance().getActiveInvitesString());

@@ -74,9 +74,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     private SwipeRefreshLayout swipeLayout;
     private TextView invitePhoneNumber, inviteTime, inviteLocation;
 
-    //todo schrift etwas groesser in buttons, besonder accept decline, auch die namen
-    //todo Datum etwas stylischer
-    //todo place placeholder text
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -388,6 +385,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
     public void areYouSureToDeclineDialogue(final View _view) {
         CharSequence transportationModes[] = getResources().getStringArray(R.array.decline_answers);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         builder.setTitle(DECLINE_SURE);
         builder.setItems(transportationModes, new DialogInterface.OnClickListener() {
             @Override
@@ -402,7 +400,6 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                 }
             }
         });
-        builder.show();
     }
 
 
