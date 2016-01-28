@@ -89,7 +89,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
         } catch (NumberFormatException e) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            finish();
+            return;
         }
         Log.d("Input Intent:", getIntent().getStringExtra(CentroidListViewActivity.INVITE_ID));
 

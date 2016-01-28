@@ -94,8 +94,9 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
         } catch (Exception e) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            finish();
+            return;
         }
+        Log.d("XXXX","NOOO!!");
 
         _adapter = new CentroidListHashMapArrayAdapter(this,
                 R.layout.centroid_list_view_item, new ArrayList(_sortedMap.entrySet()));
