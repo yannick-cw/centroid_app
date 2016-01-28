@@ -60,7 +60,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void syncButton(View view) {
+    public void syncButton(View view) {
         syncWithServer();
     }
 
