@@ -36,10 +36,7 @@ public class MainActivity extends AppCompatActivity {
             PersistenceHandler.getInstance().loadFriendMapFromDB();
             Log.d("loaded friend map", PersistenceHandler.getInstance().getFriendMap().toString());
             sendContacts();
-            //todo try if works
-//            //updates the token every start
-//            Intent _intent = new Intent(this, RegistrationIntentService.class);
-//            startService(_intent);
+
             Intent intent = new Intent(this, CentroidListViewActivity.class);
             startActivity(intent);
             finish();

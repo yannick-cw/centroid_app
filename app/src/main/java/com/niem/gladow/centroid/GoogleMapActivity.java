@@ -113,7 +113,6 @@ public class GoogleMapActivity extends FragmentActivity implements
                         .icon(BitmapDescriptorFactory.defaultMarker(215f))
                         .alpha(0)
                         .title(CENTROID));
-                //todo colors, check if color is working
             }
             float _size;
             _size = calculateCentroidSize(centroid, _location);
