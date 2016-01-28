@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -33,6 +34,14 @@ public class WelcomeViewActivity extends AppCompatActivity {
         welcomeText = (TextView) findViewById(R.id.welcomeText);
         Button nex = (Button) findViewById(R.id.button);
         nex.getBackground().setColorFilter(Util.getInstance().getButtonColor(this), PorterDuff.Mode.MULTIPLY);
+
+
+        Typeface _typeFace = Typeface.createFromAsset(getAssets(), "fonts/VeraSe.ttf");
+        welcomeText.setTypeface(_typeFace);
+        nex.setTypeface(_typeFace);
+
+        TextView textView = (TextView) findViewById(R.id.textView);
+        textView.setTypeface(_typeFace);
 
         if (!permissionsGranted()) {
             requestMissingPermissions();

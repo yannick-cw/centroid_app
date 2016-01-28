@@ -13,6 +13,7 @@
         android:text="@string/sync"
         android:onClick="syncButton"
         android:id="@+id/button"
+        style="@style/CentroidButton"
         android:layout_above="@+id/welcomeText"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

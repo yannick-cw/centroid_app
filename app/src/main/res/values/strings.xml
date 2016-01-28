@@ -15,7 +15,7 @@
     <string name="choose_location">show centroid and\nchoose location</string>
     <string name="sync">next</string>
     <string name="invite_Button">Invite</string>
-    <string name="button_font">fonts/VeraSeBd.ttf</string>
+    <string name="button_font">fonts/Vera.ttf</string>
 <string-array name="transportation_modes">
     <item>Feet</item>
     <item>Bike</item>
