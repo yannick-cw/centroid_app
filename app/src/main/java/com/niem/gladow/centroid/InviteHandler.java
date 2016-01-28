@@ -78,9 +78,7 @@ public class InviteHandler {
 
     public void responseToInvite(long startTime, InviteReply inviteReply
             , TransportationMode transportationMode, Context context) {
-        if (GpsDataHandler.getInstance().getLastLocation() == null) {
-            return;
-        }
+
         //if the users accepts the invite his latest gps signal is transmitted to the server
         //and the status is set to accepted
         if (inviteReply.equals(InviteReply.ACCEPTED)) {
