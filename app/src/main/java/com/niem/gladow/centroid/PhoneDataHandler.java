@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by yannick_uni on 11/10/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class PhoneDataHandler extends AsyncTask<String, String, String> {
     private Context context;

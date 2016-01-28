@@ -3,7 +3,9 @@ package com.niem.gladow.centroid.Enums;
 import java.io.Serializable;
 
 /**
- * Created by yannick_uni on 1/12/16.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class InviteStatus implements Serializable{
     private InviteReply inviteReply;

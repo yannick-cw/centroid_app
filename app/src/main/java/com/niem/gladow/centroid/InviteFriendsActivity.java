@@ -30,7 +30,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * Created by clem on 11.11.15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class InviteFriendsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipeLayout;

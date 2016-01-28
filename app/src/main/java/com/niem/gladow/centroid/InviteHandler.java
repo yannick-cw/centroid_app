@@ -115,7 +115,7 @@ public class InviteHandler {
      * either creates new invite or updates existing one
      *
      * @param result  from the server, separated invite
-     * @param context
+     * @param context context
      */
     public void syncInvite(String result, Context context) {
         if (result != null && !"".equals(result)) {

@@ -1,7 +1,6 @@
 package com.niem.gladow.centroid;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
@@ -20,7 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by clem on 24/11/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 

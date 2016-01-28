@@ -19,7 +19,9 @@ import java.util.Map;
 
 
 /**
- * Created by yannick_uni on 11/17/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class PersistenceHandler {
     private Map<String, String> contactsMap;
@@ -87,7 +89,7 @@ public class PersistenceHandler {
      */
     public void addToInviteList(String number) {
         for (String str : inviteList) {
-            if (str == number) {
+            if (str.equals(number)) {
                 return;
             }
         }

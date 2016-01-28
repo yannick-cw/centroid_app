@@ -13,7 +13,9 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * Created by yannick on 26.01.16.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class SecurityThroughObscurity {
     private SecretKeySpec key;
@@ -40,9 +42,7 @@ public class SecurityThroughObscurity {
 
         try {
             _cipherText = cipher.doFinal(_input);
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
         byte[] _cipherTextFinal = Base64.encode(_cipherText, Base64.DEFAULT);
@@ -82,9 +82,7 @@ public class SecurityThroughObscurity {
         byte[] _original = new byte[0];
         try {
             _original = cipher.doFinal(_plainText);
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
         return new String(_original);

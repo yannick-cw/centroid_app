@@ -2,7 +2,7 @@
     <string name="app_name">centroid</string>
     <string name="invite_friends">Who do you want to invite?</string>
     <string name="invite_activity">Where will the centroid be</string>
-    <string name="invite_listview">centroid - your invites</string>
+    <string name="invite_listView">centroid - your invites</string>
     <string name="action_settings">refresh</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>

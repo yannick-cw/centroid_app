@@ -10,7 +10,7 @@ public class Centroid implements Serializable {
     double longitude;
 
     public Centroid(String latLong) {
-        //input string from server is splitted
+        //input string from server is split
         latitude = Double.valueOf(latLong.split(",")[0]);
         longitude = Double.valueOf(latLong.split(",")[1]);
     }

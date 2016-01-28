@@ -126,6 +126,7 @@ public class WelcomeViewActivity extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
                 } else {
                     try {
                         Snackbar.make(getCurrentFocus(), HIT_SYNC, Snackbar.LENGTH_LONG)

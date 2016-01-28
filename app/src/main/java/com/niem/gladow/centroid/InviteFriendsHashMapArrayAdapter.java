@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by clem on 24/11/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
     private ArrayList<Boolean> checkList;
@@ -76,7 +77,7 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.name.setTypeface(_typeFace);
         _viewHolder.checked = checkList.get(position);
 
-        //change backgroundcolor according to checked status
+        //change background color according to checked status
         if(_viewHolder.checked){
             convertView.setBackgroundResource(R.color.centroid_1);
         }else{
@@ -90,9 +91,8 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
     private List<Integer> getCentroidColorArray(){
         int[] _colors = getContext().getResources().getIntArray(R.array.colorArray);
         List<Integer> _intList = new ArrayList<>();
-        for (int index = 0; index < _colors.length; index++)
-        {
-            _intList.add(_colors[index]);
+        for (int _color : _colors) {
+            _intList.add(_color);
         }
         return _intList;
     }

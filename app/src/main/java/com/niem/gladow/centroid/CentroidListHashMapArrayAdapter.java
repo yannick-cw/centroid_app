@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.niem.gladow.centroid.Enums.InviteReply;
 import com.niem.gladow.centroid.Enums.InviteStatus;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
@@ -23,7 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by clem on 24/11/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
@@ -87,7 +88,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
         _viewHolder.members.setText(_styledMembers);
 
 
-        //setTextViews/Imageviews
+        //setTextViews/ImageViews
         Typeface _typeFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/Vera.ttf");
         _viewHolder.time.setText(String.valueOf(Util.getInstance().getShortDate(_invite)));
         _viewHolder.time.setTypeface(_typeFace);
@@ -120,7 +121,6 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
 
     //method that sets the different layouts to member statusImage and shows them in listViewItem
     private void setStringStyles(Invite _invite, SpannableString _styledMembers, int _start, int _end) {
-        InviteReply _memberReply;
         String _tmpName;
         TransportationMode _memberTransportation;
 
@@ -144,7 +144,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
             //check the statusImage of the member and apply style accordingly
             _memberTransportation = _memberEntry.getValue().getTransportationMode();
             _styledMembers.setSpan(new ForegroundColorSpan(ContextCompat
-                    .getColor(getContext(), Util.getInstance().getColorForTranspMode(_memberTransportation))), _start, _end, 0);
+                    .getColor(getContext(), Util.getInstance().getColorForTransportationMode(_memberTransportation))), _start, _end, 0);
 
             //shift space for ", " used to separate names
             _end += 2;

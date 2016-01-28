@@ -9,7 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by yannick_uni on 11/10/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class RestConnector extends AsyncTask<String, String, String> {
     public static final String POST_NO_RESULT = "1", GET_NO_RESULT = "2", SEND_CONTACTS = "3", SYNC_INVITE = "4", SYNC_ALL_INVITES = "5";
@@ -61,7 +63,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
             out.write("test");
             out.close();
 
-            Log.d("responseCode", new Integer(connection.getResponseCode()).toString());
+            Log.d("responseCode", Integer.toString(connection.getResponseCode()));
 
             result = Util.getInstance().convertInputStreamToString(connection.getInputStream());
             Log.d("reader", result);
@@ -83,7 +85,7 @@ public class RestConnector extends AsyncTask<String, String, String> {
 
             connection.setRequestMethod("GET");
 
-            Log.d("responseCode", new Integer(connection.getResponseCode()).toString());
+            Log.d("responseCode", Integer.toString(connection.getResponseCode()));
             if (new Integer(connection.getResponseCode()) == 200) {
                 result = Util.getInstance().convertInputStreamToString(connection.getInputStream());
             }

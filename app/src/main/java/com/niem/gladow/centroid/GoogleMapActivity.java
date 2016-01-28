@@ -75,7 +75,7 @@ public class GoogleMapActivity extends FragmentActivity implements
     }
 
     private void updateUI() {
-        LatLng _location = null;
+        LatLng _location;
         try {
             _location = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         } catch (Exception e) {

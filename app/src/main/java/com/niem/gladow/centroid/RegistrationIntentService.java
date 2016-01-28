@@ -18,19 +18,13 @@ package com.niem.gladow.centroid;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.niem.gladow.centroid.NumberLogicHandler;
 import com.niem.gladow.centroid.PersistenceHandler;
 import com.niem.gladow.centroid.R;
-
-import java.io.IOException;
 
 public class RegistrationIntentService extends IntentService {
 

@@ -1,7 +1,9 @@
 package com.niem.gladow.centroid.Enums;
 
 /**
- * Created by yannick_uni on 12/8/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public enum InviteReply {
     ACCEPTED, DECLINED, UNANSWERED, READY

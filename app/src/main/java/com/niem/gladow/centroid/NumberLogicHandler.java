@@ -7,7 +7,9 @@ import android.util.Log;
 import com.niem.gladow.centroid.Enums.TransportationMode;
 
 /**
- * Created by yannick_uni on 11/10/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class NumberLogicHandler implements AsyncResponse {
     private static final String SEND_NUMBER = "/android/registerNumber/",
@@ -42,7 +44,7 @@ public class NumberLogicHandler implements AsyncResponse {
                 + PersistenceHandler.getInstance().getToken());
     }
 
-    //reads friendlist from file and starts async task RestConnector to send friend numbers to server
+    //reads friend list from file and starts async task RestConnector to send friend numbers to server
     public boolean inviteFriends(TransportationMode transportationMode) {
         if (GpsDataHandler.getInstance().getLastLocation() == null) {
             return false;

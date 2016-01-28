@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -29,7 +28,9 @@ import java.util.Collections;
 import java.util.TreeMap;
 
 /**
- * Created by clem on 11.11.15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class CentroidListViewActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static final String INVITE_ID = "InviteId";
@@ -112,8 +113,8 @@ public class CentroidListViewActivity extends AppCompatActivity implements Swipe
 
                     TextView _textViewClicked = (TextView) view.findViewById(R.id.centroidListItemInviteId);
                     TextView _textViewClicked1 = (TextView) view.findViewById(R.id.centroidListItemStatus);
-                    Log.d("Textview.gettext:", _textViewClicked.getText().toString()); //start_time/invite_id
-                    Log.d("Textview1.gettext:", _textViewClicked1.getText().toString());
+                    Log.d("TextView.getText:", _textViewClicked.getText().toString()); //start_time/invite_id
+                    Log.d("TextView1.getText:", _textViewClicked1.getText().toString());
 
                     startInviteActivity(_textViewClicked.getText().toString());
 

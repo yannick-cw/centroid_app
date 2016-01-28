@@ -57,7 +57,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CentroidListViewActivity"
-            android:label="@string/invite_listview"
+            android:label="@string/invite_listView"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

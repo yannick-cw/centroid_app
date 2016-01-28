@@ -45,7 +45,9 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 /**
- * Created by clem on 05/01/16.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public class InviteActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private static final int PLACE_PICKER_REQUEST = 1;
@@ -257,9 +259,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
 
             try {
                 startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
+            } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
                 e.printStackTrace();
             }
             //if a member calls showCentroid the custom map is loaded
@@ -400,6 +400,7 @@ public class InviteActivity extends AppCompatActivity implements SwipeRefreshLay
                 }
             }
         });
+        builder.show();
     }
 
 

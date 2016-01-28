@@ -1,7 +1,9 @@
 package com.niem.gladow.centroid.Enums;
 
 /**
- * Created by clem on 12/01/16.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public enum TransportationMode {
     FOOT("w"), CAR("d"), BIKE("b"), PUBLIC("r"), DEFAULT("d"), DECLINED("d");

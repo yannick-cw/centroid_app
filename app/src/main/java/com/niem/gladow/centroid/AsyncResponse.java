@@ -1,7 +1,9 @@
 package com.niem.gladow.centroid;
 
 /**
- * Created by yannick_uni on 11/10/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public interface AsyncResponse {
     void processFinish(String output);

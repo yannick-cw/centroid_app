@@ -22,7 +22,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by yannick_uni on 11/17/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public final class Util {
     private static Util instance;
@@ -131,7 +133,7 @@ public final class Util {
 
     }
 
-    public int getColorForTranspMode(TransportationMode transportationMode) {
+    public int getColorForTransportationMode(TransportationMode transportationMode) {
         switch (transportationMode) {
             case DECLINED:
                 return R.color.transp_declined;
@@ -149,14 +151,14 @@ public final class Util {
     public static <K, V extends Comparable<? super V>> Map<K, V>
     sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list =
-                new LinkedList<Map.Entry<K, V>>(map.entrySet());
+                new LinkedList<>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
             public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
                 return (o1.getValue()).compareTo(o2.getValue());
             }
         });
 
-        Map<K, V> result = new LinkedHashMap<K, V>();
+        Map<K, V> result = new LinkedHashMap<>();
         for (Map.Entry<K, V> entry : list) {
             result.put(entry.getKey(), entry.getValue());
         }

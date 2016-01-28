@@ -1,9 +1,9 @@
 package com.niem.gladow.centroid.Database;
 
-import java.util.Map;
-
 /**
- * Created by yannick_uni on 11/30/15.
+ * Created by yannick and clemens 2016
+ *
+ * centroid
  */
 public interface StringDB {
     public String loadString (String fileName);
