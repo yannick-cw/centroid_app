@@ -65,11 +65,11 @@ public class MemberStatusHashMapArrayAdapter extends ArrayAdapter {
 
         _realName = member.getValue().getRealName();
         if(_realName.matches("")){
-            _viewHolder.memberName.setText(member.getKey()+"\n"+
+            _viewHolder.memberName.setText(member.getKey()+" \n"+
                     "(" + member.getValue().getInviteReply().toString().toLowerCase() + ")");
 
         }else {
-            _viewHolder.memberName.setText(member.getValue().getRealName()+"\n" +
+            _viewHolder.memberName.setText(member.getValue().getRealName()+" \n" +
                     "(" + member.getValue().getInviteReply().toString().toLowerCase() + ")");
         }
         _viewHolder.inviteReply = member.getValue().getInviteReply();
