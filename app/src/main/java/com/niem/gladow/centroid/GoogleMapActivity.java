@@ -103,7 +103,7 @@ public class GoogleMapActivity extends FragmentActivity implements
             if (location != null) {
                 map.addMarker(new MarkerOptions()
                         .position(location)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                        .icon(BitmapDescriptorFactory.defaultMarker(215f))
                         .alpha(0.7F)
                         .title(locationName));
             } else {
