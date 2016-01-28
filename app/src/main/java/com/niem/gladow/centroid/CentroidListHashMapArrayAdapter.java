@@ -142,19 +142,7 @@ public class CentroidListHashMapArrayAdapter extends ArrayAdapter {
             }
 
             //check the statusImage of the member and apply style accordingly
-            _memberReply = _memberEntry.getValue().getInviteReply();
             _memberTransportation = _memberEntry.getValue().getTransportationMode();
-            switch (_memberReply) {
-                case ACCEPTED:
-                    _styledMembers.setSpan(new StyleSpan(Typeface.NORMAL), _start, _end, 0);
-                    break;
-                case DECLINED:
-                    _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC), _start, _end, 0);
-                    break;
-                case UNANSWERED:
-                    _styledMembers.setSpan(new StyleSpan(Typeface.ITALIC), _start, _end, 0);
-                    break;
-            }
             _styledMembers.setSpan(new ForegroundColorSpan(ContextCompat
                     .getColor(getContext(), Util.getInstance().getColorForTranspMode(_memberTransportation))), _start, _end, 0);
 

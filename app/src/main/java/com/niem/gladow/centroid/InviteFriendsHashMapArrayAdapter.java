@@ -69,7 +69,7 @@ public class InviteFriendsHashMapArrayAdapter extends ArrayAdapter {
 
         //set texts etc.
         Typeface _typeFace = Typeface.createFromAsset(getContext().getAssets(),
-                "fonts/VeraMoBd.ttf");
+                "fonts/Vera.ttf");
         _viewHolder.number.setText(entry.getKey());
         _viewHolder.number.setTypeface(_typeFace);
         _viewHolder.name.setText(_name);
