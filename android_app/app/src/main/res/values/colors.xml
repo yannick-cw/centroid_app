@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Primary color:-->
+    <color name="centroid_1">#00BDE9</color>
+    <color name="centroid_2">#00809E</color>
+    <color name="centroid_3">#006880</color>
+    <color name="centroid_4">#005265</color>
+    <color name="centroid_5">#003947</color>
+    <!--Secondary color (1):-->
+    <color name="unanswered_1">#FFB100</color>
+    <color name="unanswered_2">#CF9000</color>
+    <color name="unanswered_3">#A37100</color>
+    <color name="unanswered_4">#724F00</color>
+    <!--Secondary color (2):-->
+    <color name="declined_1">#FF1E00</color>
+    <color name="declined_2">#CF1800</color>
+    <color name="declined_3">#A31300</color>
+    <color name="declined_4">#720D00</color>
+    <!--Complement color:-->
+    <color name="unanswered_dark_1">#FF7F00</color>
+    <color name="unanswered_dark_2">#CF6700</color>
+    <color name="unanswered_dark_3">#A35100</color>
+    <color name="unanswered_dark_4">#723900</color>
+
+    <!-- Color Helpers-->
+    <color name="button_color">@color/centroid_2</color>
+
+    <color name="invite_ready">@color/centroid_1</color>
+    <color name="invite_accepted">@color/centroid_2</color>
+    <color name="invite_unanswered">@color/unanswered_1</color>
+    <color name="invite_declined">@color/declined_2</color>
+
+    <color name="depr_ready">#7700BDE9</color>
+    <color name="depr_accepted">#7700809E</color>
+    <color name="depr_unanswered">#77FFB100</color>
+    <color name="depr_declined">#77CF1800</color>
+
+    <color name="transp_chosen">@color/centroid_1</color>
+    <color name="transp_unanswered">@color/unanswered_1</color>
+    <color name="transp_declined">@color/declined_2</color>
+
+    <array name="colorArray">
+        <!--<item>@color/centroid_1</item>-->
+        <item>@color/centroid_2</item>
+        <item>@color/centroid_3</item>
+        <item>@color/centroid_4</item>
+        <item>@color/centroid_5</item>
+        <!--<item>@color/unanswered_dark_1</item>-->
+        <!--<item>@color/unanswered_dark_2</item>-->
+        <!--<item>@color/unanswered_dark_3</item>-->
+        <!--<item>@color/unanswered_dark_4</item>-->
+        <!--<item>@color/unanswered_1</item>-->
+        <!--<item>@color/declined_1</item>-->
+    </array>
+</resources>
