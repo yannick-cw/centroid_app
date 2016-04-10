@@ -1,3 +1,4 @@
 # centroid
 
-###The Center of Gravity of Friendship
+This is a small android application to create optimal meeting points with friends.
+It was created by Clemens Niemeyer and Yannick Gladow.
