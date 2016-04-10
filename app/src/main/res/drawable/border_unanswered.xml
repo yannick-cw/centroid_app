@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:left="@dimen/border_minus_width"  android:right="@dimen/border_minus_width" android:top="@dimen/border_minus_width">
-        <shape android:shape="rectangle">
-            <stroke android:width="@dimen/border_width" android:color="@color/unanswered_1" />
-        </shape>
-    </item>
-</layer-list>
